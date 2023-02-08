@@ -1,0 +1,302 @@
+﻿
+@{
+    ViewBag.Title = "Orders";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script>
+
+    var orders = {};
+
+    var orderStatusesList = {};
+
+    $(document).ready(function () {
+        var uid = @ViewBag.UserId;
+        debugger;
+        initializeOrdersList(uid);
+
+    });
+
+    function loadAllOrders() {
+        if ($.fn.DataTable.isDataTable('#table-15')) {
+            $('#table-15').DataTable().destroy();
+        }
+        var rows = '';
+        for (i = 0; i < orders.Table.length; i++) {
+            var item = orders.Table[i];
+            rows = rows + '<tr><td>' + item.ORDER_ID + '</td><td>' + item.CUSTOMER_ID + '</td><td>' + item.NAME + '</td><td>'
+                        + item.MOBILE + '</td><td>' + item.ADDRESS + '</td><td>'
+                        + item.DELIVERY_DESCRIPTION + '</td><td>' + item.DELIVERY_TIME + '</td><td>'
+                        + item.MANUAL_DISCOUNT + '</td><td>' + item.COUPON_DISCOUNT + '</td><td>'
+                        + item.IS_PACKAGE + '</td><td>'
+                        + item.TOTAL_ITEMS + '</td><td>' + item.TOTAL_AMOUNT + '</td><td>' + item.STATUS_DESCRIPTION + '</td>'
+                        + '<td><a style="color:green" target="_blank" href = "ViewOrder?oID=' + item.ORDER_ID + '">View</a></td></tr>';
+        }
+
+        $("#ordersTable5").html(rows);
+        loadDT5();
+    }
+
+    function initializeOrdersList(uId) {
+        $.ajax({
+            type: "GET",
+            url: '/api/order/customerOrders?uId=' + uId ,
+            contentType: 'application/json',
+            success: function (result) {
+                orders = jQuery.parseJSON(result);
+                loadAllOrders();
+            },
+            error: function (res) {
+                //console.log(res);
+                alert('failure: ' + res);
+            }
+        });
+    }
+
+    
+</script>
+
+
+<ol class="breadcrumb">
+    <li class="breadcrumb-item">
+        <a href="/Home/Index">Grocery Store</a>
+    </li>
+    <li>Customer Management</li>
+    <li class="breadcrumb-item active">Orders</li>
+</ol>
+
+
+<h2>Orders</h2>
+<br />
+<style>
+    .table thead tr th {
+        font-size: larger;
+        color: cadetblue;
+    }
+</style>
+<table class="table table-bordered datatable" style=" table-layout: fixed;" id="table-15">
+    <thead>
+        <tr>
+            <th style="width: 8%; word-wrap: break-word">Order ID</th>
+            <th style="width: 5%; word-wrap: break-word">Customer ID</th>
+            <th style="width: 13%; word-wrap: break-word">Name</th>
+            <th style="width: 10%; word-wrap: break-word">Mobile</th>
+            <th style="width: 15%; word-wrap: break-word">Address</th>
+            <th style="width: 12%; word-wrap: break-word">Message</th>
+            <th style="width: 10%; word-wrap: break-word">Time</th>
+            <th style="width: 5%; word-wrap: break-word">Manual Disc</th>
+            <th style="width: 5%; word-wrap: break-word">Coupon Disc</th>
+            <th style="width: 3%; word-wrap: break-word">Package</th>
+            <th style="width: 4%; word-wrap: break-word">Items</th>
+            <th style="width: 5%; word-wrap: break-word">Amount</th>
+            <th style="width: 5%; word-wrap: break-word">Status</th>
+            <th style="width: 10%; word-wrap: break-word">Action</th>
+
+
+        </tr>
+    </thead>
+    <tbody id="ordersTable5"></tbody>
+    <tfoot>
+        <tr>
+            <th style="width: 8%; word-wrap: break-word">Order ID</th>
+            <th style="width: 5%; word-wrap: break-word">Customer ID</th>
+            <th style="width: 13%; word-wrap: break-word">Name</th>
+            <th style="width: 10%; word-wrap: break-word">Mobile</th>
+            <th style="width: 15%; word-wrap: break-word">Address</th>
+            <th style="width: 12%; word-wrap: break-word">Message</th>
+            <th style="width: 10%; word-wrap: break-word">Time</th>
+            <th style="width: 5%; word-wrap: break-word">Manual Disc</th>
+            <th style="width: 5%; word-wrap: break-word">Coupon Disc</th>
+            <th style="width: 3%; word-wrap: break-word">Package</th>
+            <th style="width: 4%; word-wrap: break-word">Items</th>
+            <th style="width: 5%; word-wrap: break-word">Amount</th>
+            <th style="width: 5%; word-wrap: break-word">Status</th>
+            <th style="width: 10%; word-wrap: break-word">Action</th>
+
+
+        </tr>
+    </tfoot>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+    var responsiveHelper;
+    var breakpointDefinition = {
+        tablet: 1024,
+        phone: 480
+    };
+    var tableContainer = null;
+
+    function loadDT1() {
+        //if (tableContainer != null) {
+        //    tableContainer.dataTable().destroy();
+        //}
+        tableContainer = $("#table-11");
+
+        tableContainer.dataTable({
+            "sPaginationType": "bootstrap",
+            "aLengthMenu": [[30, 100, 1000, -1], [30, 100, 1000, "All"]],
+            "bStateSave": true,
+            "sDom": "<'row'<'col-xs-6 col-left'l><'col-xs-6 col-right'<'export-data'T>f>r>t<'row'<'col-xs-6 col-left'i><'col-xs-6 col-right'p>>",
+            "oTableTools": {
+            },
+
+            // Responsive Settings
+            bAutoWidth: false,
+            fnPreDrawCallback: function () {
+                // Initialize the responsive datatables helper once.
+                if (!responsiveHelper) {
+                    responsiveHelper = new ResponsiveDatatablesHelper(tableContainer, breakpointDefinition);
+                }
+            },
+            //fnRowCallback: function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+            //    responsiveHelper.createExpandIcon(nRow);
+            //},
+            //fnDrawCallback: function (oSettings) {
+            //    responsiveHelper.respond();
+            //}
+        });
+    }
+
+    function loadDT2() {
+        //if (tableContainer != null) {
+        //    tableContainer.dataTable().destroy();
+        //}
+        tableContainer = $("#table-12");
+
+        tableContainer.dataTable({
+            "sPaginationType": "bootstrap",
+            "aLengthMenu": [[30, 100, 1000, -1], [30, 100, 1000, "All"]],
+            "bStateSave": true,
+            "oTableTools": {
+            },
+
+            // Responsive Settings
+            bAutoWidth: false,
+            fnPreDrawCallback: function () {
+                // Initialize the responsive datatables helper once.
+                if (!responsiveHelper) {
+                    responsiveHelper = new ResponsiveDatatablesHelper(tableContainer, breakpointDefinition);
+                }
+            },
+            //fnRowCallback: function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+            //    responsiveHelper.createExpandIcon(nRow);
+            //},
+            //fnDrawCallback: function (oSettings) {
+            //    responsiveHelper.respond();
+            //}
+        });
+    }
+
+    function loadDT3() {
+
+        tableContainer = $("#table-13");
+
+        tableContainer.dataTable({
+            "sPaginationType": "bootstrap",
+            "aLengthMenu": [[30, 100, 1000, -1], [30, 100, 1000, "All"]],
+            "bStateSave": true,
+            "oTableTools": {
+            },
+
+            // Responsive Settings
+            bAutoWidth: false,
+            fnPreDrawCallback: function () {
+                // Initialize the responsive datatables helper once.
+                if (!responsiveHelper) {
+                    responsiveHelper = new ResponsiveDatatablesHelper(tableContainer, breakpointDefinition);
+                }
+            },
+            //fnRowCallback: function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+            //    responsiveHelper.createExpandIcon(nRow);
+            //},
+            //fnDrawCallback: function (oSettings) {
+            //    responsiveHelper.respond();
+            //}
+        });
+    }
+
+    function loadDT4() {
+
+        tableContainer = $("#table-14");
+
+        tableContainer.dataTable({
+            "sPaginationType": "bootstrap",
+            "aLengthMenu": [[30, 100, 1000, -1], [30, 100, 1000, "All"]],
+            "bStateSave": true,
+            "oTableTools": {
+            },
+
+            // Responsive Settings
+            bAutoWidth: false,
+            fnPreDrawCallback: function () {
+                // Initialize the responsive datatables helper once.
+                if (!responsiveHelper) {
+                    responsiveHelper = new ResponsiveDatatablesHelper(tableContainer, breakpointDefinition);
+                }
+            },
+            //    fnRowCallback: function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+            //        responsiveHelper.createExpandIcon(nRow);
+            //    },
+            //    fnDrawCallback: function (oSettings) {
+            //        responsiveHelper.respond();
+            //    }
+        });
+    }
+
+    function loadDT5() {
+
+        tableContainer = $("#table-15");
+
+        tableContainer.dataTable({
+            "sPaginationType": "bootstrap",
+            "aLengthMenu": [[30, 100, 1000, -1], [30, 100, 1000, "All"]],
+            "bStateSave": true,
+
+            "oTableTools": {
+            },
+
+            // Responsive Settings
+            bAutoWidth: false,
+            fnPreDrawCallback: function () {
+                // Initialize the responsive datatables helper once.
+                if (!responsiveHelper) {
+                    responsiveHelper = new ResponsiveDatatablesHelper(tableContainer, breakpointDefinition);
+                }
+            },
+            //fnRowCallback: function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+            //    responsiveHelper.createExpandIcon(nRow);
+            //},
+            fnDrawCallback: function (oSettings) {
+                responsiveHelper.respond();
+            }
+        });
+    }
+</script>
+
+<br />
+
+
+<!-- Imported styles on this page -->
+<link rel="stylesheet" href="~/assets/js/datatables/responsive/css/datatables.responsive.css">
+<link rel="stylesheet" href="~/assets/js/select2/select2-bootstrap.css">
+<link rel="stylesheet" href="~/assets/js/select2/select2.css">
+<!-- Bottom scripts (common) -->
+<script src="~/assets/js/jquery.dataTables.min.js"></script>
+<script src="~/assets/js/datatables/TableTools.min.js"></script>
+
+<!-- Imported scripts on this page -->
+<script src="~/assets/js/dataTables.bootstrap.js"></script>
+<script src="~/assets/js/datatables/jquery.dataTables.columnFilter.js"></script>
+<script src="~/assets/js/datatables/lodash.min.js"></script>
+<script src="~/assets/js/datatables/responsive/js/datatables.responsive.js"></script>

@@ -1,0 +1,73 @@
+﻿@model GROCERY.Models.PRODUCT
+
+@{
+    ViewBag.Title = "Upload Products";
+}
+
+
+<script src="~/assets/js/fileinput.js"></script>
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+
+<ol class="breadcrumb">
+    <li class="breadcrumb-item">
+        <a href="/Home/Index">Grocery Store</a>
+    </li>
+    <li>Product Management</li>
+    <li class="breadcrumb-item active">Upload Product(s)</li>
+</ol>
+
+<h2>Products</h2>
+<form role="form" action="UploadProduct" method="post" id="form-upload-product" enctype="multipart/form-data">
+    <div class="row">
+        <div class="col-md-12">
+
+            <div class="panel panel-primary" data-collapsed="0">
+
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        Upload New Product
+                    </div>
+
+                    <div class="panel-options">
+                        <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                    </div>
+                </div>
+
+
+                <div class="panel-body">
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="fileinput fileinput-new" data-provides="fileinput">
+                                <div class="fileinput-new thumbnail" style="width: auto; height: auto;" data-trigger="fileinput">
+                                    
+                                </div>
+                                <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px"></div>
+                                <div>
+                                    <span class="btn btn-white btn-file">
+                                        <span class="fileinput-new">Select File</span>
+                                        <span class="fileinput-exists">Change</span>
+                                        <input type="file" name="file" required/>
+                                    </span>
+                                    <a href="#" class="btn btn-orange fileinput-exists" data-dismiss="fileinput">Remove</a>
+                                </div>
+                            </div>
+                          
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <div class="modal-footer">
+                        <button type="reset" class="btn btn-default" data-dismiss="modal">Reset</button>
+                        <button type="submit" class="btn btn-info">Upload</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</form>

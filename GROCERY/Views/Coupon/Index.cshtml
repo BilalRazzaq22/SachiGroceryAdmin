@@ -1,0 +1,75 @@
+﻿@model List<GROCERY.Models.COUPON>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+
+<br />
+
+<table class="table table-responsive table-striped" >
+    <thead>
+        <tr>
+            <th>
+                Promo
+            </th>
+            <th>
+                Promo Start Date
+            </th>
+            <th>
+                Promo End Date
+            </th>
+            <th>
+                Promo Value
+            </th>
+            <th>
+                Promo Active
+            </th>
+            <th>
+                Promo Used
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @item.PROMO
+        </td>
+        <td>
+            @item.START_DATE
+        </td>
+        <td>
+            @item.EXPIRY_DATE
+        </td>
+        <td>
+            @item.VALUE
+        </td>
+        <td>
+            @item.IS_ACTIVE
+        </td>
+        <td>
+            @item.IS_USED
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.COUPON_ID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.COUPON_ID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.COUPON_ID })
+        </td>
+    </tr>
+}
+
+</table>
+
+
+<!-- Imported styles on this page -->
+<link rel="stylesheet" href="~/assets/js/datatables/responsive/css/datatables.responsive.css">
+<link rel="stylesheet" href="~/assets/js/select2/select2-bootstrap.css">
+<link rel="stylesheet" href="~/assets/js/select2/select2.css">

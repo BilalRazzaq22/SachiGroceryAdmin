@@ -1,0 +1,2996 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="GROCERY.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'anytimea_GROCERY.dbo.A_TEMP' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="A_TEMP">
+          <Property Name="ITEM_CODE" Type="int" />
+          <Property Name="ITEM_DESC" Type="nvarchar(max)" />
+          <Property Name="ITEM_DESC_LONG" Type="nvarchar(max)" />
+        </EntityType>-->
+        <EntityType Name="ADS">
+          <Key>
+            <PropertyRef Name="AD_ID" />
+          </Key>
+          <Property Name="AD_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TEXT" Type="nvarchar(max)" />
+          <Property Name="IMAGE_PATH" Type="nvarchar(max)" />
+          <Property Name="CREATED_BY" Type="int" />
+          <Property Name="CREATED_ON" Type="datetime" />
+          <Property Name="UPDATED_BY" Type="int" />
+          <Property Name="UPDATED_ON" Type="datetime" />
+          <Property Name="IS_ACTIVE" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'anytimea_GROCERY.dbo.API_LOGS' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="API_LOGS">
+          <Property Name="API_LOG_ID" Type="int" />
+          <Property Name="DESCRIPTION" Type="nvarchar(max)" />
+          <Property Name="CALLED_ON" Type="datetime" />
+        </EntityType>-->
+        <EntityType Name="AREAS">
+          <Key>
+            <PropertyRef Name="AREA_ID" />
+          </Key>
+          <Property Name="AREA_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NAME" Type="nvarchar" MaxLength="300" />
+          <Property Name="BRANCH_ID" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'anytimea_GROCERY.dbo.BarcodeNewTest' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="BarcodeNewTest">
+          <Key>
+            <PropertyRef Name="LOCNO" />
+            <PropertyRef Name="ITEM_CODE" />
+            <PropertyRef Name="PACK_CODE" />
+            <PropertyRef Name="PACK_DESC" />
+            <PropertyRef Name="UNIT" />
+            <PropertyRef Name="bDEFAULT" />
+            <PropertyRef Name="BAR_CODE" />
+            <PropertyRef Name="BARTYPE" />
+            <PropertyRef Name="UNIT_PRICE" />
+            <PropertyRef Name="DEALER_PRICE1" />
+            <PropertyRef Name="DEALER_PRICE2" />
+            <PropertyRef Name="RF_MARGIN" />
+            <PropertyRef Name="CUSER" />
+            <PropertyRef Name="CDATE" />
+            <PropertyRef Name="MUSER" />
+            <PropertyRef Name="MDATE" />
+            <PropertyRef Name="bRandomDisc" />
+            <PropertyRef Name="DiscStartDate" />
+            <PropertyRef Name="DiscEndDate" />
+            <PropertyRef Name="DiscStartTime" />
+            <PropertyRef Name="DiscEndTime" />
+            <PropertyRef Name="DISC_TYPE" />
+            <PropertyRef Name="DISC" />
+            <PropertyRef Name="IsActive" />
+            <PropertyRef Name="NeedsReplication" />
+            <PropertyRef Name="NeedsUpdation" />
+          </Key>
+          <Property Name="LOCNO" Type="smallint" Nullable="false" />
+          <Property Name="ITEM_CODE" Type="int" Nullable="false" />
+          <Property Name="PACK_CODE" Type="smallint" Nullable="false" />
+          <Property Name="PACK_DESC" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="UNIT" Type="decimal" Precision="9" Scale="0" Nullable="false" />
+          <Property Name="bDEFAULT" Type="bit" Nullable="false" />
+          <Property Name="BAR_CODE" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="BARTYPE" Type="tinyint" Nullable="false" />
+          <Property Name="UNIT_PRICE" Type="money" Nullable="false" />
+          <Property Name="DEALER_PRICE1" Type="money" Nullable="false" />
+          <Property Name="DEALER_PRICE2" Type="money" Nullable="false" />
+          <Property Name="RF_MARGIN" Type="decimal" Precision="9" Scale="0" Nullable="false" />
+          <Property Name="CUSER" Type="int" Nullable="false" />
+          <Property Name="CDATE" Type="datetime" Nullable="false" />
+          <Property Name="MUSER" Type="int" Nullable="false" />
+          <Property Name="MDATE" Type="datetime" Nullable="false" />
+          <Property Name="bRandomDisc" Type="bit" Nullable="false" />
+          <Property Name="DiscStartDate" Type="datetime" Nullable="false" />
+          <Property Name="DiscEndDate" Type="datetime" Nullable="false" />
+          <Property Name="DiscStartTime" Type="datetime" Nullable="false" />
+          <Property Name="DiscEndTime" Type="datetime" Nullable="false" />
+          <Property Name="DISC_TYPE" Type="smallint" Nullable="false" />
+          <Property Name="DISC" Type="decimal" Precision="9" Scale="0" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="NeedsReplication" Type="bit" Nullable="false" />
+          <Property Name="NeedsUpdation" Type="bit" Nullable="false" />
+          <Property Name="L1P1NeedsUpdation" Type="bit" />
+          <Property Name="L1P2NeedsUpdation" Type="bit" />
+          <Property Name="L1P3NeedsUpdation" Type="bit" />
+          <Property Name="L1P4NeedsUpdation" Type="bit" />
+          <Property Name="L1P5NeedsUpdation" Type="bit" />
+          <Property Name="L1P6NeedsUpdation" Type="bit" />
+          <Property Name="L1P7NeedsUpdation" Type="bit" />
+          <Property Name="L1P8NeedsUpdation" Type="bit" />
+          <Property Name="L1P9NeedsUpdation" Type="bit" />
+          <Property Name="L1P10NeedsUpdation" Type="bit" />
+          <Property Name="L2P1NeedsUpdation" Type="bit" />
+          <Property Name="L2P2NeedsUpdation" Type="bit" />
+          <Property Name="L2P3NeedsUpdation" Type="bit" />
+          <Property Name="L3P1NeedsUpdation" Type="bit" />
+          <Property Name="L3P2NeedsUpdation" Type="bit" />
+          <Property Name="L3P3NeedsUpdation" Type="bit" />
+          <Property Name="L3P4NeedsUpdation" Type="bit" />
+          <Property Name="L3P5NeedsUpdation" Type="bit" />
+          <Property Name="L3P6NeedsUpdation" Type="bit" />
+          <Property Name="L3P7NeedsUpdation" Type="bit" />
+          <Property Name="L3P8NeedsUpdation" Type="bit" />
+          <Property Name="L4P1NeedsUpdation" Type="bit" />
+          <Property Name="L5P1NeedsUpdation" Type="bit" />
+          <Property Name="L6P1NeedsUpdation" Type="bit" />
+          <Property Name="L4P2NeedsUpdation" Type="bit" />
+          <Property Name="L4P3NeedsUpdation" Type="bit" />
+          <Property Name="L5P3NeedsUpdation" Type="bit" />
+          <Property Name="L6P3NeedsUpdation" Type="bit" />
+          <Property Name="L5P2NeedsUpdation" Type="bit" />
+          <Property Name="L6P2NeedsUpdation" Type="bit" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'anytimea_GROCERY.dbo.BARCODES' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="BARCODES">
+          <Key>
+            <PropertyRef Name="LOCNO" />
+            <PropertyRef Name="ITEM_CODE" />
+            <PropertyRef Name="PACK_CODE" />
+            <PropertyRef Name="PACK_DESC" />
+            <PropertyRef Name="UNIT" />
+            <PropertyRef Name="bDEFAULT" />
+            <PropertyRef Name="BAR_CODE" />
+            <PropertyRef Name="BARTYPE" />
+            <PropertyRef Name="UNIT_PRICE" />
+            <PropertyRef Name="DEALER_PRICE1" />
+            <PropertyRef Name="DEALER_PRICE2" />
+            <PropertyRef Name="RF_MARGIN" />
+            <PropertyRef Name="CUSER" />
+            <PropertyRef Name="CDATE" />
+            <PropertyRef Name="MUSER" />
+            <PropertyRef Name="MDATE" />
+            <PropertyRef Name="bRandomDisc" />
+            <PropertyRef Name="DiscStartDate" />
+            <PropertyRef Name="DiscEndDate" />
+            <PropertyRef Name="DiscStartTime" />
+            <PropertyRef Name="DiscEndTime" />
+            <PropertyRef Name="DISC_TYPE" />
+            <PropertyRef Name="DISC" />
+            <PropertyRef Name="IsActive" />
+            <PropertyRef Name="NeedsReplication" />
+            <PropertyRef Name="NeedsUpdation" />
+            <PropertyRef Name="L1P1NeedsUpdation" />
+            <PropertyRef Name="L1P2NeedsUpdation" />
+            <PropertyRef Name="L1P3NeedsUpdation" />
+            <PropertyRef Name="L1P4NeedsUpdation" />
+            <PropertyRef Name="L1P5NeedsUpdation" />
+            <PropertyRef Name="L1P6NeedsUpdation" />
+            <PropertyRef Name="L1P7NeedsUpdation" />
+            <PropertyRef Name="L1P8NeedsUpdation" />
+            <PropertyRef Name="L1P9NeedsUpdation" />
+            <PropertyRef Name="L1P10NeedsUpdation" />
+            <PropertyRef Name="L2P1NeedsUpdation" />
+            <PropertyRef Name="L2P2NeedsUpdation" />
+            <PropertyRef Name="L2P3NeedsUpdation" />
+            <PropertyRef Name="L3P1NeedsUpdation" />
+            <PropertyRef Name="L3P2NeedsUpdation" />
+            <PropertyRef Name="L3P3NeedsUpdation" />
+            <PropertyRef Name="L3P4NeedsUpdation" />
+            <PropertyRef Name="L3P5NeedsUpdation" />
+            <PropertyRef Name="L3P6NeedsUpdation" />
+            <PropertyRef Name="L3P7NeedsUpdation" />
+            <PropertyRef Name="L3P8NeedsUpdation" />
+            <PropertyRef Name="L4P1NeedsUpdation" />
+            <PropertyRef Name="L5P1NeedsUpdation" />
+            <PropertyRef Name="L6P1NeedsUpdation" />
+            <PropertyRef Name="L4P2NeedsUpdation" />
+            <PropertyRef Name="L4P3NeedsUpdation" />
+            <PropertyRef Name="L5P3NeedsUpdation" />
+            <PropertyRef Name="L6P3NeedsUpdation" />
+            <PropertyRef Name="L5P2NeedsUpdation" />
+            <PropertyRef Name="L6P2NeedsUpdation" />
+            <PropertyRef Name="L7P1NeedsUpdation" />
+            <PropertyRef Name="L7P2NeedsUpdation" />
+            <PropertyRef Name="L7P3NeedsUpdation" />
+          </Key>
+          <Property Name="LOCNO" Type="smallint" Nullable="false" />
+          <Property Name="ITEM_CODE" Type="int" Nullable="false" />
+          <Property Name="PACK_CODE" Type="smallint" Nullable="false" />
+          <Property Name="PACK_DESC" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="UNIT" Type="decimal" Precision="9" Scale="0" Nullable="false" />
+          <Property Name="bDEFAULT" Type="bit" Nullable="false" />
+          <Property Name="BAR_CODE" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="BARTYPE" Type="tinyint" Nullable="false" />
+          <Property Name="UNIT_PRICE" Type="money" Nullable="false" />
+          <Property Name="DEALER_PRICE1" Type="money" Nullable="false" />
+          <Property Name="DEALER_PRICE2" Type="money" Nullable="false" />
+          <Property Name="RF_MARGIN" Type="decimal" Precision="9" Scale="0" Nullable="false" />
+          <Property Name="CUSER" Type="int" Nullable="false" />
+          <Property Name="CDATE" Type="datetime" Nullable="false" />
+          <Property Name="MUSER" Type="int" Nullable="false" />
+          <Property Name="MDATE" Type="datetime" Nullable="false" />
+          <Property Name="bRandomDisc" Type="bit" Nullable="false" />
+          <Property Name="DiscStartDate" Type="datetime" Nullable="false" />
+          <Property Name="DiscEndDate" Type="datetime" Nullable="false" />
+          <Property Name="DiscStartTime" Type="datetime" Nullable="false" />
+          <Property Name="DiscEndTime" Type="datetime" Nullable="false" />
+          <Property Name="DISC_TYPE" Type="smallint" Nullable="false" />
+          <Property Name="DISC" Type="decimal" Precision="9" Scale="0" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="NeedsReplication" Type="bit" Nullable="false" />
+          <Property Name="NeedsUpdation" Type="bit" Nullable="false" />
+          <Property Name="L1P1NeedsUpdation" Type="bit" Nullable="false" />
+          <Property Name="L1P2NeedsUpdation" Type="bit" Nullable="false" />
+          <Property Name="L1P3NeedsUpdation" Type="bit" Nullable="false" />
+          <Property Name="L1P4NeedsUpdation" Type="bit" Nullable="false" />
+          <Property Name="L1P5NeedsUpdation" Type="bit" Nullable="false" />
+          <Property Name="L1P6NeedsUpdation" Type="bit" Nullable="false" />
+          <Property Name="L1P7NeedsUpdation" Type="bit" Nullable="false" />
+          <Property Name="L1P8NeedsUpdation" Type="bit" Nullable="false" />
+          <Property Name="L1P9NeedsUpdation" Type="bit" Nullable="false" />
+          <Property Name="L1P10NeedsUpdation" Type="bit" Nullable="false" />
+          <Property Name="L2P1NeedsUpdation" Type="bit" Nullable="false" />
+          <Property Name="L2P2NeedsUpdation" Type="bit" Nullable="false" />
+          <Property Name="L2P3NeedsUpdation" Type="bit" Nullable="false" />
+          <Property Name="L3P1NeedsUpdation" Type="bit" Nullable="false" />
+          <Property Name="L3P2NeedsUpdation" Type="bit" Nullable="false" />
+          <Property Name="L3P3NeedsUpdation" Type="bit" Nullable="false" />
+          <Property Name="L3P4NeedsUpdation" Type="bit" Nullable="false" />
+          <Property Name="L3P5NeedsUpdation" Type="bit" Nullable="false" />
+          <Property Name="L3P6NeedsUpdation" Type="bit" Nullable="false" />
+          <Property Name="L3P7NeedsUpdation" Type="bit" Nullable="false" />
+          <Property Name="L3P8NeedsUpdation" Type="bit" Nullable="false" />
+          <Property Name="L4P1NeedsUpdation" Type="bit" Nullable="false" />
+          <Property Name="L5P1NeedsUpdation" Type="bit" Nullable="false" />
+          <Property Name="L6P1NeedsUpdation" Type="bit" Nullable="false" />
+          <Property Name="L4P2NeedsUpdation" Type="bit" Nullable="false" />
+          <Property Name="L4P3NeedsUpdation" Type="bit" Nullable="false" />
+          <Property Name="L5P3NeedsUpdation" Type="bit" Nullable="false" />
+          <Property Name="L6P3NeedsUpdation" Type="bit" Nullable="false" />
+          <Property Name="L5P2NeedsUpdation" Type="bit" Nullable="false" />
+          <Property Name="L6P2NeedsUpdation" Type="bit" Nullable="false" />
+          <Property Name="L7P1NeedsUpdation" Type="bit" Nullable="false" />
+          <Property Name="L7P2NeedsUpdation" Type="bit" Nullable="false" />
+          <Property Name="L7P3NeedsUpdation" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="BARCODESTest">
+          <Key>
+            <PropertyRef Name="LOCNO" />
+            <PropertyRef Name="ITEM_CODE" />
+            <PropertyRef Name="PACK_CODE" />
+          </Key>
+          <Property Name="LOCNO" Type="smallint" Nullable="false" />
+          <Property Name="ITEM_CODE" Type="int" Nullable="false" />
+          <Property Name="PACK_CODE" Type="smallint" Nullable="false" />
+          <Property Name="PACK_DESC" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="UNIT" Type="decimal" Precision="9" Scale="0" Nullable="false" />
+          <Property Name="bDEFAULT" Type="bit" Nullable="false" />
+          <Property Name="BAR_CODE" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="BARTYPE" Type="tinyint" Nullable="false" />
+          <Property Name="UNIT_PRICE" Type="money" Nullable="false" />
+          <Property Name="DEALER_PRICE1" Type="money" Nullable="false" />
+          <Property Name="DEALER_PRICE2" Type="money" Nullable="false" />
+          <Property Name="RF_MARGIN" Type="decimal" Precision="9" Scale="0" Nullable="false" />
+          <Property Name="CUSER" Type="int" Nullable="false" />
+          <Property Name="CDATE" Type="datetime" Nullable="false" />
+          <Property Name="MUSER" Type="int" Nullable="false" />
+          <Property Name="MDATE" Type="datetime" Nullable="false" />
+          <Property Name="bRandomDisc" Type="bit" Nullable="false" />
+          <Property Name="DiscStartDate" Type="datetime" Nullable="false" />
+          <Property Name="DiscEndDate" Type="datetime" Nullable="false" />
+          <Property Name="DiscStartTime" Type="datetime" Nullable="false" />
+          <Property Name="DiscEndTime" Type="datetime" Nullable="false" />
+          <Property Name="DISC_TYPE" Type="smallint" Nullable="false" />
+          <Property Name="DISC" Type="decimal" Precision="9" Scale="0" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="NeedsReplication" Type="bit" Nullable="false" />
+          <Property Name="NeedsUpdation" Type="bit" Nullable="false" />
+          <Property Name="L1P1NeedsUpdation" Type="bit" />
+          <Property Name="L1P2NeedsUpdation" Type="bit" />
+          <Property Name="L1P3NeedsUpdation" Type="bit" />
+          <Property Name="L1P4NeedsUpdation" Type="bit" />
+          <Property Name="L1P5NeedsUpdation" Type="bit" />
+          <Property Name="L1P6NeedsUpdation" Type="bit" />
+          <Property Name="L1P7NeedsUpdation" Type="bit" />
+          <Property Name="L1P8NeedsUpdation" Type="bit" />
+          <Property Name="L1P9NeedsUpdation" Type="bit" />
+          <Property Name="L1P10NeedsUpdation" Type="bit" />
+          <Property Name="L2P1NeedsUpdation" Type="bit" />
+          <Property Name="L2P2NeedsUpdation" Type="bit" />
+          <Property Name="L2P3NeedsUpdation" Type="bit" />
+          <Property Name="L3P1NeedsUpdation" Type="bit" />
+          <Property Name="L3P2NeedsUpdation" Type="bit" />
+          <Property Name="L3P3NeedsUpdation" Type="bit" />
+          <Property Name="L3P4NeedsUpdation" Type="bit" />
+          <Property Name="L3P5NeedsUpdation" Type="bit" />
+          <Property Name="L3P6NeedsUpdation" Type="bit" />
+          <Property Name="L3P7NeedsUpdation" Type="bit" />
+          <Property Name="L3P8NeedsUpdation" Type="bit" />
+          <Property Name="L4P1NeedsUpdation" Type="bit" />
+          <Property Name="L5P1NeedsUpdation" Type="bit" />
+          <Property Name="L6P1NeedsUpdation" Type="bit" />
+          <Property Name="L4P2NeedsUpdation" Type="bit" />
+          <Property Name="L4P3NeedsUpdation" Type="bit" />
+          <Property Name="L5P3NeedsUpdation" Type="bit" />
+          <Property Name="L6P3NeedsUpdation" Type="bit" />
+          <Property Name="L5P2NeedsUpdation" Type="bit" />
+          <Property Name="L6P2NeedsUpdation" Type="bit" />
+        </EntityType>
+        <EntityType Name="BRANCHES">
+          <Key>
+            <PropertyRef Name="BRANCH_ID" />
+          </Key>
+          <Property Name="BRANCH_ID" Type="int" Nullable="false" />
+          <Property Name="BRANCH_NAME" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="LATITUDE" Type="float" />
+          <Property Name="LONGITUDE" Type="float" />
+          <Property Name="ADDRESS" Type="nvarchar(max)" />
+          <Property Name="PHONE" Type="varchar" MaxLength="50" />
+          <Property Name="IS_ACTIVE" Type="bit" />
+        </EntityType>
+        <EntityType Name="BRANDS">
+          <Key>
+            <PropertyRef Name="BRAND_ID" />
+          </Key>
+          <Property Name="BRAND_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NAME" Type="nvarchar" MaxLength="250" />
+        </EntityType>
+        <EntityType Name="CATEGORIES">
+          <Key>
+            <PropertyRef Name="CATEGORY_ID" />
+          </Key>
+          <Property Name="CATEGORY_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DESCRIPTION" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="GROUP_ID" Type="int" Nullable="false" />
+          <Property Name="CREATED_BY" Type="int" />
+          <Property Name="CREATED_DATE" Type="datetime" />
+          <Property Name="MODIFIED_BY" Type="int" />
+          <Property Name="MODIFIED_DATE" Type="datetime" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="COUPONS">
+          <Key>
+            <PropertyRef Name="COUPON_ID" />
+          </Key>
+          <Property Name="COUPON_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PROMO_TEXT" Type="nvarchar" MaxLength="50" />
+          <Property Name="START_DATE" Type="datetime" />
+          <Property Name="EXPIRY_DATE" Type="datetime" />
+          <Property Name="VALUE" Type="int" />
+          <Property Name="CREATED_ON" Type="datetime" />
+          <Property Name="CREATED_BY" Type="int" />
+          <Property Name="IS_ACTIVE" Type="bit" />
+          <Property Name="IS_USED" Type="bit" />
+          <Property Name="UNLOCK_AMOUNT" Type="int" />
+          <Property Name="CODE" Type="int" />
+          <Property Name="PROMO" Type="varchar" MaxLength="20" />
+          <Property Name="updated_by" Type="int" />
+          <Property Name="updated_on" Type="datetime" />
+        </EntityType>
+        <EntityType Name="GROUPS">
+          <Key>
+            <PropertyRef Name="GROUP_ID" />
+          </Key>
+          <Property Name="GROUP_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NAME" Type="nvarchar" MaxLength="50" />
+          <Property Name="IMAGE_NAME" Type="nvarchar(max)" />
+          <Property Name="RELATIVE_IMAGE_NAME" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="ITEMINFO">
+          <Key>
+            <PropertyRef Name="ITEM_CODE" />
+          </Key>
+          <Property Name="ITEM_CODE" Type="int" Nullable="false" />
+          <Property Name="HV_CODE" Type="varchar" MaxLength="10" />
+          <Property Name="ITEM_TYPE" Type="tinyint" />
+          <Property Name="ITEM_ATTRIB" Type="tinyint" />
+          <Property Name="IsRECIPE" Type="bit" />
+          <Property Name="SERIALIZED" Type="bit" />
+          <Property Name="EXPIRY_ITEM" Type="bit" />
+          <Property Name="FEATURED" Type="bit" />
+          <Property Name="UOM" Type="varchar" MaxLength="50" />
+          <Property Name="BATCH_QTY" Type="decimal" Precision="9" Scale="3" />
+          <Property Name="DEPT_CODE" Type="smallint" />
+          <Property Name="GRCODE" Type="smallint" />
+          <Property Name="SUBGRCODE" Type="smallint" />
+          <Property Name="CATCODE" Type="int" />
+          <Property Name="BRAND_CODE" Type="int" />
+          <Property Name="DESIGN_CD" Type="int" />
+          <Property Name="CLR_CODE" Type="smallint" />
+          <Property Name="SUPP_CODE" Type="varchar" MaxLength="10" />
+          <Property Name="MAKE_CODE" Type="smallint" />
+          <Property Name="SIZE_CODE" Type="int" />
+          <Property Name="AUTH_CODE" Type="int" />
+          <Property Name="PUB_CODE" Type="int" />
+          <Property Name="EDITION" Type="varchar" MaxLength="50" />
+          <Property Name="CLASS" Type="varchar" MaxLength="50" />
+          <Property Name="ISBN" Type="varchar" MaxLength="25" />
+          <Property Name="ITEM_DESC" Type="varchar" MaxLength="25" />
+          <Property Name="ITEM_DESC_LONG" Type="varchar" MaxLength="50" />
+          <Property Name="COST_MARGIN" Type="money" />
+          <Property Name="SEX" Type="varchar" MaxLength="50" />
+          <Property Name="SEASON" Type="varchar" MaxLength="50" />
+          <Property Name="AGE" Type="varchar" MaxLength="50" />
+          <Property Name="FABRIC" Type="varchar" MaxLength="50" />
+          <Property Name="SPEED" Type="varchar" MaxLength="50" />
+          <Property Name="PLY" Type="varchar" MaxLength="50" />
+          <Property Name="PCD" Type="varchar" MaxLength="50" />
+          <Property Name="HOLES" Type="varchar" MaxLength="50" />
+          <Property Name="SPH" Type="varchar" MaxLength="10" />
+          <Property Name="CYL" Type="varchar" MaxLength="10" />
+          <Property Name="AXIS" Type="varchar" MaxLength="10" />
+          <Property Name="ADDS" Type="varchar" MaxLength="10" />
+          <Property Name="COMMENT" Type="ntext" />
+          <Property Name="EXEMPT" Type="bit" />
+          <Property Name="VAT" Type="decimal" Precision="9" Scale="0" />
+          <Property Name="GST" Type="decimal" Precision="9" Scale="0" />
+          <Property Name="OPEN_PRICE" Type="bit" />
+          <Property Name="FRACTIONAL" Type="bit" />
+          <Property Name="ALLOWQTY" Type="bit" />
+          <Property Name="MATERIAL_COST" Type="money" />
+          <Property Name="INGR_COST" Type="money" />
+          <Property Name="PKG_COST" Type="money" />
+          <Property Name="LAB_COST" Type="money" />
+          <Property Name="OH_COST" Type="money" />
+          <Property Name="OTH_COST" Type="money" />
+          <Property Name="WASTAGE" Type="money" />
+          <Property Name="COST_PRICE1" Type="money" />
+          <Property Name="COST_PRICE2" Type="money" />
+          <Property Name="COST_PRICE3" Type="money" />
+          <Property Name="NET_COST" Type="money" />
+          <Property Name="AVG_COST" Type="money" />
+          <Property Name="AVG_COST1" Type="money" />
+          <Property Name="AVG_COST2" Type="money" />
+          <Property Name="AVG_COST3" Type="money" />
+          <Property Name="F_PUR_PRICE" Type="money" />
+          <Property Name="LAST_PUR_PRICE1" Type="money" />
+          <Property Name="LAST_PUR_PRICE2" Type="money" />
+          <Property Name="LAST_PUR_PRICE3" Type="money" />
+          <Property Name="LAST_SUPP" Type="varchar" MaxLength="10" />
+          <Property Name="LAST_SUPP1" Type="varchar" MaxLength="10" />
+          <Property Name="LAST_SUPP2" Type="varchar" MaxLength="10" />
+          <Property Name="FREE_QTY" Type="decimal" Precision="9" Scale="0" />
+          <Property Name="FREE_QTY_AVG_COST" Type="decimal" Precision="9" Scale="0" />
+          <Property Name="ITEM_DISC" Type="money" />
+          <Property Name="bDISCOUNTED" Type="bit" />
+          <Property Name="DISC_QTY" Type="decimal" Precision="9" Scale="3" />
+          <Property Name="SALE_DISC" Type="decimal" Precision="9" Scale="2" />
+          <Property Name="CDATE" Type="datetime" />
+          <Property Name="CUSER" Type="int" />
+          <Property Name="MDATE" Type="datetime" />
+          <Property Name="MUSER" Type="int" />
+          <Property Name="EMPTY" Type="bit" />
+          <Property Name="bNEW" Type="bit" />
+          <Property Name="NeedsReplication" Type="bit" />
+        </EntityType>
+        <EntityType Name="ORDER_PRODUCTS">
+          <Key>
+            <PropertyRef Name="OREDER_PRODUCT_ID" />
+          </Key>
+          <Property Name="OREDER_PRODUCT_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ORDER_ID" Type="int" />
+          <Property Name="PRODUCT_ID" Type="int" />
+          <Property Name="QUANTITY" Type="int" />
+          <Property Name="IS_ACTIVE" Type="int" />
+          <Property Name="UPDATED_BY" Type="int" />
+          <Property Name="UPDATED_ON" Type="datetime" />
+          <Property Name="BAR_CODE" Type="varchar" MaxLength="20" />
+        </EntityType>
+        <EntityType Name="ORDER_STATUSES">
+          <Key>
+            <PropertyRef Name="ORDER_STATUS_ID" />
+          </Key>
+          <Property Name="ORDER_STATUS_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DESCRIPTION" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="ORDERS">
+          <Key>
+            <PropertyRef Name="ORDER_ID" />
+          </Key>
+          <Property Name="ORDER_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CUSTOMER_ID" Type="int" />
+          <Property Name="NAME" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="MOBILE" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ADDRESS" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="STATUS" Type="int" Nullable="false" />
+          <Property Name="CREATED_ON" Type="datetime" Nullable="false" />
+          <Property Name="CREATED_BY" Type="int" />
+          <Property Name="ASSIGNED_ON" Type="datetime" />
+          <Property Name="ASSIGNED_BY" Type="int" />
+          <Property Name="SENT_TO_RIDER_ON" Type="datetime" />
+          <Property Name="SENT_TO_RIDER_BY" Type="int" />
+          <Property Name="UPDATED_ON" Type="datetime" />
+          <Property Name="UPDATED_BY" Type="int" />
+          <Property Name="RIDER_ID" Type="int" />
+          <Property Name="REJECTED_BY" Type="int" />
+          <Property Name="REJECTED_REASON" Type="varchar(max)" />
+          <Property Name="DELIVERY_TIME" Type="datetime" />
+          <Property Name="IS_ACTIVE" Type="int" />
+          <Property Name="BRANCH_ID" Type="int" />
+          <Property Name="DELIVERY_DESCRIPTION" Type="nvarchar(max)" />
+          <Property Name="PAYMENT_MODE_ID" Type="int" />
+          <Property Name="MANUAL_DISCOUNT" Type="int" />
+          <Property Name="COUPON_ID" Type="int" />
+          <Property Name="COUPON_DISCOUNT" Type="int" />
+          <Property Name="PICKUP_TIME" Type="datetime" />
+          <Property Name="IS_PACKAGE" Type="int" />
+          <Property Name="ADDED_BY" Type="tinyint" />
+        </EntityType>
+        <EntityType Name="PACKAGE_PRODUCTS">
+          <Key>
+            <PropertyRef Name="PACKAGE_PRODUCT_ID" />
+          </Key>
+          <Property Name="PACKAGE_PRODUCT_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PACKAGE_ID" Type="int" />
+          <Property Name="PRODUCT_ID" Type="int" />
+          <Property Name="QUANTITY" Type="int" />
+          <Property Name="IS_ACTIVE" Type="int" />
+          <Property Name="UPDATED_BY" Type="int" />
+          <Property Name="UPDATED_ON" Type="datetime" />
+          <Property Name="BAR_CODE" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="PACKAGES">
+          <Key>
+            <PropertyRef Name="PACKAGE_ID" />
+          </Key>
+          <Property Name="PACKAGE_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NAME" Type="nvarchar(max)" />
+          <Property Name="CREATED_ON" Type="datetime" />
+          <Property Name="CREATED_BY" Type="int" />
+          <Property Name="IS_ACTIVE" Type="bit" />
+          <Property Name="UPDATED_BY" Type="int" />
+          <Property Name="UPDATED_ON" Type="datetime" />
+          <Property Name="DESCRIPTION" Type="nvarchar(max)" />
+          <Property Name="BRANCH_ID" Type="int" />
+        </EntityType>
+        <EntityType Name="PAYMENT_MODES">
+          <Key>
+            <PropertyRef Name="PAYMENT_MODE_ID" />
+          </Key>
+          <Property Name="PAYMENT_MODE_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DESCRIPTION" Type="varchar" MaxLength="20" />
+        </EntityType>
+        <EntityType Name="PRODUCT_BRANDS">
+          <Key>
+            <PropertyRef Name="PRODUCT_BRAND_ID" />
+          </Key>
+          <Property Name="PRODUCT_BRAND_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PRODUCT_ID" Type="int" />
+          <Property Name="BRAND_NAME" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="PRODUCT_COLORS">
+          <Key>
+            <PropertyRef Name="PRODUCT_COLOR_ID" />
+          </Key>
+          <Property Name="PRODUCT_COLOR_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PRODUCT_ID" Type="int" />
+          <Property Name="COLOR_NAME" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="PRODUCT_FLAVORS">
+          <Key>
+            <PropertyRef Name="PRODUCT_FLAVOR_ID" />
+          </Key>
+          <Property Name="PRODUCT_FLAVOR_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PRODUCT_ID" Type="int" />
+          <Property Name="FLAVOR_NAME" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="PRODUCT_IMAGES">
+          <Key>
+            <PropertyRef Name="PRODUCT_IMAGE_ID" />
+          </Key>
+          <Property Name="PRODUCT_IMAGE_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PRODUCT_ID" Type="int" />
+          <Property Name="ADMIN_IMAGE_PATH" Type="nvarchar(max)" />
+          <Property Name="ADMIN_THUMNAIL_IMAGE_PATH" Type="nvarchar(max)" />
+          <Property Name="CHAARSU_IMAGE_PATH" Type="nvarchar(max)" />
+          <Property Name="CHAARSU_THUMBNAIL_PATH" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="PRODUCT_LEVELS">
+          <Key>
+            <PropertyRef Name="PRODUCT_LEVEL_ID" />
+          </Key>
+          <Property Name="PRODUCT_LEVEL_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NAME" Type="varchar" MaxLength="50" />
+          <Property Name="SUB_CATEGORY_ID" Type="int" />
+        </EntityType>
+        <EntityType Name="PRODUCT_PACKINGS">
+          <Key>
+            <PropertyRef Name="PRODUCT_PACKING_ID" />
+          </Key>
+          <Property Name="PRODUCT_PACKING_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PRODUCT_ID" Type="int" />
+          <Property Name="PACKING_NAME" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="PRODUCT_TAGS">
+          <Key>
+            <PropertyRef Name="PRODUCT_TAG_ID" />
+          </Key>
+          <Property Name="PRODUCT_TAG_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PRODUCT_ID" Type="int" />
+          <Property Name="TAG_NAME" Type="nvarchar(max)" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'anytimea_GROCERY.dbo.Product_Temp_Load' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="Product_Temp_Load">
+          <Property Name="NAME" Type="nvarchar(max)" />
+          <Property Name="DESCRIPTION" Type="varchar(max)" />
+          <Property Name="UNIT_OF_MEASUREMENT" Type="nvarchar(max)" />
+          <Property Name="AVG_COST" Type="money" />
+        </EntityType>-->
+        <EntityType Name="PRODUCT_TYPES">
+          <Key>
+            <PropertyRef Name="PRODUCT_TYPE_ID" />
+          </Key>
+          <Property Name="PRODUCT_TYPE_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PRODUCT_ID" Type="int" />
+          <Property Name="TYPE_NAME" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="PRODUCTS">
+          <Key>
+            <PropertyRef Name="PRODUCT_ID" />
+          </Key>
+          <Property Name="PRODUCT_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="OLD_PRODUCT_ID" Type="int" />
+          <Property Name="NAME" Type="varchar(max)" />
+          <Property Name="DESCRIPTION" Type="varchar(max)" />
+          <Property Name="SUB_CATEGORY_ID" Type="int" />
+          <Property Name="UNIT_OF_MEASUREMENT" Type="varchar(max)" />
+          <Property Name="AVG_COST" Type="money" />
+          <Property Name="PRICE" Type="money" />
+          <Property Name="DISCOUNT_PERCENTAGE" Type="int" />
+          <Property Name="IMPORTED" Type="bit" />
+          <Property Name="IS_ACTIVE" Type="bit" />
+          <Property Name="CREATED_DATE" Type="datetime" />
+          <Property Name="CREATED_BY" Type="int" />
+          <Property Name="MODIFIED_DATE" Type="datetime" />
+          <Property Name="MODIFIED_BY" Type="int" />
+          <Property Name="COLOR" Type="varchar(max)" />
+          <Property Name="BRAND" Type="varchar(max)" />
+          <Property Name="FLAVOR" Type="varchar(max)" />
+          <Property Name="PACKING" Type="varchar(max)" />
+          <Property Name="TAG" Type="varchar(max)" />
+          <Property Name="TYPES" Type="varchar(max)" />
+          <Property Name="DISCOUNT" Type="float" />
+          <Property Name="SEC_SUB_CATEGORY_A" Type="int" />
+          <Property Name="SEC_SUB_CATEGORY_B" Type="int" />
+          <Property Name="PRICE2" Type="int" />
+          <Property Name="HAS_IMAGE" Type="bit" />
+          <Property Name="HAS_THUMBNAIL_IMAGE" Type="bit" />
+          <Property Name="VENDOR_ID" Type="int" />
+          <Property Name="CATEGORY_ID" Type="int" />
+          <Property Name="IS_FEATURED" Type="bit" />
+          <Property Name="THRESHOLD" Type="int" />
+          <Property Name="IS_EXEMPTED" Type="bit" />
+        </EntityType>
+        <EntityType Name="ProductTest">
+          <Key>
+            <PropertyRef Name="PRODUCT_ID" />
+          </Key>
+          <Property Name="PRODUCT_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="OLD_PRODUCT_ID" Type="int" />
+          <Property Name="NAME" Type="varchar(max)" />
+          <Property Name="DESCRIPTION" Type="varchar(max)" />
+          <Property Name="SUB_CATEGORY_ID" Type="int" />
+          <Property Name="UNIT_OF_MEASUREMENT" Type="varchar(max)" />
+          <Property Name="AVG_COST" Type="money" />
+          <Property Name="PRICE" Type="money" />
+          <Property Name="DISCOUNT_PERCENTAGE" Type="int" />
+          <Property Name="IMPORTED" Type="bit" />
+          <Property Name="IS_ACTIVE" Type="bit" />
+          <Property Name="CREATED_DATE" Type="datetime" />
+          <Property Name="CREATED_BY" Type="int" />
+          <Property Name="MODIFIED_DATE" Type="datetime" />
+          <Property Name="MODIFIED_BY" Type="int" />
+          <Property Name="COLOR" Type="varchar(max)" />
+          <Property Name="BRAND" Type="varchar(max)" />
+          <Property Name="FLAVOR" Type="varchar(max)" />
+          <Property Name="PACKING" Type="varchar(max)" />
+          <Property Name="TAG" Type="varchar(max)" />
+          <Property Name="TYPES" Type="varchar(max)" />
+          <Property Name="DISCOUNT" Type="float" />
+          <Property Name="SEC_SUB_CATEGORY_A" Type="int" />
+          <Property Name="SEC_SUB_CATEGORY_B" Type="int" />
+          <Property Name="PRICE2" Type="int" />
+          <Property Name="HAS_IMAGE" Type="bit" />
+          <Property Name="HAS_THUMBNAIL_IMAGE" Type="bit" />
+          <Property Name="VENDOR_ID" Type="int" />
+          <Property Name="CATEGORY_ID" Type="int" />
+          <Property Name="IS_FEATURED" Type="bit" />
+          <Property Name="THRESHOLD" Type="int" />
+          <Property Name="IS_EXEMPTED" Type="bit" />
+        </EntityType>
+        <EntityType Name="PS000">
+          <Key>
+            <PropertyRef Name="LOCNO" />
+            <PropertyRef Name="ITEM_CODE" />
+          </Key>
+          <Property Name="LOCNO" Type="smallint" Nullable="false" />
+          <Property Name="ITEM_CODE" Type="int" Nullable="false" />
+          <Property Name="QTY" Type="decimal" Precision="9" Scale="3" />
+          <Property Name="WH_QTY" Type="decimal" Precision="9" Scale="3" />
+          <Property Name="T_QTY" Type="decimal" Precision="19" Scale="3" />
+          <Property Name="FLOOR_NO" Type="tinyint" />
+          <Property Name="COUNTER" Type="smallint" />
+          <Property Name="SHELF" Type="tinyint" />
+          <Property Name="SHELF_QTY" Type="decimal" Precision="9" Scale="3" />
+          <Property Name="SHELF_FACING" Type="decimal" Precision="9" Scale="3" />
+          <Property Name="LSDATE" Type="datetime" />
+          <Property Name="LPDATE" Type="datetime" />
+          <Property Name="ALLOW_NEGATIVE" Type="bit" />
+          <Property Name="AreaCovered" Type="decimal" Precision="9" Scale="2" />
+          <Property Name="IsActive" Type="bit" />
+          <Property Name="MAX_QTY" Type="decimal" Precision="19" Scale="3" />
+          <Property Name="MIN_QTY" Type="decimal" Precision="19" Scale="3" />
+          <Property Name="OP_STOCK" Type="decimal" Precision="19" Scale="3" />
+          <Property Name="OP_STOCK_VAL" Type="money" />
+          <Property Name="NeedsReplication" Type="bit" />
+          <Property Name="NeedsUpdation" Type="bit" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'anytimea_GROCERY.dbo.PS000Test' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="PS000Test">
+          <Key>
+            <PropertyRef Name="LOCNO" />
+            <PropertyRef Name="ITEM_CODE" />
+            <PropertyRef Name="QTY" />
+            <PropertyRef Name="WH_QTY" />
+            <PropertyRef Name="T_QTY" />
+            <PropertyRef Name="FLOOR_NO" />
+            <PropertyRef Name="COUNTER" />
+            <PropertyRef Name="SHELF" />
+            <PropertyRef Name="SHELF_QTY" />
+            <PropertyRef Name="SHELF_FACING" />
+            <PropertyRef Name="LSDATE" />
+            <PropertyRef Name="LPDATE" />
+            <PropertyRef Name="ALLOW_NEGATIVE" />
+            <PropertyRef Name="AreaCovered" />
+            <PropertyRef Name="IsActive" />
+            <PropertyRef Name="MAX_QTY" />
+            <PropertyRef Name="MIN_QTY" />
+            <PropertyRef Name="OP_STOCK" />
+            <PropertyRef Name="OP_STOCK_VAL" />
+            <PropertyRef Name="NeedsReplication" />
+            <PropertyRef Name="NeedsUpdation" />
+          </Key>
+          <Property Name="LOCNO" Type="smallint" Nullable="false" />
+          <Property Name="ITEM_CODE" Type="int" Nullable="false" />
+          <Property Name="QTY" Type="decimal" Precision="9" Scale="3" Nullable="false" />
+          <Property Name="WH_QTY" Type="decimal" Precision="9" Scale="3" Nullable="false" />
+          <Property Name="T_QTY" Type="decimal" Precision="19" Scale="3" Nullable="false" />
+          <Property Name="FLOOR_NO" Type="tinyint" Nullable="false" />
+          <Property Name="COUNTER" Type="smallint" Nullable="false" />
+          <Property Name="SHELF" Type="tinyint" Nullable="false" />
+          <Property Name="SHELF_QTY" Type="decimal" Precision="9" Scale="3" Nullable="false" />
+          <Property Name="SHELF_FACING" Type="decimal" Precision="9" Scale="3" Nullable="false" />
+          <Property Name="LSDATE" Type="datetime" Nullable="false" />
+          <Property Name="LPDATE" Type="datetime" Nullable="false" />
+          <Property Name="ALLOW_NEGATIVE" Type="bit" Nullable="false" />
+          <Property Name="AreaCovered" Type="decimal" Precision="9" Scale="2" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="MAX_QTY" Type="decimal" Precision="19" Scale="3" Nullable="false" />
+          <Property Name="MIN_QTY" Type="decimal" Precision="19" Scale="3" Nullable="false" />
+          <Property Name="OP_STOCK" Type="decimal" Precision="19" Scale="3" Nullable="false" />
+          <Property Name="OP_STOCK_VAL" Type="money" Nullable="false" />
+          <Property Name="NeedsReplication" Type="bit" Nullable="false" />
+          <Property Name="NeedsUpdation" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SMS">
+          <Key>
+            <PropertyRef Name="SMS_ID" />
+          </Key>
+          <Property Name="SMS_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SENDER" Type="int" />
+          <Property Name="TEXT" Type="nvarchar(max)" />
+          <Property Name="RESPONSE" Type="nvarchar(max)" />
+          <Property Name="SENT_ON" Type="datetime" />
+          <Property Name="SMS_TYPE_ID" Type="int" />
+        </EntityType>
+        <EntityType Name="SMS_TYPES">
+          <Key>
+            <PropertyRef Name="SMS_TYPE_ID" />
+          </Key>
+          <Property Name="SMS_TYPE_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DESCRIPTION" Type="nvarchar" MaxLength="200" />
+        </EntityType>
+        <EntityType Name="STOCK">
+          <Key>
+            <PropertyRef Name="BRANCH_ID" />
+            <PropertyRef Name="PRODUCT_ID" />
+          </Key>
+          <Property Name="BRANCH_ID" Type="smallint" Nullable="false" />
+          <Property Name="PRODUCT_ID" Type="int" Nullable="false" />
+          <Property Name="QTY" Type="decimal" Precision="9" Scale="3" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SUB_CATEGORIES">
+          <Key>
+            <PropertyRef Name="SUB_CATEGORY_ID" />
+          </Key>
+          <Property Name="SUB_CATEGORY_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CATEGORY_ID" Type="int" Nullable="false" />
+          <Property Name="DESCRIPTION" Type="varchar" MaxLength="50" />
+          <Property Name="CREATED_BY" Type="int" />
+          <Property Name="CREATED_DATE" Type="datetime" />
+          <Property Name="MODIFIED_BY" Type="int" />
+          <Property Name="MODIFIED_DATE" Type="datetime" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="APP_IMAGE_PATH" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="TEMP_CUSTOMERS">
+          <Key>
+            <PropertyRef Name="TEMP_CUSTOMER_ID" />
+          </Key>
+          <Property Name="TEMP_CUSTOMER_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NAME" Type="nvarchar(max)" />
+          <Property Name="PHONE" Type="nvarchar" MaxLength="20" />
+          <Property Name="ADDRESS" Type="nvarchar(max)" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'anytimea_GROCERY.dbo.TEST' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="TEST">
+          <Key>
+            <PropertyRef Name="OLD_PRODUCT_ID" />
+            <PropertyRef Name="NAME" />
+            <PropertyRef Name="DESCRIPTION" />
+            <PropertyRef Name="AVG_COST" />
+          </Key>
+          <Property Name="OLD_PRODUCT_ID" Type="int" Nullable="false" />
+          <Property Name="NAME" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="DESCRIPTION" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="AVG_COST" Type="decimal" Precision="9" Scale="2" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'anytimea_GROCERY.dbo.Transaction' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="Transaction">
+          <Property Name="TransactionID" Type="int" />
+          <Property Name="ProductID" Type="int" />
+          <Property Name="ReferenceOrderID" Type="int" />
+          <Property Name="ReferenceOrderLineID" Type="int" />
+          <Property Name="TransactionDate" Type="datetime" />
+          <Property Name="TransactionType" Type="nvarchar" MaxLength="1" />
+          <Property Name="Quantity" Type="int" />
+          <Property Name="ActualCost" Type="money" />
+          <Property Name="ModifiedDate" Type="datetime" />
+        </EntityType>-->
+        <EntityType Name="USER_ADDRESSES">
+          <Key>
+            <PropertyRef Name="USER_ADDRESS_ID" />
+          </Key>
+          <Property Name="USER_ADDRESS_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="USER_ID" Type="int" />
+          <Property Name="ADDRESS" Type="nvarchar(max)" />
+          <Property Name="IS_ACTIVE" Type="bit" />
+          <Property Name="CREATED_BY" Type="int" />
+          <Property Name="CREATED_ON" Type="datetime" />
+          <Property Name="UPDATED_BY" Type="int" />
+          <Property Name="UPDATED_ON" Type="datetime" />
+        </EntityType>
+        <EntityType Name="USER_FAVOURITES">
+          <Key>
+            <PropertyRef Name="USER_FAVOURITE_ID" />
+          </Key>
+          <Property Name="USER_FAVOURITE_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="USER_ID" Type="int" />
+          <Property Name="PRODUCT_ID" Type="int" />
+          <Property Name="CREATED_ON" Type="datetime" />
+          <Property Name="UPDATED_ON" Type="datetime" />
+          <Property Name="IS_ACTIVE" Type="int" />
+        </EntityType>
+        <EntityType Name="USER_TYPES">
+          <Key>
+            <PropertyRef Name="USER_TYPE_ID" />
+          </Key>
+          <Property Name="USER_TYPE_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DESCRIPTION" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="USERS">
+          <Key>
+            <PropertyRef Name="USER_ID" />
+          </Key>
+          <Property Name="USER_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="USERNAME" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="PASSWORD" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="USER_TYPE" Type="int" Nullable="false" />
+          <Property Name="BRANCH_ID" Type="int" />
+          <Property Name="MOBILE_NO" Type="varchar" MaxLength="50" />
+          <Property Name="ADDRESS" Type="nvarchar(max)" />
+          <Property Name="CITY" Type="nvarchar(max)" />
+          <Property Name="IS_ACTIVE" Type="bit" Nullable="false" />
+          <Property Name="CREATED_ON" Type="datetime" />
+          <Property Name="CREATED_BY" Type="int" />
+          <Property Name="UPDATED_ON" Type="datetime" />
+          <Property Name="UPDATED_BY" Type="int" />
+          <Property Name="IS_AVAILABLE" Type="int" />
+          <Property Name="VEHICLE_NUMBER" Type="varchar" MaxLength="20" />
+          <Property Name="VEHICLE_DESCRIPTION" Type="varchar(max)" />
+          <Property Name="DEVICE_ID" Type="nvarchar(max)" />
+          <Property Name="IMAGE_PATH" Type="nvarchar(max)" />
+          <Property Name="EMAIL" Type="nvarchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="VENDOR_BRANCHES">
+          <Key>
+            <PropertyRef Name="VENDOR_BRANCH_ID" />
+          </Key>
+          <Property Name="VENDOR_BRANCH_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="VENDOR_ID" Type="int" />
+          <Property Name="NAME" Type="nvarchar(max)" />
+          <Property Name="ADDRESS" Type="nvarchar(max)" />
+          <Property Name="LATITUDE" Type="float" />
+          <Property Name="LONGITUDE" Type="float" />
+          <Property Name="PHONE" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="VENDORS">
+          <Key>
+            <PropertyRef Name="VENDOR_ID" />
+          </Key>
+          <Property Name="VENDOR_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CLIENT_TYPE" Type="tinyint" Nullable="false" />
+          <Property Name="VENDOR_NAME" Type="varchar" MaxLength="60" Nullable="false" />
+          <Property Name="ADDR1" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="CITY" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="COUNTRY" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="CONT_PERSON1" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="TITLE1" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="MOBILE1" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="PHONE1" Type="varchar" MaxLength="25" Nullable="false" />
+          <Property Name="FAX1" Type="varchar" MaxLength="25" Nullable="false" />
+          <Property Name="ADDR2" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="CITY2" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="COUNTRY2" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="CONT_PERSON2" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="TITLE2" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="MOBILE2" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="PHONE2" Type="varchar" MaxLength="25" Nullable="false" />
+          <Property Name="FAX2" Type="varchar" MaxLength="25" Nullable="false" />
+          <Property Name="WHATSAPP" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="EMAIL" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="URL" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="NTN" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="CREATED_BY" Type="int" />
+          <Property Name="CREATED_DATE" Type="datetime" />
+          <Property Name="MODIFIED_BY" Type="int" />
+          <Property Name="MODIFIED_DATE" Type="datetime" />
+        </EntityType>
+        <EntityContainer Name="GROCERYStoreContainer">
+          <EntitySet Name="ADS" EntityType="Self.ADS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AREAS" EntityType="Self.AREAS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BARCODESTest" EntityType="Self.BARCODESTest" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BRANCHES" EntityType="Self.BRANCHES" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BRANDS" EntityType="Self.BRANDS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CATEGORIES" EntityType="Self.CATEGORIES" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="COUPONS" EntityType="Self.COUPONS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="GROUPS" EntityType="Self.GROUPS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ITEMINFO" EntityType="Self.ITEMINFO" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ORDER_PRODUCTS" EntityType="Self.ORDER_PRODUCTS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ORDER_STATUSES" EntityType="Self.ORDER_STATUSES" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ORDERS" EntityType="Self.ORDERS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PACKAGE_PRODUCTS" EntityType="Self.PACKAGE_PRODUCTS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PACKAGES" EntityType="Self.PACKAGES" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PAYMENT_MODES" EntityType="Self.PAYMENT_MODES" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PRODUCT_BRANDS" EntityType="Self.PRODUCT_BRANDS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PRODUCT_COLORS" EntityType="Self.PRODUCT_COLORS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PRODUCT_FLAVORS" EntityType="Self.PRODUCT_FLAVORS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PRODUCT_IMAGES" EntityType="Self.PRODUCT_IMAGES" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PRODUCT_LEVELS" EntityType="Self.PRODUCT_LEVELS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PRODUCT_PACKINGS" EntityType="Self.PRODUCT_PACKINGS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PRODUCT_TAGS" EntityType="Self.PRODUCT_TAGS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PRODUCT_TYPES" EntityType="Self.PRODUCT_TYPES" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PRODUCTS" EntityType="Self.PRODUCTS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProductTest" EntityType="Self.ProductTest" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PS000" EntityType="Self.PS000" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SMS" EntityType="Self.SMS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SMS_TYPES" EntityType="Self.SMS_TYPES" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="STOCK" EntityType="Self.STOCK" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SUB_CATEGORIES" EntityType="Self.SUB_CATEGORIES" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TEMP_CUSTOMERS" EntityType="Self.TEMP_CUSTOMERS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="USER_ADDRESSES" EntityType="Self.USER_ADDRESSES" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="USER_FAVOURITES" EntityType="Self.USER_FAVOURITES" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="USER_TYPES" EntityType="Self.USER_TYPES" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="USERS" EntityType="Self.USERS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="VENDOR_BRANCHES" EntityType="Self.VENDOR_BRANCHES" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="VENDORS" EntityType="Self.VENDORS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BarcodeNewTest" EntityType="Self.BarcodeNewTest" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [BarcodeNewTest].[LOCNO] AS [LOCNO], 
+    [BarcodeNewTest].[ITEM_CODE] AS [ITEM_CODE], 
+    [BarcodeNewTest].[PACK_CODE] AS [PACK_CODE], 
+    [BarcodeNewTest].[PACK_DESC] AS [PACK_DESC], 
+    [BarcodeNewTest].[UNIT] AS [UNIT], 
+    [BarcodeNewTest].[bDEFAULT] AS [bDEFAULT], 
+    [BarcodeNewTest].[BAR_CODE] AS [BAR_CODE], 
+    [BarcodeNewTest].[BARTYPE] AS [BARTYPE], 
+    [BarcodeNewTest].[UNIT_PRICE] AS [UNIT_PRICE], 
+    [BarcodeNewTest].[DEALER_PRICE1] AS [DEALER_PRICE1], 
+    [BarcodeNewTest].[DEALER_PRICE2] AS [DEALER_PRICE2], 
+    [BarcodeNewTest].[RF_MARGIN] AS [RF_MARGIN], 
+    [BarcodeNewTest].[CUSER] AS [CUSER], 
+    [BarcodeNewTest].[CDATE] AS [CDATE], 
+    [BarcodeNewTest].[MUSER] AS [MUSER], 
+    [BarcodeNewTest].[MDATE] AS [MDATE], 
+    [BarcodeNewTest].[bRandomDisc] AS [bRandomDisc], 
+    [BarcodeNewTest].[DiscStartDate] AS [DiscStartDate], 
+    [BarcodeNewTest].[DiscEndDate] AS [DiscEndDate], 
+    [BarcodeNewTest].[DiscStartTime] AS [DiscStartTime], 
+    [BarcodeNewTest].[DiscEndTime] AS [DiscEndTime], 
+    [BarcodeNewTest].[DISC_TYPE] AS [DISC_TYPE], 
+    [BarcodeNewTest].[DISC] AS [DISC], 
+    [BarcodeNewTest].[IsActive] AS [IsActive], 
+    [BarcodeNewTest].[NeedsReplication] AS [NeedsReplication], 
+    [BarcodeNewTest].[NeedsUpdation] AS [NeedsUpdation], 
+    [BarcodeNewTest].[L1P1NeedsUpdation] AS [L1P1NeedsUpdation], 
+    [BarcodeNewTest].[L1P2NeedsUpdation] AS [L1P2NeedsUpdation], 
+    [BarcodeNewTest].[L1P3NeedsUpdation] AS [L1P3NeedsUpdation], 
+    [BarcodeNewTest].[L1P4NeedsUpdation] AS [L1P4NeedsUpdation], 
+    [BarcodeNewTest].[L1P5NeedsUpdation] AS [L1P5NeedsUpdation], 
+    [BarcodeNewTest].[L1P6NeedsUpdation] AS [L1P6NeedsUpdation], 
+    [BarcodeNewTest].[L1P7NeedsUpdation] AS [L1P7NeedsUpdation], 
+    [BarcodeNewTest].[L1P8NeedsUpdation] AS [L1P8NeedsUpdation], 
+    [BarcodeNewTest].[L1P9NeedsUpdation] AS [L1P9NeedsUpdation], 
+    [BarcodeNewTest].[L1P10NeedsUpdation] AS [L1P10NeedsUpdation], 
+    [BarcodeNewTest].[L2P1NeedsUpdation] AS [L2P1NeedsUpdation], 
+    [BarcodeNewTest].[L2P2NeedsUpdation] AS [L2P2NeedsUpdation], 
+    [BarcodeNewTest].[L2P3NeedsUpdation] AS [L2P3NeedsUpdation], 
+    [BarcodeNewTest].[L3P1NeedsUpdation] AS [L3P1NeedsUpdation], 
+    [BarcodeNewTest].[L3P2NeedsUpdation] AS [L3P2NeedsUpdation], 
+    [BarcodeNewTest].[L3P3NeedsUpdation] AS [L3P3NeedsUpdation], 
+    [BarcodeNewTest].[L3P4NeedsUpdation] AS [L3P4NeedsUpdation], 
+    [BarcodeNewTest].[L3P5NeedsUpdation] AS [L3P5NeedsUpdation], 
+    [BarcodeNewTest].[L3P6NeedsUpdation] AS [L3P6NeedsUpdation], 
+    [BarcodeNewTest].[L3P7NeedsUpdation] AS [L3P7NeedsUpdation], 
+    [BarcodeNewTest].[L3P8NeedsUpdation] AS [L3P8NeedsUpdation], 
+    [BarcodeNewTest].[L4P1NeedsUpdation] AS [L4P1NeedsUpdation], 
+    [BarcodeNewTest].[L5P1NeedsUpdation] AS [L5P1NeedsUpdation], 
+    [BarcodeNewTest].[L6P1NeedsUpdation] AS [L6P1NeedsUpdation], 
+    [BarcodeNewTest].[L4P2NeedsUpdation] AS [L4P2NeedsUpdation], 
+    [BarcodeNewTest].[L4P3NeedsUpdation] AS [L4P3NeedsUpdation], 
+    [BarcodeNewTest].[L5P3NeedsUpdation] AS [L5P3NeedsUpdation], 
+    [BarcodeNewTest].[L6P3NeedsUpdation] AS [L6P3NeedsUpdation], 
+    [BarcodeNewTest].[L5P2NeedsUpdation] AS [L5P2NeedsUpdation], 
+    [BarcodeNewTest].[L6P2NeedsUpdation] AS [L6P2NeedsUpdation]
+    FROM [dbo].[BarcodeNewTest] AS [BarcodeNewTest]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="BARCODES" EntityType="Self.BARCODES" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [BARCODES].[LOCNO] AS [LOCNO], 
+    [BARCODES].[ITEM_CODE] AS [ITEM_CODE], 
+    [BARCODES].[PACK_CODE] AS [PACK_CODE], 
+    [BARCODES].[PACK_DESC] AS [PACK_DESC], 
+    [BARCODES].[UNIT] AS [UNIT], 
+    [BARCODES].[bDEFAULT] AS [bDEFAULT], 
+    [BARCODES].[BAR_CODE] AS [BAR_CODE], 
+    [BARCODES].[BARTYPE] AS [BARTYPE], 
+    [BARCODES].[UNIT_PRICE] AS [UNIT_PRICE], 
+    [BARCODES].[DEALER_PRICE1] AS [DEALER_PRICE1], 
+    [BARCODES].[DEALER_PRICE2] AS [DEALER_PRICE2], 
+    [BARCODES].[RF_MARGIN] AS [RF_MARGIN], 
+    [BARCODES].[CUSER] AS [CUSER], 
+    [BARCODES].[CDATE] AS [CDATE], 
+    [BARCODES].[MUSER] AS [MUSER], 
+    [BARCODES].[MDATE] AS [MDATE], 
+    [BARCODES].[bRandomDisc] AS [bRandomDisc], 
+    [BARCODES].[DiscStartDate] AS [DiscStartDate], 
+    [BARCODES].[DiscEndDate] AS [DiscEndDate], 
+    [BARCODES].[DiscStartTime] AS [DiscStartTime], 
+    [BARCODES].[DiscEndTime] AS [DiscEndTime], 
+    [BARCODES].[DISC_TYPE] AS [DISC_TYPE], 
+    [BARCODES].[DISC] AS [DISC], 
+    [BARCODES].[IsActive] AS [IsActive], 
+    [BARCODES].[NeedsReplication] AS [NeedsReplication], 
+    [BARCODES].[NeedsUpdation] AS [NeedsUpdation], 
+    [BARCODES].[L1P1NeedsUpdation] AS [L1P1NeedsUpdation], 
+    [BARCODES].[L1P2NeedsUpdation] AS [L1P2NeedsUpdation], 
+    [BARCODES].[L1P3NeedsUpdation] AS [L1P3NeedsUpdation], 
+    [BARCODES].[L1P4NeedsUpdation] AS [L1P4NeedsUpdation], 
+    [BARCODES].[L1P5NeedsUpdation] AS [L1P5NeedsUpdation], 
+    [BARCODES].[L1P6NeedsUpdation] AS [L1P6NeedsUpdation], 
+    [BARCODES].[L1P7NeedsUpdation] AS [L1P7NeedsUpdation], 
+    [BARCODES].[L1P8NeedsUpdation] AS [L1P8NeedsUpdation], 
+    [BARCODES].[L1P9NeedsUpdation] AS [L1P9NeedsUpdation], 
+    [BARCODES].[L1P10NeedsUpdation] AS [L1P10NeedsUpdation], 
+    [BARCODES].[L2P1NeedsUpdation] AS [L2P1NeedsUpdation], 
+    [BARCODES].[L2P2NeedsUpdation] AS [L2P2NeedsUpdation], 
+    [BARCODES].[L2P3NeedsUpdation] AS [L2P3NeedsUpdation], 
+    [BARCODES].[L3P1NeedsUpdation] AS [L3P1NeedsUpdation], 
+    [BARCODES].[L3P2NeedsUpdation] AS [L3P2NeedsUpdation], 
+    [BARCODES].[L3P3NeedsUpdation] AS [L3P3NeedsUpdation], 
+    [BARCODES].[L3P4NeedsUpdation] AS [L3P4NeedsUpdation], 
+    [BARCODES].[L3P5NeedsUpdation] AS [L3P5NeedsUpdation], 
+    [BARCODES].[L3P6NeedsUpdation] AS [L3P6NeedsUpdation], 
+    [BARCODES].[L3P7NeedsUpdation] AS [L3P7NeedsUpdation], 
+    [BARCODES].[L3P8NeedsUpdation] AS [L3P8NeedsUpdation], 
+    [BARCODES].[L4P1NeedsUpdation] AS [L4P1NeedsUpdation], 
+    [BARCODES].[L5P1NeedsUpdation] AS [L5P1NeedsUpdation], 
+    [BARCODES].[L6P1NeedsUpdation] AS [L6P1NeedsUpdation], 
+    [BARCODES].[L4P2NeedsUpdation] AS [L4P2NeedsUpdation], 
+    [BARCODES].[L4P3NeedsUpdation] AS [L4P3NeedsUpdation], 
+    [BARCODES].[L5P3NeedsUpdation] AS [L5P3NeedsUpdation], 
+    [BARCODES].[L6P3NeedsUpdation] AS [L6P3NeedsUpdation], 
+    [BARCODES].[L5P2NeedsUpdation] AS [L5P2NeedsUpdation], 
+    [BARCODES].[L6P2NeedsUpdation] AS [L6P2NeedsUpdation], 
+    [BARCODES].[L7P1NeedsUpdation] AS [L7P1NeedsUpdation], 
+    [BARCODES].[L7P2NeedsUpdation] AS [L7P2NeedsUpdation], 
+    [BARCODES].[L7P3NeedsUpdation] AS [L7P3NeedsUpdation]
+    FROM [dbo].[BARCODES] AS [BARCODES]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="PS000Test" EntityType="Self.PS000Test" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [PS000Test].[LOCNO] AS [LOCNO], 
+    [PS000Test].[ITEM_CODE] AS [ITEM_CODE], 
+    [PS000Test].[QTY] AS [QTY], 
+    [PS000Test].[WH_QTY] AS [WH_QTY], 
+    [PS000Test].[T_QTY] AS [T_QTY], 
+    [PS000Test].[FLOOR_NO] AS [FLOOR_NO], 
+    [PS000Test].[COUNTER] AS [COUNTER], 
+    [PS000Test].[SHELF] AS [SHELF], 
+    [PS000Test].[SHELF_QTY] AS [SHELF_QTY], 
+    [PS000Test].[SHELF_FACING] AS [SHELF_FACING], 
+    [PS000Test].[LSDATE] AS [LSDATE], 
+    [PS000Test].[LPDATE] AS [LPDATE], 
+    [PS000Test].[ALLOW_NEGATIVE] AS [ALLOW_NEGATIVE], 
+    [PS000Test].[AreaCovered] AS [AreaCovered], 
+    [PS000Test].[IsActive] AS [IsActive], 
+    [PS000Test].[MAX_QTY] AS [MAX_QTY], 
+    [PS000Test].[MIN_QTY] AS [MIN_QTY], 
+    [PS000Test].[OP_STOCK] AS [OP_STOCK], 
+    [PS000Test].[OP_STOCK_VAL] AS [OP_STOCK_VAL], 
+    [PS000Test].[NeedsReplication] AS [NeedsReplication], 
+    [PS000Test].[NeedsUpdation] AS [NeedsUpdation]
+    FROM [dbo].[PS000Test] AS [PS000Test]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="TEST" EntityType="Self.TEST" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [TEST].[OLD_PRODUCT_ID] AS [OLD_PRODUCT_ID], 
+    [TEST].[NAME] AS [NAME], 
+    [TEST].[DESCRIPTION] AS [DESCRIPTION], 
+    [TEST].[AVG_COST] AS [AVG_COST]
+    FROM [dbo].[TEST] AS [TEST]</DefiningQuery>
+          </EntitySet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="GROCERY" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="AD">
+          <Key>
+            <PropertyRef Name="AD_ID" />
+          </Key>
+          <Property Name="AD_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TEXT" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IMAGE_PATH" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CREATED_BY" Type="Int32" />
+          <Property Name="CREATED_ON" Type="DateTime" Precision="3" />
+          <Property Name="UPDATED_BY" Type="Int32" />
+          <Property Name="UPDATED_ON" Type="DateTime" Precision="3" />
+          <Property Name="IS_ACTIVE" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="AREA">
+          <Key>
+            <PropertyRef Name="AREA_ID" />
+          </Key>
+          <Property Name="AREA_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NAME" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="BRANCH_ID" Type="Int32" />
+        </EntityType>
+        <EntityType Name="BARCODESTest">
+          <Key>
+            <PropertyRef Name="LOCNO" />
+            <PropertyRef Name="ITEM_CODE" />
+            <PropertyRef Name="PACK_CODE" />
+          </Key>
+          <Property Name="LOCNO" Type="Int16" Nullable="false" />
+          <Property Name="ITEM_CODE" Type="Int32" Nullable="false" />
+          <Property Name="PACK_CODE" Type="Int16" Nullable="false" />
+          <Property Name="PACK_DESC" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="UNIT" Type="Decimal" Precision="9" Scale="0" Nullable="false" />
+          <Property Name="bDEFAULT" Type="Boolean" Nullable="false" />
+          <Property Name="BAR_CODE" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="BARTYPE" Type="Byte" Nullable="false" />
+          <Property Name="UNIT_PRICE" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <Property Name="DEALER_PRICE1" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <Property Name="DEALER_PRICE2" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <Property Name="RF_MARGIN" Type="Decimal" Precision="9" Scale="0" Nullable="false" />
+          <Property Name="CUSER" Type="Int32" Nullable="false" />
+          <Property Name="CDATE" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="MUSER" Type="Int32" Nullable="false" />
+          <Property Name="MDATE" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="bRandomDisc" Type="Boolean" Nullable="false" />
+          <Property Name="DiscStartDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DiscEndDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DiscStartTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DiscEndTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DISC_TYPE" Type="Int16" Nullable="false" />
+          <Property Name="DISC" Type="Decimal" Precision="9" Scale="0" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="NeedsReplication" Type="Boolean" Nullable="false" />
+          <Property Name="NeedsUpdation" Type="Boolean" Nullable="false" />
+          <Property Name="L1P1NeedsUpdation" Type="Boolean" />
+          <Property Name="L1P2NeedsUpdation" Type="Boolean" />
+          <Property Name="L1P3NeedsUpdation" Type="Boolean" />
+          <Property Name="L1P4NeedsUpdation" Type="Boolean" />
+          <Property Name="L1P5NeedsUpdation" Type="Boolean" />
+          <Property Name="L1P6NeedsUpdation" Type="Boolean" />
+          <Property Name="L1P7NeedsUpdation" Type="Boolean" />
+          <Property Name="L1P8NeedsUpdation" Type="Boolean" />
+          <Property Name="L1P9NeedsUpdation" Type="Boolean" />
+          <Property Name="L1P10NeedsUpdation" Type="Boolean" />
+          <Property Name="L2P1NeedsUpdation" Type="Boolean" />
+          <Property Name="L2P2NeedsUpdation" Type="Boolean" />
+          <Property Name="L2P3NeedsUpdation" Type="Boolean" />
+          <Property Name="L3P1NeedsUpdation" Type="Boolean" />
+          <Property Name="L3P2NeedsUpdation" Type="Boolean" />
+          <Property Name="L3P3NeedsUpdation" Type="Boolean" />
+          <Property Name="L3P4NeedsUpdation" Type="Boolean" />
+          <Property Name="L3P5NeedsUpdation" Type="Boolean" />
+          <Property Name="L3P6NeedsUpdation" Type="Boolean" />
+          <Property Name="L3P7NeedsUpdation" Type="Boolean" />
+          <Property Name="L3P8NeedsUpdation" Type="Boolean" />
+          <Property Name="L4P1NeedsUpdation" Type="Boolean" />
+          <Property Name="L5P1NeedsUpdation" Type="Boolean" />
+          <Property Name="L6P1NeedsUpdation" Type="Boolean" />
+          <Property Name="L4P2NeedsUpdation" Type="Boolean" />
+          <Property Name="L4P3NeedsUpdation" Type="Boolean" />
+          <Property Name="L5P3NeedsUpdation" Type="Boolean" />
+          <Property Name="L6P3NeedsUpdation" Type="Boolean" />
+          <Property Name="L5P2NeedsUpdation" Type="Boolean" />
+          <Property Name="L6P2NeedsUpdation" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="BRANCH">
+          <Key>
+            <PropertyRef Name="BRANCH_ID" />
+          </Key>
+          <Property Name="BRANCH_ID" Type="Int32" Nullable="false" />
+          <Property Name="BRANCH_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="LATITUDE" Type="Double" />
+          <Property Name="LONGITUDE" Type="Double" />
+          <Property Name="ADDRESS" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PHONE" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IS_ACTIVE" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="BRAND">
+          <Key>
+            <PropertyRef Name="BRAND_ID" />
+          </Key>
+          <Property Name="BRAND_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NAME" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="CATEGORy">
+          <Key>
+            <PropertyRef Name="CATEGORY_ID" />
+          </Key>
+          <Property Name="CATEGORY_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DESCRIPTION" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="GROUP_ID" Type="Int32" Nullable="false" />
+          <Property Name="CREATED_BY" Type="Int32" />
+          <Property Name="CREATED_DATE" Type="DateTime" Precision="3" />
+          <Property Name="MODIFIED_BY" Type="Int32" />
+          <Property Name="MODIFIED_DATE" Type="DateTime" Precision="3" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="COUPON">
+          <Key>
+            <PropertyRef Name="COUPON_ID" />
+          </Key>
+          <Property Name="COUPON_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PROMO_TEXT" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="START_DATE" Type="DateTime" Precision="3" />
+          <Property Name="EXPIRY_DATE" Type="DateTime" Precision="3" />
+          <Property Name="VALUE" Type="Int32" />
+          <Property Name="CREATED_ON" Type="DateTime" Precision="3" />
+          <Property Name="CREATED_BY" Type="Int32" />
+          <Property Name="IS_ACTIVE" Type="Boolean" />
+          <Property Name="IS_USED" Type="Boolean" />
+          <Property Name="UNLOCK_AMOUNT" Type="Int32" />
+          <Property Name="CODE" Type="Int32" />
+          <Property Name="PROMO" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="updated_by" Type="Int32" />
+          <Property Name="updated_on" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="GROUP">
+          <Key>
+            <PropertyRef Name="GROUP_ID" />
+          </Key>
+          <Property Name="GROUP_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IMAGE_NAME" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="RELATIVE_IMAGE_NAME" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="ITEMINFO">
+          <Key>
+            <PropertyRef Name="ITEM_CODE" />
+          </Key>
+          <Property Name="ITEM_CODE" Type="Int32" Nullable="false" />
+          <Property Name="HV_CODE" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="ITEM_TYPE" Type="Byte" />
+          <Property Name="ITEM_ATTRIB" Type="Byte" />
+          <Property Name="IsRECIPE" Type="Boolean" />
+          <Property Name="SERIALIZED" Type="Boolean" />
+          <Property Name="EXPIRY_ITEM" Type="Boolean" />
+          <Property Name="FEATURED" Type="Boolean" />
+          <Property Name="UOM" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="BATCH_QTY" Type="Decimal" Precision="9" Scale="3" />
+          <Property Name="DEPT_CODE" Type="Int16" />
+          <Property Name="GRCODE" Type="Int16" />
+          <Property Name="SUBGRCODE" Type="Int16" />
+          <Property Name="CATCODE" Type="Int32" />
+          <Property Name="BRAND_CODE" Type="Int32" />
+          <Property Name="DESIGN_CD" Type="Int32" />
+          <Property Name="CLR_CODE" Type="Int16" />
+          <Property Name="SUPP_CODE" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="MAKE_CODE" Type="Int16" />
+          <Property Name="SIZE_CODE" Type="Int32" />
+          <Property Name="AUTH_CODE" Type="Int32" />
+          <Property Name="PUB_CODE" Type="Int32" />
+          <Property Name="EDITION" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CLASS" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ISBN" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="ITEM_DESC" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="ITEM_DESC_LONG" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="COST_MARGIN" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="SEX" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="SEASON" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="AGE" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="FABRIC" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="SPEED" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PLY" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PCD" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="HOLES" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="SPH" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="CYL" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="AXIS" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="ADDS" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="COMMENT" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="EXEMPT" Type="Boolean" />
+          <Property Name="VAT" Type="Decimal" Precision="9" Scale="0" />
+          <Property Name="GST" Type="Decimal" Precision="9" Scale="0" />
+          <Property Name="OPEN_PRICE" Type="Boolean" />
+          <Property Name="FRACTIONAL" Type="Boolean" />
+          <Property Name="ALLOWQTY" Type="Boolean" />
+          <Property Name="MATERIAL_COST" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="INGR_COST" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="PKG_COST" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="LAB_COST" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="OH_COST" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="OTH_COST" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="WASTAGE" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="COST_PRICE1" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="COST_PRICE2" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="COST_PRICE3" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="NET_COST" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="AVG_COST" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="AVG_COST1" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="AVG_COST2" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="AVG_COST3" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="F_PUR_PRICE" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="LAST_PUR_PRICE1" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="LAST_PUR_PRICE2" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="LAST_PUR_PRICE3" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="LAST_SUPP" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="LAST_SUPP1" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="LAST_SUPP2" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="FREE_QTY" Type="Decimal" Precision="9" Scale="0" />
+          <Property Name="FREE_QTY_AVG_COST" Type="Decimal" Precision="9" Scale="0" />
+          <Property Name="ITEM_DISC" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="bDISCOUNTED" Type="Boolean" />
+          <Property Name="DISC_QTY" Type="Decimal" Precision="9" Scale="3" />
+          <Property Name="SALE_DISC" Type="Decimal" Precision="9" Scale="2" />
+          <Property Name="CDATE" Type="DateTime" Precision="3" />
+          <Property Name="CUSER" Type="Int32" />
+          <Property Name="MDATE" Type="DateTime" Precision="3" />
+          <Property Name="MUSER" Type="Int32" />
+          <Property Name="EMPTY" Type="Boolean" />
+          <Property Name="bNEW" Type="Boolean" />
+          <Property Name="NeedsReplication" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="ORDER_PRODUCTS">
+          <Key>
+            <PropertyRef Name="OREDER_PRODUCT_ID" />
+          </Key>
+          <Property Name="OREDER_PRODUCT_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ORDER_ID" Type="Int32" />
+          <Property Name="PRODUCT_ID" Type="Int32" />
+          <Property Name="QUANTITY" Type="Int32" />
+          <Property Name="IS_ACTIVE" Type="Int32" />
+          <Property Name="UPDATED_BY" Type="Int32" />
+          <Property Name="UPDATED_ON" Type="DateTime" Precision="3" />
+          <Property Name="BAR_CODE" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="ORDER_STATUSES">
+          <Key>
+            <PropertyRef Name="ORDER_STATUS_ID" />
+          </Key>
+          <Property Name="ORDER_STATUS_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DESCRIPTION" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="ORDER">
+          <Key>
+            <PropertyRef Name="ORDER_ID" />
+          </Key>
+          <Property Name="ORDER_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CUSTOMER_ID" Type="Int32" />
+          <Property Name="NAME" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="MOBILE" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ADDRESS" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="STATUS" Type="Int32" Nullable="false" />
+          <Property Name="CREATED_ON" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CREATED_BY" Type="Int32" />
+          <Property Name="ASSIGNED_ON" Type="DateTime" Precision="3" />
+          <Property Name="ASSIGNED_BY" Type="Int32" />
+          <Property Name="SENT_TO_RIDER_ON" Type="DateTime" Precision="3" />
+          <Property Name="SENT_TO_RIDER_BY" Type="Int32" />
+          <Property Name="UPDATED_ON" Type="DateTime" Precision="3" />
+          <Property Name="UPDATED_BY" Type="Int32" />
+          <Property Name="RIDER_ID" Type="Int32" />
+          <Property Name="REJECTED_BY" Type="Int32" />
+          <Property Name="REJECTED_REASON" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="DELIVERY_TIME" Type="DateTime" Precision="3" />
+          <Property Name="IS_ACTIVE" Type="Int32" />
+          <Property Name="BRANCH_ID" Type="Int32" />
+          <Property Name="DELIVERY_DESCRIPTION" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PAYMENT_MODE_ID" Type="Int32" />
+          <Property Name="MANUAL_DISCOUNT" Type="Int32" />
+          <Property Name="COUPON_ID" Type="Int32" />
+          <Property Name="COUPON_DISCOUNT" Type="Int32" />
+          <Property Name="PICKUP_TIME" Type="DateTime" Precision="3" />
+          <Property Name="IS_PACKAGE" Type="Int32" />
+          <Property Name="ADDED_BY" Type="Byte" />
+        </EntityType>
+        <EntityType Name="PACKAGE_PRODUCTS">
+          <Key>
+            <PropertyRef Name="PACKAGE_PRODUCT_ID" />
+          </Key>
+          <Property Name="PACKAGE_PRODUCT_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PACKAGE_ID" Type="Int32" />
+          <Property Name="PRODUCT_ID" Type="Int32" />
+          <Property Name="QUANTITY" Type="Int32" />
+          <Property Name="IS_ACTIVE" Type="Int32" />
+          <Property Name="UPDATED_BY" Type="Int32" />
+          <Property Name="UPDATED_ON" Type="DateTime" Precision="3" />
+          <Property Name="BAR_CODE" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="PACKAGE">
+          <Key>
+            <PropertyRef Name="PACKAGE_ID" />
+          </Key>
+          <Property Name="PACKAGE_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NAME" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CREATED_ON" Type="DateTime" Precision="3" />
+          <Property Name="CREATED_BY" Type="Int32" />
+          <Property Name="IS_ACTIVE" Type="Boolean" />
+          <Property Name="UPDATED_BY" Type="Int32" />
+          <Property Name="UPDATED_ON" Type="DateTime" Precision="3" />
+          <Property Name="DESCRIPTION" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="BRANCH_ID" Type="Int32" />
+        </EntityType>
+        <EntityType Name="PAYMENT_MODES">
+          <Key>
+            <PropertyRef Name="PAYMENT_MODE_ID" />
+          </Key>
+          <Property Name="PAYMENT_MODE_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DESCRIPTION" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="PRODUCT_BRANDS">
+          <Key>
+            <PropertyRef Name="PRODUCT_BRAND_ID" />
+          </Key>
+          <Property Name="PRODUCT_BRAND_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PRODUCT_ID" Type="Int32" />
+          <Property Name="BRAND_NAME" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="PRODUCT_COLORS">
+          <Key>
+            <PropertyRef Name="PRODUCT_COLOR_ID" />
+          </Key>
+          <Property Name="PRODUCT_COLOR_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PRODUCT_ID" Type="Int32" />
+          <Property Name="COLOR_NAME" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="PRODUCT_FLAVORS">
+          <Key>
+            <PropertyRef Name="PRODUCT_FLAVOR_ID" />
+          </Key>
+          <Property Name="PRODUCT_FLAVOR_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PRODUCT_ID" Type="Int32" />
+          <Property Name="FLAVOR_NAME" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="PRODUCT_IMAGES">
+          <Key>
+            <PropertyRef Name="PRODUCT_IMAGE_ID" />
+          </Key>
+          <Property Name="PRODUCT_IMAGE_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PRODUCT_ID" Type="Int32" />
+          <Property Name="ADMIN_IMAGE_PATH" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ADMIN_THUMNAIL_IMAGE_PATH" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CHAARSU_IMAGE_PATH" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CHAARSU_THUMBNAIL_PATH" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="PRODUCT_LEVELS">
+          <Key>
+            <PropertyRef Name="PRODUCT_LEVEL_ID" />
+          </Key>
+          <Property Name="PRODUCT_LEVEL_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="SUB_CATEGORY_ID" Type="Int32" />
+        </EntityType>
+        <EntityType Name="PRODUCT_PACKINGS">
+          <Key>
+            <PropertyRef Name="PRODUCT_PACKING_ID" />
+          </Key>
+          <Property Name="PRODUCT_PACKING_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PRODUCT_ID" Type="Int32" />
+          <Property Name="PACKING_NAME" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="PRODUCT_TAGS">
+          <Key>
+            <PropertyRef Name="PRODUCT_TAG_ID" />
+          </Key>
+          <Property Name="PRODUCT_TAG_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PRODUCT_ID" Type="Int32" />
+          <Property Name="TAG_NAME" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="PRODUCT_TYPES">
+          <Key>
+            <PropertyRef Name="PRODUCT_TYPE_ID" />
+          </Key>
+          <Property Name="PRODUCT_TYPE_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PRODUCT_ID" Type="Int32" />
+          <Property Name="TYPE_NAME" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="PRODUCT">
+          <Key>
+            <PropertyRef Name="PRODUCT_ID" />
+          </Key>
+          <Property Name="PRODUCT_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OLD_PRODUCT_ID" Type="Int32" />
+          <Property Name="NAME" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="DESCRIPTION" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="SUB_CATEGORY_ID" Type="Int32" />
+          <Property Name="UNIT_OF_MEASUREMENT" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="AVG_COST" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="PRICE" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="DISCOUNT_PERCENTAGE" Type="Int32" />
+          <Property Name="IMPORTED" Type="Boolean" />
+          <Property Name="IS_ACTIVE" Type="Boolean" />
+          <Property Name="CREATED_DATE" Type="DateTime" Precision="3" />
+          <Property Name="CREATED_BY" Type="Int32" />
+          <Property Name="MODIFIED_DATE" Type="DateTime" Precision="3" />
+          <Property Name="MODIFIED_BY" Type="Int32" />
+          <Property Name="COLOR" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="BRAND" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="FLAVOR" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="PACKING" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="TAG" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="TYPES" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="DISCOUNT" Type="Double" />
+          <Property Name="SEC_SUB_CATEGORY_A" Type="Int32" />
+          <Property Name="SEC_SUB_CATEGORY_B" Type="Int32" />
+          <Property Name="PRICE2" Type="Int32" />
+          <Property Name="HAS_IMAGE" Type="Boolean" />
+          <Property Name="HAS_THUMBNAIL_IMAGE" Type="Boolean" />
+          <Property Name="VENDOR_ID" Type="Int32" />
+          <Property Name="CATEGORY_ID" Type="Int32" />
+          <Property Name="IS_FEATURED" Type="Boolean" />
+          <Property Name="THRESHOLD" Type="Int32" />
+          <Property Name="IS_EXEMPTED" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="ProductTest">
+          <Key>
+            <PropertyRef Name="PRODUCT_ID" />
+          </Key>
+          <Property Name="PRODUCT_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OLD_PRODUCT_ID" Type="Int32" />
+          <Property Name="NAME" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="DESCRIPTION" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="SUB_CATEGORY_ID" Type="Int32" />
+          <Property Name="UNIT_OF_MEASUREMENT" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="AVG_COST" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="PRICE" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="DISCOUNT_PERCENTAGE" Type="Int32" />
+          <Property Name="IMPORTED" Type="Boolean" />
+          <Property Name="IS_ACTIVE" Type="Boolean" />
+          <Property Name="CREATED_DATE" Type="DateTime" Precision="3" />
+          <Property Name="CREATED_BY" Type="Int32" />
+          <Property Name="MODIFIED_DATE" Type="DateTime" Precision="3" />
+          <Property Name="MODIFIED_BY" Type="Int32" />
+          <Property Name="COLOR" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="BRAND" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="FLAVOR" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="PACKING" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="TAG" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="TYPES" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="DISCOUNT" Type="Double" />
+          <Property Name="SEC_SUB_CATEGORY_A" Type="Int32" />
+          <Property Name="SEC_SUB_CATEGORY_B" Type="Int32" />
+          <Property Name="PRICE2" Type="Int32" />
+          <Property Name="HAS_IMAGE" Type="Boolean" />
+          <Property Name="HAS_THUMBNAIL_IMAGE" Type="Boolean" />
+          <Property Name="VENDOR_ID" Type="Int32" />
+          <Property Name="CATEGORY_ID" Type="Int32" />
+          <Property Name="IS_FEATURED" Type="Boolean" />
+          <Property Name="THRESHOLD" Type="Int32" />
+          <Property Name="IS_EXEMPTED" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="PS000">
+          <Key>
+            <PropertyRef Name="LOCNO" />
+            <PropertyRef Name="ITEM_CODE" />
+          </Key>
+          <Property Name="LOCNO" Type="Int16" Nullable="false" />
+          <Property Name="ITEM_CODE" Type="Int32" Nullable="false" />
+          <Property Name="QTY" Type="Decimal" Precision="9" Scale="3" />
+          <Property Name="WH_QTY" Type="Decimal" Precision="9" Scale="3" />
+          <Property Name="T_QTY" Type="Decimal" Precision="19" Scale="3" />
+          <Property Name="FLOOR_NO" Type="Byte" />
+          <Property Name="COUNTER" Type="Int16" />
+          <Property Name="SHELF" Type="Byte" />
+          <Property Name="SHELF_QTY" Type="Decimal" Precision="9" Scale="3" />
+          <Property Name="SHELF_FACING" Type="Decimal" Precision="9" Scale="3" />
+          <Property Name="LSDATE" Type="DateTime" Precision="3" />
+          <Property Name="LPDATE" Type="DateTime" Precision="3" />
+          <Property Name="ALLOW_NEGATIVE" Type="Boolean" />
+          <Property Name="AreaCovered" Type="Decimal" Precision="9" Scale="2" />
+          <Property Name="IsActive" Type="Boolean" />
+          <Property Name="MAX_QTY" Type="Decimal" Precision="19" Scale="3" />
+          <Property Name="MIN_QTY" Type="Decimal" Precision="19" Scale="3" />
+          <Property Name="OP_STOCK" Type="Decimal" Precision="19" Scale="3" />
+          <Property Name="OP_STOCK_VAL" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="NeedsReplication" Type="Boolean" />
+          <Property Name="NeedsUpdation" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="SM">
+          <Key>
+            <PropertyRef Name="SMS_ID" />
+          </Key>
+          <Property Name="SMS_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SENDER" Type="Int32" />
+          <Property Name="TEXT" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="RESPONSE" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SENT_ON" Type="DateTime" Precision="3" />
+          <Property Name="SMS_TYPE_ID" Type="Int32" />
+        </EntityType>
+        <EntityType Name="SMS_TYPES">
+          <Key>
+            <PropertyRef Name="SMS_TYPE_ID" />
+          </Key>
+          <Property Name="SMS_TYPE_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DESCRIPTION" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="STOCK">
+          <Key>
+            <PropertyRef Name="BRANCH_ID" />
+            <PropertyRef Name="PRODUCT_ID" />
+          </Key>
+          <Property Name="BRANCH_ID" Type="Int16" Nullable="false" />
+          <Property Name="PRODUCT_ID" Type="Int32" Nullable="false" />
+          <Property Name="QTY" Type="Decimal" Precision="9" Scale="3" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SUB_CATEGORIES">
+          <Key>
+            <PropertyRef Name="SUB_CATEGORY_ID" />
+          </Key>
+          <Property Name="SUB_CATEGORY_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CATEGORY_ID" Type="Int32" Nullable="false" />
+          <Property Name="DESCRIPTION" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CREATED_BY" Type="Int32" />
+          <Property Name="CREATED_DATE" Type="DateTime" Precision="3" />
+          <Property Name="MODIFIED_BY" Type="Int32" />
+          <Property Name="MODIFIED_DATE" Type="DateTime" Precision="3" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="APP_IMAGE_PATH" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="TEMP_CUSTOMERS">
+          <Key>
+            <PropertyRef Name="TEMP_CUSTOMER_ID" />
+          </Key>
+          <Property Name="TEMP_CUSTOMER_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NAME" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PHONE" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="ADDRESS" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="USER_ADDRESSES">
+          <Key>
+            <PropertyRef Name="USER_ADDRESS_ID" />
+          </Key>
+          <Property Name="USER_ADDRESS_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="USER_ID" Type="Int32" />
+          <Property Name="ADDRESS" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IS_ACTIVE" Type="Boolean" />
+          <Property Name="CREATED_BY" Type="Int32" />
+          <Property Name="CREATED_ON" Type="DateTime" Precision="3" />
+          <Property Name="UPDATED_BY" Type="Int32" />
+          <Property Name="UPDATED_ON" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="USER_FAVOURITES">
+          <Key>
+            <PropertyRef Name="USER_FAVOURITE_ID" />
+          </Key>
+          <Property Name="USER_FAVOURITE_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="USER_ID" Type="Int32" />
+          <Property Name="PRODUCT_ID" Type="Int32" />
+          <Property Name="CREATED_ON" Type="DateTime" Precision="3" />
+          <Property Name="UPDATED_ON" Type="DateTime" Precision="3" />
+          <Property Name="IS_ACTIVE" Type="Int32" />
+        </EntityType>
+        <EntityType Name="USER_TYPES">
+          <Key>
+            <PropertyRef Name="USER_TYPE_ID" />
+          </Key>
+          <Property Name="USER_TYPE_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DESCRIPTION" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
+        <EntityType Name="USER">
+          <Key>
+            <PropertyRef Name="USER_ID" />
+          </Key>
+          <Property Name="USER_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="USERNAME" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PASSWORD" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="USER_TYPE" Type="Int32" Nullable="false" />
+          <Property Name="BRANCH_ID" Type="Int32" />
+          <Property Name="MOBILE_NO" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ADDRESS" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CITY" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IS_ACTIVE" Type="Boolean" Nullable="false" />
+          <Property Name="CREATED_ON" Type="DateTime" Precision="3" />
+          <Property Name="CREATED_BY" Type="Int32" />
+          <Property Name="UPDATED_ON" Type="DateTime" Precision="3" />
+          <Property Name="UPDATED_BY" Type="Int32" />
+          <Property Name="IS_AVAILABLE" Type="Int32" />
+          <Property Name="VEHICLE_NUMBER" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="VEHICLE_DESCRIPTION" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="DEVICE_ID" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IMAGE_PATH" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="EMAIL" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="VENDOR_BRANCHES">
+          <Key>
+            <PropertyRef Name="VENDOR_BRANCH_ID" />
+          </Key>
+          <Property Name="VENDOR_BRANCH_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="VENDOR_ID" Type="Int32" />
+          <Property Name="NAME" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ADDRESS" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="LATITUDE" Type="Double" />
+          <Property Name="LONGITUDE" Type="Double" />
+          <Property Name="PHONE" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="VENDOR">
+          <Key>
+            <PropertyRef Name="VENDOR_ID" />
+          </Key>
+          <Property Name="VENDOR_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CLIENT_TYPE" Type="Byte" Nullable="false" />
+          <Property Name="VENDOR_NAME" Type="String" MaxLength="60" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ADDR1" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CITY" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="COUNTRY" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CONT_PERSON1" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="TITLE1" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="MOBILE1" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="PHONE1" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="FAX1" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ADDR2" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CITY2" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="COUNTRY2" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CONT_PERSON2" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="TITLE2" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="MOBILE2" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="PHONE2" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="FAX2" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="WHATSAPP" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="EMAIL" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="URL" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="NTN" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="CREATED_BY" Type="Int32" />
+          <Property Name="CREATED_DATE" Type="DateTime" Precision="3" />
+          <Property Name="MODIFIED_BY" Type="Int32" />
+          <Property Name="MODIFIED_DATE" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="BarcodeNewTest">
+          <Key>
+            <PropertyRef Name="LOCNO" />
+            <PropertyRef Name="ITEM_CODE" />
+            <PropertyRef Name="PACK_CODE" />
+            <PropertyRef Name="PACK_DESC" />
+            <PropertyRef Name="UNIT" />
+            <PropertyRef Name="bDEFAULT" />
+            <PropertyRef Name="BAR_CODE" />
+            <PropertyRef Name="BARTYPE" />
+            <PropertyRef Name="UNIT_PRICE" />
+            <PropertyRef Name="DEALER_PRICE1" />
+            <PropertyRef Name="DEALER_PRICE2" />
+            <PropertyRef Name="RF_MARGIN" />
+            <PropertyRef Name="CUSER" />
+            <PropertyRef Name="CDATE" />
+            <PropertyRef Name="MUSER" />
+            <PropertyRef Name="MDATE" />
+            <PropertyRef Name="bRandomDisc" />
+            <PropertyRef Name="DiscStartDate" />
+            <PropertyRef Name="DiscEndDate" />
+            <PropertyRef Name="DiscStartTime" />
+            <PropertyRef Name="DiscEndTime" />
+            <PropertyRef Name="DISC_TYPE" />
+            <PropertyRef Name="DISC" />
+            <PropertyRef Name="IsActive" />
+            <PropertyRef Name="NeedsReplication" />
+            <PropertyRef Name="NeedsUpdation" />
+          </Key>
+          <Property Name="LOCNO" Type="Int16" Nullable="false" />
+          <Property Name="ITEM_CODE" Type="Int32" Nullable="false" />
+          <Property Name="PACK_CODE" Type="Int16" Nullable="false" />
+          <Property Name="PACK_DESC" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="UNIT" Type="Decimal" Precision="9" Scale="0" Nullable="false" />
+          <Property Name="bDEFAULT" Type="Boolean" Nullable="false" />
+          <Property Name="BAR_CODE" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="BARTYPE" Type="Byte" Nullable="false" />
+          <Property Name="UNIT_PRICE" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <Property Name="DEALER_PRICE1" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <Property Name="DEALER_PRICE2" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <Property Name="RF_MARGIN" Type="Decimal" Precision="9" Scale="0" Nullable="false" />
+          <Property Name="CUSER" Type="Int32" Nullable="false" />
+          <Property Name="CDATE" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="MUSER" Type="Int32" Nullable="false" />
+          <Property Name="MDATE" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="bRandomDisc" Type="Boolean" Nullable="false" />
+          <Property Name="DiscStartDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DiscEndDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DiscStartTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DiscEndTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DISC_TYPE" Type="Int16" Nullable="false" />
+          <Property Name="DISC" Type="Decimal" Precision="9" Scale="0" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="NeedsReplication" Type="Boolean" Nullable="false" />
+          <Property Name="NeedsUpdation" Type="Boolean" Nullable="false" />
+          <Property Name="L1P1NeedsUpdation" Type="Boolean" />
+          <Property Name="L1P2NeedsUpdation" Type="Boolean" />
+          <Property Name="L1P3NeedsUpdation" Type="Boolean" />
+          <Property Name="L1P4NeedsUpdation" Type="Boolean" />
+          <Property Name="L1P5NeedsUpdation" Type="Boolean" />
+          <Property Name="L1P6NeedsUpdation" Type="Boolean" />
+          <Property Name="L1P7NeedsUpdation" Type="Boolean" />
+          <Property Name="L1P8NeedsUpdation" Type="Boolean" />
+          <Property Name="L1P9NeedsUpdation" Type="Boolean" />
+          <Property Name="L1P10NeedsUpdation" Type="Boolean" />
+          <Property Name="L2P1NeedsUpdation" Type="Boolean" />
+          <Property Name="L2P2NeedsUpdation" Type="Boolean" />
+          <Property Name="L2P3NeedsUpdation" Type="Boolean" />
+          <Property Name="L3P1NeedsUpdation" Type="Boolean" />
+          <Property Name="L3P2NeedsUpdation" Type="Boolean" />
+          <Property Name="L3P3NeedsUpdation" Type="Boolean" />
+          <Property Name="L3P4NeedsUpdation" Type="Boolean" />
+          <Property Name="L3P5NeedsUpdation" Type="Boolean" />
+          <Property Name="L3P6NeedsUpdation" Type="Boolean" />
+          <Property Name="L3P7NeedsUpdation" Type="Boolean" />
+          <Property Name="L3P8NeedsUpdation" Type="Boolean" />
+          <Property Name="L4P1NeedsUpdation" Type="Boolean" />
+          <Property Name="L5P1NeedsUpdation" Type="Boolean" />
+          <Property Name="L6P1NeedsUpdation" Type="Boolean" />
+          <Property Name="L4P2NeedsUpdation" Type="Boolean" />
+          <Property Name="L4P3NeedsUpdation" Type="Boolean" />
+          <Property Name="L5P3NeedsUpdation" Type="Boolean" />
+          <Property Name="L6P3NeedsUpdation" Type="Boolean" />
+          <Property Name="L5P2NeedsUpdation" Type="Boolean" />
+          <Property Name="L6P2NeedsUpdation" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="BARCODE">
+          <Key>
+            <PropertyRef Name="LOCNO" />
+            <PropertyRef Name="ITEM_CODE" />
+            <PropertyRef Name="PACK_CODE" />
+            <PropertyRef Name="PACK_DESC" />
+            <PropertyRef Name="UNIT" />
+            <PropertyRef Name="bDEFAULT" />
+            <PropertyRef Name="BAR_CODE" />
+            <PropertyRef Name="BARTYPE" />
+            <PropertyRef Name="UNIT_PRICE" />
+            <PropertyRef Name="DEALER_PRICE1" />
+            <PropertyRef Name="DEALER_PRICE2" />
+            <PropertyRef Name="RF_MARGIN" />
+            <PropertyRef Name="CUSER" />
+            <PropertyRef Name="CDATE" />
+            <PropertyRef Name="MUSER" />
+            <PropertyRef Name="MDATE" />
+            <PropertyRef Name="bRandomDisc" />
+            <PropertyRef Name="DiscStartDate" />
+            <PropertyRef Name="DiscEndDate" />
+            <PropertyRef Name="DiscStartTime" />
+            <PropertyRef Name="DiscEndTime" />
+            <PropertyRef Name="DISC_TYPE" />
+            <PropertyRef Name="DISC" />
+            <PropertyRef Name="IsActive" />
+            <PropertyRef Name="NeedsReplication" />
+            <PropertyRef Name="NeedsUpdation" />
+            <PropertyRef Name="L1P1NeedsUpdation" />
+            <PropertyRef Name="L1P2NeedsUpdation" />
+            <PropertyRef Name="L1P3NeedsUpdation" />
+            <PropertyRef Name="L1P4NeedsUpdation" />
+            <PropertyRef Name="L1P5NeedsUpdation" />
+            <PropertyRef Name="L1P6NeedsUpdation" />
+            <PropertyRef Name="L1P7NeedsUpdation" />
+            <PropertyRef Name="L1P8NeedsUpdation" />
+            <PropertyRef Name="L1P9NeedsUpdation" />
+            <PropertyRef Name="L1P10NeedsUpdation" />
+            <PropertyRef Name="L2P1NeedsUpdation" />
+            <PropertyRef Name="L2P2NeedsUpdation" />
+            <PropertyRef Name="L2P3NeedsUpdation" />
+            <PropertyRef Name="L3P1NeedsUpdation" />
+            <PropertyRef Name="L3P2NeedsUpdation" />
+            <PropertyRef Name="L3P3NeedsUpdation" />
+            <PropertyRef Name="L3P4NeedsUpdation" />
+            <PropertyRef Name="L3P5NeedsUpdation" />
+            <PropertyRef Name="L3P6NeedsUpdation" />
+            <PropertyRef Name="L3P7NeedsUpdation" />
+            <PropertyRef Name="L3P8NeedsUpdation" />
+            <PropertyRef Name="L4P1NeedsUpdation" />
+            <PropertyRef Name="L5P1NeedsUpdation" />
+            <PropertyRef Name="L6P1NeedsUpdation" />
+            <PropertyRef Name="L4P2NeedsUpdation" />
+            <PropertyRef Name="L4P3NeedsUpdation" />
+            <PropertyRef Name="L5P3NeedsUpdation" />
+            <PropertyRef Name="L6P3NeedsUpdation" />
+            <PropertyRef Name="L5P2NeedsUpdation" />
+            <PropertyRef Name="L6P2NeedsUpdation" />
+            <PropertyRef Name="L7P1NeedsUpdation" />
+            <PropertyRef Name="L7P2NeedsUpdation" />
+            <PropertyRef Name="L7P3NeedsUpdation" />
+          </Key>
+          <Property Name="LOCNO" Type="Int16" Nullable="false" />
+          <Property Name="ITEM_CODE" Type="Int32" Nullable="false" />
+          <Property Name="PACK_CODE" Type="Int16" Nullable="false" />
+          <Property Name="PACK_DESC" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="UNIT" Type="Decimal" Precision="9" Scale="0" Nullable="false" />
+          <Property Name="bDEFAULT" Type="Boolean" Nullable="false" />
+          <Property Name="BAR_CODE" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="BARTYPE" Type="Byte" Nullable="false" />
+          <Property Name="UNIT_PRICE" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <Property Name="DEALER_PRICE1" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <Property Name="DEALER_PRICE2" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <Property Name="RF_MARGIN" Type="Decimal" Precision="9" Scale="0" Nullable="false" />
+          <Property Name="CUSER" Type="Int32" Nullable="false" />
+          <Property Name="CDATE" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="MUSER" Type="Int32" Nullable="false" />
+          <Property Name="MDATE" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="bRandomDisc" Type="Boolean" Nullable="false" />
+          <Property Name="DiscStartDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DiscEndDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DiscStartTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DiscEndTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DISC_TYPE" Type="Int16" Nullable="false" />
+          <Property Name="DISC" Type="Decimal" Precision="9" Scale="0" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="NeedsReplication" Type="Boolean" Nullable="false" />
+          <Property Name="NeedsUpdation" Type="Boolean" Nullable="false" />
+          <Property Name="L1P1NeedsUpdation" Type="Boolean" Nullable="false" />
+          <Property Name="L1P2NeedsUpdation" Type="Boolean" Nullable="false" />
+          <Property Name="L1P3NeedsUpdation" Type="Boolean" Nullable="false" />
+          <Property Name="L1P4NeedsUpdation" Type="Boolean" Nullable="false" />
+          <Property Name="L1P5NeedsUpdation" Type="Boolean" Nullable="false" />
+          <Property Name="L1P6NeedsUpdation" Type="Boolean" Nullable="false" />
+          <Property Name="L1P7NeedsUpdation" Type="Boolean" Nullable="false" />
+          <Property Name="L1P8NeedsUpdation" Type="Boolean" Nullable="false" />
+          <Property Name="L1P9NeedsUpdation" Type="Boolean" Nullable="false" />
+          <Property Name="L1P10NeedsUpdation" Type="Boolean" Nullable="false" />
+          <Property Name="L2P1NeedsUpdation" Type="Boolean" Nullable="false" />
+          <Property Name="L2P2NeedsUpdation" Type="Boolean" Nullable="false" />
+          <Property Name="L2P3NeedsUpdation" Type="Boolean" Nullable="false" />
+          <Property Name="L3P1NeedsUpdation" Type="Boolean" Nullable="false" />
+          <Property Name="L3P2NeedsUpdation" Type="Boolean" Nullable="false" />
+          <Property Name="L3P3NeedsUpdation" Type="Boolean" Nullable="false" />
+          <Property Name="L3P4NeedsUpdation" Type="Boolean" Nullable="false" />
+          <Property Name="L3P5NeedsUpdation" Type="Boolean" Nullable="false" />
+          <Property Name="L3P6NeedsUpdation" Type="Boolean" Nullable="false" />
+          <Property Name="L3P7NeedsUpdation" Type="Boolean" Nullable="false" />
+          <Property Name="L3P8NeedsUpdation" Type="Boolean" Nullable="false" />
+          <Property Name="L4P1NeedsUpdation" Type="Boolean" Nullable="false" />
+          <Property Name="L5P1NeedsUpdation" Type="Boolean" Nullable="false" />
+          <Property Name="L6P1NeedsUpdation" Type="Boolean" Nullable="false" />
+          <Property Name="L4P2NeedsUpdation" Type="Boolean" Nullable="false" />
+          <Property Name="L4P3NeedsUpdation" Type="Boolean" Nullable="false" />
+          <Property Name="L5P3NeedsUpdation" Type="Boolean" Nullable="false" />
+          <Property Name="L6P3NeedsUpdation" Type="Boolean" Nullable="false" />
+          <Property Name="L5P2NeedsUpdation" Type="Boolean" Nullable="false" />
+          <Property Name="L6P2NeedsUpdation" Type="Boolean" Nullable="false" />
+          <Property Name="L7P1NeedsUpdation" Type="Boolean" Nullable="false" />
+          <Property Name="L7P2NeedsUpdation" Type="Boolean" Nullable="false" />
+          <Property Name="L7P3NeedsUpdation" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PS000Test">
+          <Key>
+            <PropertyRef Name="LOCNO" />
+            <PropertyRef Name="ITEM_CODE" />
+            <PropertyRef Name="QTY" />
+            <PropertyRef Name="WH_QTY" />
+            <PropertyRef Name="T_QTY" />
+            <PropertyRef Name="FLOOR_NO" />
+            <PropertyRef Name="COUNTER" />
+            <PropertyRef Name="SHELF" />
+            <PropertyRef Name="SHELF_QTY" />
+            <PropertyRef Name="SHELF_FACING" />
+            <PropertyRef Name="LSDATE" />
+            <PropertyRef Name="LPDATE" />
+            <PropertyRef Name="ALLOW_NEGATIVE" />
+            <PropertyRef Name="AreaCovered" />
+            <PropertyRef Name="IsActive" />
+            <PropertyRef Name="MAX_QTY" />
+            <PropertyRef Name="MIN_QTY" />
+            <PropertyRef Name="OP_STOCK" />
+            <PropertyRef Name="OP_STOCK_VAL" />
+            <PropertyRef Name="NeedsReplication" />
+            <PropertyRef Name="NeedsUpdation" />
+          </Key>
+          <Property Name="LOCNO" Type="Int16" Nullable="false" />
+          <Property Name="ITEM_CODE" Type="Int32" Nullable="false" />
+          <Property Name="QTY" Type="Decimal" Precision="9" Scale="3" Nullable="false" />
+          <Property Name="WH_QTY" Type="Decimal" Precision="9" Scale="3" Nullable="false" />
+          <Property Name="T_QTY" Type="Decimal" Precision="19" Scale="3" Nullable="false" />
+          <Property Name="FLOOR_NO" Type="Byte" Nullable="false" />
+          <Property Name="COUNTER" Type="Int16" Nullable="false" />
+          <Property Name="SHELF" Type="Byte" Nullable="false" />
+          <Property Name="SHELF_QTY" Type="Decimal" Precision="9" Scale="3" Nullable="false" />
+          <Property Name="SHELF_FACING" Type="Decimal" Precision="9" Scale="3" Nullable="false" />
+          <Property Name="LSDATE" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LPDATE" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ALLOW_NEGATIVE" Type="Boolean" Nullable="false" />
+          <Property Name="AreaCovered" Type="Decimal" Precision="9" Scale="2" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="MAX_QTY" Type="Decimal" Precision="19" Scale="3" Nullable="false" />
+          <Property Name="MIN_QTY" Type="Decimal" Precision="19" Scale="3" Nullable="false" />
+          <Property Name="OP_STOCK" Type="Decimal" Precision="19" Scale="3" Nullable="false" />
+          <Property Name="OP_STOCK_VAL" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <Property Name="NeedsReplication" Type="Boolean" Nullable="false" />
+          <Property Name="NeedsUpdation" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TEST">
+          <Key>
+            <PropertyRef Name="OLD_PRODUCT_ID" />
+            <PropertyRef Name="NAME" />
+            <PropertyRef Name="DESCRIPTION" />
+            <PropertyRef Name="AVG_COST" />
+          </Key>
+          <Property Name="OLD_PRODUCT_ID" Type="Int32" Nullable="false" />
+          <Property Name="NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DESCRIPTION" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="AVG_COST" Type="Decimal" Precision="9" Scale="2" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="GROCERYEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="ADS" EntityType="Self.AD" />
+          <EntitySet Name="AREAS" EntityType="Self.AREA" />
+          <EntitySet Name="BARCODESTests" EntityType="Self.BARCODESTest" />
+          <EntitySet Name="BRANCHES" EntityType="Self.BRANCH" />
+          <EntitySet Name="BRANDS" EntityType="Self.BRAND" />
+          <EntitySet Name="CATEGORIES" EntityType="Self.CATEGORy" />
+          <EntitySet Name="COUPONS" EntityType="Self.COUPON" />
+          <EntitySet Name="GROUPS" EntityType="Self.GROUP" />
+          <EntitySet Name="ITEMINFOes" EntityType="Self.ITEMINFO" />
+          <EntitySet Name="ORDER_PRODUCTS" EntityType="Self.ORDER_PRODUCTS" />
+          <EntitySet Name="ORDER_STATUSES" EntityType="Self.ORDER_STATUSES" />
+          <EntitySet Name="ORDERS" EntityType="Self.ORDER" />
+          <EntitySet Name="PACKAGE_PRODUCTS" EntityType="Self.PACKAGE_PRODUCTS" />
+          <EntitySet Name="PACKAGES" EntityType="Self.PACKAGE" />
+          <EntitySet Name="PAYMENT_MODES" EntityType="Self.PAYMENT_MODES" />
+          <EntitySet Name="PRODUCT_BRANDS" EntityType="Self.PRODUCT_BRANDS" />
+          <EntitySet Name="PRODUCT_COLORS" EntityType="Self.PRODUCT_COLORS" />
+          <EntitySet Name="PRODUCT_FLAVORS" EntityType="Self.PRODUCT_FLAVORS" />
+          <EntitySet Name="PRODUCT_IMAGES" EntityType="Self.PRODUCT_IMAGES" />
+          <EntitySet Name="PRODUCT_LEVELS" EntityType="Self.PRODUCT_LEVELS" />
+          <EntitySet Name="PRODUCT_PACKINGS" EntityType="Self.PRODUCT_PACKINGS" />
+          <EntitySet Name="PRODUCT_TAGS" EntityType="Self.PRODUCT_TAGS" />
+          <EntitySet Name="PRODUCT_TYPES" EntityType="Self.PRODUCT_TYPES" />
+          <EntitySet Name="PRODUCTS" EntityType="Self.PRODUCT" />
+          <EntitySet Name="ProductTests" EntityType="Self.ProductTest" />
+          <EntitySet Name="PS000" EntityType="Self.PS000" />
+          <EntitySet Name="SMS" EntityType="Self.SM" />
+          <EntitySet Name="SMS_TYPES" EntityType="Self.SMS_TYPES" />
+          <EntitySet Name="STOCKs" EntityType="Self.STOCK" />
+          <EntitySet Name="SUB_CATEGORIES" EntityType="Self.SUB_CATEGORIES" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+          <EntitySet Name="TEMP_CUSTOMERS" EntityType="Self.TEMP_CUSTOMERS" />
+          <EntitySet Name="USER_ADDRESSES" EntityType="Self.USER_ADDRESSES" />
+          <EntitySet Name="USER_FAVOURITES" EntityType="Self.USER_FAVOURITES" />
+          <EntitySet Name="USER_TYPES" EntityType="Self.USER_TYPES" />
+          <EntitySet Name="USERS" EntityType="Self.USER" />
+          <EntitySet Name="VENDOR_BRANCHES" EntityType="Self.VENDOR_BRANCHES" />
+          <EntitySet Name="VENDORS" EntityType="Self.VENDOR" />
+          <EntitySet Name="BarcodeNewTests" EntityType="Self.BarcodeNewTest" />
+          <EntitySet Name="BARCODES" EntityType="Self.BARCODE" />
+          <EntitySet Name="PS000Test" EntityType="Self.PS000Test" />
+          <EntitySet Name="TESTs" EntityType="Self.TEST" />
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="GROCERYStoreContainer" CdmEntityContainer="GROCERYEntities">
+          <EntitySetMapping Name="ADS">
+            <EntityTypeMapping TypeName="GROCERY.AD">
+              <MappingFragment StoreEntitySet="ADS">
+                <ScalarProperty Name="AD_ID" ColumnName="AD_ID" />
+                <ScalarProperty Name="TEXT" ColumnName="TEXT" />
+                <ScalarProperty Name="IMAGE_PATH" ColumnName="IMAGE_PATH" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="CREATED_ON" ColumnName="CREATED_ON" />
+                <ScalarProperty Name="UPDATED_BY" ColumnName="UPDATED_BY" />
+                <ScalarProperty Name="UPDATED_ON" ColumnName="UPDATED_ON" />
+                <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AREAS">
+            <EntityTypeMapping TypeName="GROCERY.AREA">
+              <MappingFragment StoreEntitySet="AREAS">
+                <ScalarProperty Name="AREA_ID" ColumnName="AREA_ID" />
+                <ScalarProperty Name="NAME" ColumnName="NAME" />
+                <ScalarProperty Name="BRANCH_ID" ColumnName="BRANCH_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BARCODESTests">
+            <EntityTypeMapping TypeName="GROCERY.BARCODESTest">
+              <MappingFragment StoreEntitySet="BARCODESTest">
+                <ScalarProperty Name="LOCNO" ColumnName="LOCNO" />
+                <ScalarProperty Name="ITEM_CODE" ColumnName="ITEM_CODE" />
+                <ScalarProperty Name="PACK_CODE" ColumnName="PACK_CODE" />
+                <ScalarProperty Name="PACK_DESC" ColumnName="PACK_DESC" />
+                <ScalarProperty Name="UNIT" ColumnName="UNIT" />
+                <ScalarProperty Name="bDEFAULT" ColumnName="bDEFAULT" />
+                <ScalarProperty Name="BAR_CODE" ColumnName="BAR_CODE" />
+                <ScalarProperty Name="BARTYPE" ColumnName="BARTYPE" />
+                <ScalarProperty Name="UNIT_PRICE" ColumnName="UNIT_PRICE" />
+                <ScalarProperty Name="DEALER_PRICE1" ColumnName="DEALER_PRICE1" />
+                <ScalarProperty Name="DEALER_PRICE2" ColumnName="DEALER_PRICE2" />
+                <ScalarProperty Name="RF_MARGIN" ColumnName="RF_MARGIN" />
+                <ScalarProperty Name="CUSER" ColumnName="CUSER" />
+                <ScalarProperty Name="CDATE" ColumnName="CDATE" />
+                <ScalarProperty Name="MUSER" ColumnName="MUSER" />
+                <ScalarProperty Name="MDATE" ColumnName="MDATE" />
+                <ScalarProperty Name="bRandomDisc" ColumnName="bRandomDisc" />
+                <ScalarProperty Name="DiscStartDate" ColumnName="DiscStartDate" />
+                <ScalarProperty Name="DiscEndDate" ColumnName="DiscEndDate" />
+                <ScalarProperty Name="DiscStartTime" ColumnName="DiscStartTime" />
+                <ScalarProperty Name="DiscEndTime" ColumnName="DiscEndTime" />
+                <ScalarProperty Name="DISC_TYPE" ColumnName="DISC_TYPE" />
+                <ScalarProperty Name="DISC" ColumnName="DISC" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="NeedsReplication" ColumnName="NeedsReplication" />
+                <ScalarProperty Name="NeedsUpdation" ColumnName="NeedsUpdation" />
+                <ScalarProperty Name="L1P1NeedsUpdation" ColumnName="L1P1NeedsUpdation" />
+                <ScalarProperty Name="L1P2NeedsUpdation" ColumnName="L1P2NeedsUpdation" />
+                <ScalarProperty Name="L1P3NeedsUpdation" ColumnName="L1P3NeedsUpdation" />
+                <ScalarProperty Name="L1P4NeedsUpdation" ColumnName="L1P4NeedsUpdation" />
+                <ScalarProperty Name="L1P5NeedsUpdation" ColumnName="L1P5NeedsUpdation" />
+                <ScalarProperty Name="L1P6NeedsUpdation" ColumnName="L1P6NeedsUpdation" />
+                <ScalarProperty Name="L1P7NeedsUpdation" ColumnName="L1P7NeedsUpdation" />
+                <ScalarProperty Name="L1P8NeedsUpdation" ColumnName="L1P8NeedsUpdation" />
+                <ScalarProperty Name="L1P9NeedsUpdation" ColumnName="L1P9NeedsUpdation" />
+                <ScalarProperty Name="L1P10NeedsUpdation" ColumnName="L1P10NeedsUpdation" />
+                <ScalarProperty Name="L2P1NeedsUpdation" ColumnName="L2P1NeedsUpdation" />
+                <ScalarProperty Name="L2P2NeedsUpdation" ColumnName="L2P2NeedsUpdation" />
+                <ScalarProperty Name="L2P3NeedsUpdation" ColumnName="L2P3NeedsUpdation" />
+                <ScalarProperty Name="L3P1NeedsUpdation" ColumnName="L3P1NeedsUpdation" />
+                <ScalarProperty Name="L3P2NeedsUpdation" ColumnName="L3P2NeedsUpdation" />
+                <ScalarProperty Name="L3P3NeedsUpdation" ColumnName="L3P3NeedsUpdation" />
+                <ScalarProperty Name="L3P4NeedsUpdation" ColumnName="L3P4NeedsUpdation" />
+                <ScalarProperty Name="L3P5NeedsUpdation" ColumnName="L3P5NeedsUpdation" />
+                <ScalarProperty Name="L3P6NeedsUpdation" ColumnName="L3P6NeedsUpdation" />
+                <ScalarProperty Name="L3P7NeedsUpdation" ColumnName="L3P7NeedsUpdation" />
+                <ScalarProperty Name="L3P8NeedsUpdation" ColumnName="L3P8NeedsUpdation" />
+                <ScalarProperty Name="L4P1NeedsUpdation" ColumnName="L4P1NeedsUpdation" />
+                <ScalarProperty Name="L5P1NeedsUpdation" ColumnName="L5P1NeedsUpdation" />
+                <ScalarProperty Name="L6P1NeedsUpdation" ColumnName="L6P1NeedsUpdation" />
+                <ScalarProperty Name="L4P2NeedsUpdation" ColumnName="L4P2NeedsUpdation" />
+                <ScalarProperty Name="L4P3NeedsUpdation" ColumnName="L4P3NeedsUpdation" />
+                <ScalarProperty Name="L5P3NeedsUpdation" ColumnName="L5P3NeedsUpdation" />
+                <ScalarProperty Name="L6P3NeedsUpdation" ColumnName="L6P3NeedsUpdation" />
+                <ScalarProperty Name="L5P2NeedsUpdation" ColumnName="L5P2NeedsUpdation" />
+                <ScalarProperty Name="L6P2NeedsUpdation" ColumnName="L6P2NeedsUpdation" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BRANCHES">
+            <EntityTypeMapping TypeName="GROCERY.BRANCH">
+              <MappingFragment StoreEntitySet="BRANCHES">
+                <ScalarProperty Name="BRANCH_ID" ColumnName="BRANCH_ID" />
+                <ScalarProperty Name="BRANCH_NAME" ColumnName="BRANCH_NAME" />
+                <ScalarProperty Name="LATITUDE" ColumnName="LATITUDE" />
+                <ScalarProperty Name="LONGITUDE" ColumnName="LONGITUDE" />
+                <ScalarProperty Name="ADDRESS" ColumnName="ADDRESS" />
+                <ScalarProperty Name="PHONE" ColumnName="PHONE" />
+                <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BRANDS">
+            <EntityTypeMapping TypeName="GROCERY.BRAND">
+              <MappingFragment StoreEntitySet="BRANDS">
+                <ScalarProperty Name="BRAND_ID" ColumnName="BRAND_ID" />
+                <ScalarProperty Name="NAME" ColumnName="NAME" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CATEGORIES">
+            <EntityTypeMapping TypeName="GROCERY.CATEGORy">
+              <MappingFragment StoreEntitySet="CATEGORIES">
+                <ScalarProperty Name="CATEGORY_ID" ColumnName="CATEGORY_ID" />
+                <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
+                <ScalarProperty Name="GROUP_ID" ColumnName="GROUP_ID" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="MODIFIED_DATE" ColumnName="MODIFIED_DATE" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="COUPONS">
+            <EntityTypeMapping TypeName="GROCERY.COUPON">
+              <MappingFragment StoreEntitySet="COUPONS">
+                <ScalarProperty Name="COUPON_ID" ColumnName="COUPON_ID" />
+                <ScalarProperty Name="PROMO_TEXT" ColumnName="PROMO_TEXT" />
+                <ScalarProperty Name="START_DATE" ColumnName="START_DATE" />
+                <ScalarProperty Name="EXPIRY_DATE" ColumnName="EXPIRY_DATE" />
+                <ScalarProperty Name="VALUE" ColumnName="VALUE" />
+                <ScalarProperty Name="CREATED_ON" ColumnName="CREATED_ON" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
+                <ScalarProperty Name="IS_USED" ColumnName="IS_USED" />
+                <ScalarProperty Name="UNLOCK_AMOUNT" ColumnName="UNLOCK_AMOUNT" />
+                <ScalarProperty Name="CODE" ColumnName="CODE" />
+                <ScalarProperty Name="PROMO" ColumnName="PROMO" />
+                <ScalarProperty Name="updated_by" ColumnName="updated_by" />
+                <ScalarProperty Name="updated_on" ColumnName="updated_on" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GROUPS">
+            <EntityTypeMapping TypeName="GROCERY.GROUP">
+              <MappingFragment StoreEntitySet="GROUPS">
+                <ScalarProperty Name="GROUP_ID" ColumnName="GROUP_ID" />
+                <ScalarProperty Name="NAME" ColumnName="NAME" />
+                <ScalarProperty Name="IMAGE_NAME" ColumnName="IMAGE_NAME" />
+                <ScalarProperty Name="RELATIVE_IMAGE_NAME" ColumnName="RELATIVE_IMAGE_NAME" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ITEMINFOes">
+            <EntityTypeMapping TypeName="GROCERY.ITEMINFO">
+              <MappingFragment StoreEntitySet="ITEMINFO">
+                <ScalarProperty Name="ITEM_CODE" ColumnName="ITEM_CODE" />
+                <ScalarProperty Name="HV_CODE" ColumnName="HV_CODE" />
+                <ScalarProperty Name="ITEM_TYPE" ColumnName="ITEM_TYPE" />
+                <ScalarProperty Name="ITEM_ATTRIB" ColumnName="ITEM_ATTRIB" />
+                <ScalarProperty Name="IsRECIPE" ColumnName="IsRECIPE" />
+                <ScalarProperty Name="SERIALIZED" ColumnName="SERIALIZED" />
+                <ScalarProperty Name="EXPIRY_ITEM" ColumnName="EXPIRY_ITEM" />
+                <ScalarProperty Name="FEATURED" ColumnName="FEATURED" />
+                <ScalarProperty Name="UOM" ColumnName="UOM" />
+                <ScalarProperty Name="BATCH_QTY" ColumnName="BATCH_QTY" />
+                <ScalarProperty Name="DEPT_CODE" ColumnName="DEPT_CODE" />
+                <ScalarProperty Name="GRCODE" ColumnName="GRCODE" />
+                <ScalarProperty Name="SUBGRCODE" ColumnName="SUBGRCODE" />
+                <ScalarProperty Name="CATCODE" ColumnName="CATCODE" />
+                <ScalarProperty Name="BRAND_CODE" ColumnName="BRAND_CODE" />
+                <ScalarProperty Name="DESIGN_CD" ColumnName="DESIGN_CD" />
+                <ScalarProperty Name="CLR_CODE" ColumnName="CLR_CODE" />
+                <ScalarProperty Name="SUPP_CODE" ColumnName="SUPP_CODE" />
+                <ScalarProperty Name="MAKE_CODE" ColumnName="MAKE_CODE" />
+                <ScalarProperty Name="SIZE_CODE" ColumnName="SIZE_CODE" />
+                <ScalarProperty Name="AUTH_CODE" ColumnName="AUTH_CODE" />
+                <ScalarProperty Name="PUB_CODE" ColumnName="PUB_CODE" />
+                <ScalarProperty Name="EDITION" ColumnName="EDITION" />
+                <ScalarProperty Name="CLASS" ColumnName="CLASS" />
+                <ScalarProperty Name="ISBN" ColumnName="ISBN" />
+                <ScalarProperty Name="ITEM_DESC" ColumnName="ITEM_DESC" />
+                <ScalarProperty Name="ITEM_DESC_LONG" ColumnName="ITEM_DESC_LONG" />
+                <ScalarProperty Name="COST_MARGIN" ColumnName="COST_MARGIN" />
+                <ScalarProperty Name="SEX" ColumnName="SEX" />
+                <ScalarProperty Name="SEASON" ColumnName="SEASON" />
+                <ScalarProperty Name="AGE" ColumnName="AGE" />
+                <ScalarProperty Name="FABRIC" ColumnName="FABRIC" />
+                <ScalarProperty Name="SPEED" ColumnName="SPEED" />
+                <ScalarProperty Name="PLY" ColumnName="PLY" />
+                <ScalarProperty Name="PCD" ColumnName="PCD" />
+                <ScalarProperty Name="HOLES" ColumnName="HOLES" />
+                <ScalarProperty Name="SPH" ColumnName="SPH" />
+                <ScalarProperty Name="CYL" ColumnName="CYL" />
+                <ScalarProperty Name="AXIS" ColumnName="AXIS" />
+                <ScalarProperty Name="ADDS" ColumnName="ADDS" />
+                <ScalarProperty Name="COMMENT" ColumnName="COMMENT" />
+                <ScalarProperty Name="EXEMPT" ColumnName="EXEMPT" />
+                <ScalarProperty Name="VAT" ColumnName="VAT" />
+                <ScalarProperty Name="GST" ColumnName="GST" />
+                <ScalarProperty Name="OPEN_PRICE" ColumnName="OPEN_PRICE" />
+                <ScalarProperty Name="FRACTIONAL" ColumnName="FRACTIONAL" />
+                <ScalarProperty Name="ALLOWQTY" ColumnName="ALLOWQTY" />
+                <ScalarProperty Name="MATERIAL_COST" ColumnName="MATERIAL_COST" />
+                <ScalarProperty Name="INGR_COST" ColumnName="INGR_COST" />
+                <ScalarProperty Name="PKG_COST" ColumnName="PKG_COST" />
+                <ScalarProperty Name="LAB_COST" ColumnName="LAB_COST" />
+                <ScalarProperty Name="OH_COST" ColumnName="OH_COST" />
+                <ScalarProperty Name="OTH_COST" ColumnName="OTH_COST" />
+                <ScalarProperty Name="WASTAGE" ColumnName="WASTAGE" />
+                <ScalarProperty Name="COST_PRICE1" ColumnName="COST_PRICE1" />
+                <ScalarProperty Name="COST_PRICE2" ColumnName="COST_PRICE2" />
+                <ScalarProperty Name="COST_PRICE3" ColumnName="COST_PRICE3" />
+                <ScalarProperty Name="NET_COST" ColumnName="NET_COST" />
+                <ScalarProperty Name="AVG_COST" ColumnName="AVG_COST" />
+                <ScalarProperty Name="AVG_COST1" ColumnName="AVG_COST1" />
+                <ScalarProperty Name="AVG_COST2" ColumnName="AVG_COST2" />
+                <ScalarProperty Name="AVG_COST3" ColumnName="AVG_COST3" />
+                <ScalarProperty Name="F_PUR_PRICE" ColumnName="F_PUR_PRICE" />
+                <ScalarProperty Name="LAST_PUR_PRICE1" ColumnName="LAST_PUR_PRICE1" />
+                <ScalarProperty Name="LAST_PUR_PRICE2" ColumnName="LAST_PUR_PRICE2" />
+                <ScalarProperty Name="LAST_PUR_PRICE3" ColumnName="LAST_PUR_PRICE3" />
+                <ScalarProperty Name="LAST_SUPP" ColumnName="LAST_SUPP" />
+                <ScalarProperty Name="LAST_SUPP1" ColumnName="LAST_SUPP1" />
+                <ScalarProperty Name="LAST_SUPP2" ColumnName="LAST_SUPP2" />
+                <ScalarProperty Name="FREE_QTY" ColumnName="FREE_QTY" />
+                <ScalarProperty Name="FREE_QTY_AVG_COST" ColumnName="FREE_QTY_AVG_COST" />
+                <ScalarProperty Name="ITEM_DISC" ColumnName="ITEM_DISC" />
+                <ScalarProperty Name="bDISCOUNTED" ColumnName="bDISCOUNTED" />
+                <ScalarProperty Name="DISC_QTY" ColumnName="DISC_QTY" />
+                <ScalarProperty Name="SALE_DISC" ColumnName="SALE_DISC" />
+                <ScalarProperty Name="CDATE" ColumnName="CDATE" />
+                <ScalarProperty Name="CUSER" ColumnName="CUSER" />
+                <ScalarProperty Name="MDATE" ColumnName="MDATE" />
+                <ScalarProperty Name="MUSER" ColumnName="MUSER" />
+                <ScalarProperty Name="EMPTY" ColumnName="EMPTY" />
+                <ScalarProperty Name="bNEW" ColumnName="bNEW" />
+                <ScalarProperty Name="NeedsReplication" ColumnName="NeedsReplication" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ORDER_PRODUCTS">
+            <EntityTypeMapping TypeName="GROCERY.ORDER_PRODUCTS">
+              <MappingFragment StoreEntitySet="ORDER_PRODUCTS">
+                <ScalarProperty Name="OREDER_PRODUCT_ID" ColumnName="OREDER_PRODUCT_ID" />
+                <ScalarProperty Name="ORDER_ID" ColumnName="ORDER_ID" />
+                <ScalarProperty Name="PRODUCT_ID" ColumnName="PRODUCT_ID" />
+                <ScalarProperty Name="QUANTITY" ColumnName="QUANTITY" />
+                <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
+                <ScalarProperty Name="UPDATED_BY" ColumnName="UPDATED_BY" />
+                <ScalarProperty Name="UPDATED_ON" ColumnName="UPDATED_ON" />
+                <ScalarProperty Name="BAR_CODE" ColumnName="BAR_CODE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ORDER_STATUSES">
+            <EntityTypeMapping TypeName="GROCERY.ORDER_STATUSES">
+              <MappingFragment StoreEntitySet="ORDER_STATUSES">
+                <ScalarProperty Name="ORDER_STATUS_ID" ColumnName="ORDER_STATUS_ID" />
+                <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ORDERS">
+            <EntityTypeMapping TypeName="GROCERY.ORDER">
+              <MappingFragment StoreEntitySet="ORDERS">
+                <ScalarProperty Name="ORDER_ID" ColumnName="ORDER_ID" />
+                <ScalarProperty Name="CUSTOMER_ID" ColumnName="CUSTOMER_ID" />
+                <ScalarProperty Name="NAME" ColumnName="NAME" />
+                <ScalarProperty Name="MOBILE" ColumnName="MOBILE" />
+                <ScalarProperty Name="ADDRESS" ColumnName="ADDRESS" />
+                <ScalarProperty Name="STATUS" ColumnName="STATUS" />
+                <ScalarProperty Name="CREATED_ON" ColumnName="CREATED_ON" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="ASSIGNED_ON" ColumnName="ASSIGNED_ON" />
+                <ScalarProperty Name="ASSIGNED_BY" ColumnName="ASSIGNED_BY" />
+                <ScalarProperty Name="SENT_TO_RIDER_ON" ColumnName="SENT_TO_RIDER_ON" />
+                <ScalarProperty Name="SENT_TO_RIDER_BY" ColumnName="SENT_TO_RIDER_BY" />
+                <ScalarProperty Name="UPDATED_ON" ColumnName="UPDATED_ON" />
+                <ScalarProperty Name="UPDATED_BY" ColumnName="UPDATED_BY" />
+                <ScalarProperty Name="RIDER_ID" ColumnName="RIDER_ID" />
+                <ScalarProperty Name="REJECTED_BY" ColumnName="REJECTED_BY" />
+                <ScalarProperty Name="REJECTED_REASON" ColumnName="REJECTED_REASON" />
+                <ScalarProperty Name="DELIVERY_TIME" ColumnName="DELIVERY_TIME" />
+                <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
+                <ScalarProperty Name="BRANCH_ID" ColumnName="BRANCH_ID" />
+                <ScalarProperty Name="DELIVERY_DESCRIPTION" ColumnName="DELIVERY_DESCRIPTION" />
+                <ScalarProperty Name="PAYMENT_MODE_ID" ColumnName="PAYMENT_MODE_ID" />
+                <ScalarProperty Name="MANUAL_DISCOUNT" ColumnName="MANUAL_DISCOUNT" />
+                <ScalarProperty Name="COUPON_ID" ColumnName="COUPON_ID" />
+                <ScalarProperty Name="COUPON_DISCOUNT" ColumnName="COUPON_DISCOUNT" />
+                <ScalarProperty Name="PICKUP_TIME" ColumnName="PICKUP_TIME" />
+                <ScalarProperty Name="IS_PACKAGE" ColumnName="IS_PACKAGE" />
+                <ScalarProperty Name="ADDED_BY" ColumnName="ADDED_BY" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PACKAGE_PRODUCTS">
+            <EntityTypeMapping TypeName="GROCERY.PACKAGE_PRODUCTS">
+              <MappingFragment StoreEntitySet="PACKAGE_PRODUCTS">
+                <ScalarProperty Name="PACKAGE_PRODUCT_ID" ColumnName="PACKAGE_PRODUCT_ID" />
+                <ScalarProperty Name="PACKAGE_ID" ColumnName="PACKAGE_ID" />
+                <ScalarProperty Name="PRODUCT_ID" ColumnName="PRODUCT_ID" />
+                <ScalarProperty Name="QUANTITY" ColumnName="QUANTITY" />
+                <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
+                <ScalarProperty Name="UPDATED_BY" ColumnName="UPDATED_BY" />
+                <ScalarProperty Name="UPDATED_ON" ColumnName="UPDATED_ON" />
+                <ScalarProperty Name="BAR_CODE" ColumnName="BAR_CODE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PACKAGES">
+            <EntityTypeMapping TypeName="GROCERY.PACKAGE">
+              <MappingFragment StoreEntitySet="PACKAGES">
+                <ScalarProperty Name="PACKAGE_ID" ColumnName="PACKAGE_ID" />
+                <ScalarProperty Name="NAME" ColumnName="NAME" />
+                <ScalarProperty Name="CREATED_ON" ColumnName="CREATED_ON" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
+                <ScalarProperty Name="UPDATED_BY" ColumnName="UPDATED_BY" />
+                <ScalarProperty Name="UPDATED_ON" ColumnName="UPDATED_ON" />
+                <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
+                <ScalarProperty Name="BRANCH_ID" ColumnName="BRANCH_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PAYMENT_MODES">
+            <EntityTypeMapping TypeName="GROCERY.PAYMENT_MODES">
+              <MappingFragment StoreEntitySet="PAYMENT_MODES">
+                <ScalarProperty Name="PAYMENT_MODE_ID" ColumnName="PAYMENT_MODE_ID" />
+                <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PRODUCT_BRANDS">
+            <EntityTypeMapping TypeName="GROCERY.PRODUCT_BRANDS">
+              <MappingFragment StoreEntitySet="PRODUCT_BRANDS">
+                <ScalarProperty Name="PRODUCT_BRAND_ID" ColumnName="PRODUCT_BRAND_ID" />
+                <ScalarProperty Name="PRODUCT_ID" ColumnName="PRODUCT_ID" />
+                <ScalarProperty Name="BRAND_NAME" ColumnName="BRAND_NAME" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PRODUCT_COLORS">
+            <EntityTypeMapping TypeName="GROCERY.PRODUCT_COLORS">
+              <MappingFragment StoreEntitySet="PRODUCT_COLORS">
+                <ScalarProperty Name="PRODUCT_COLOR_ID" ColumnName="PRODUCT_COLOR_ID" />
+                <ScalarProperty Name="PRODUCT_ID" ColumnName="PRODUCT_ID" />
+                <ScalarProperty Name="COLOR_NAME" ColumnName="COLOR_NAME" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PRODUCT_FLAVORS">
+            <EntityTypeMapping TypeName="GROCERY.PRODUCT_FLAVORS">
+              <MappingFragment StoreEntitySet="PRODUCT_FLAVORS">
+                <ScalarProperty Name="PRODUCT_FLAVOR_ID" ColumnName="PRODUCT_FLAVOR_ID" />
+                <ScalarProperty Name="PRODUCT_ID" ColumnName="PRODUCT_ID" />
+                <ScalarProperty Name="FLAVOR_NAME" ColumnName="FLAVOR_NAME" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PRODUCT_IMAGES">
+            <EntityTypeMapping TypeName="GROCERY.PRODUCT_IMAGES">
+              <MappingFragment StoreEntitySet="PRODUCT_IMAGES">
+                <ScalarProperty Name="PRODUCT_IMAGE_ID" ColumnName="PRODUCT_IMAGE_ID" />
+                <ScalarProperty Name="PRODUCT_ID" ColumnName="PRODUCT_ID" />
+                <ScalarProperty Name="ADMIN_IMAGE_PATH" ColumnName="ADMIN_IMAGE_PATH" />
+                <ScalarProperty Name="ADMIN_THUMNAIL_IMAGE_PATH" ColumnName="ADMIN_THUMNAIL_IMAGE_PATH" />
+                <ScalarProperty Name="CHAARSU_IMAGE_PATH" ColumnName="CHAARSU_IMAGE_PATH" />
+                <ScalarProperty Name="CHAARSU_THUMBNAIL_PATH" ColumnName="CHAARSU_THUMBNAIL_PATH" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PRODUCT_LEVELS">
+            <EntityTypeMapping TypeName="GROCERY.PRODUCT_LEVELS">
+              <MappingFragment StoreEntitySet="PRODUCT_LEVELS">
+                <ScalarProperty Name="PRODUCT_LEVEL_ID" ColumnName="PRODUCT_LEVEL_ID" />
+                <ScalarProperty Name="NAME" ColumnName="NAME" />
+                <ScalarProperty Name="SUB_CATEGORY_ID" ColumnName="SUB_CATEGORY_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PRODUCT_PACKINGS">
+            <EntityTypeMapping TypeName="GROCERY.PRODUCT_PACKINGS">
+              <MappingFragment StoreEntitySet="PRODUCT_PACKINGS">
+                <ScalarProperty Name="PRODUCT_PACKING_ID" ColumnName="PRODUCT_PACKING_ID" />
+                <ScalarProperty Name="PRODUCT_ID" ColumnName="PRODUCT_ID" />
+                <ScalarProperty Name="PACKING_NAME" ColumnName="PACKING_NAME" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PRODUCT_TAGS">
+            <EntityTypeMapping TypeName="GROCERY.PRODUCT_TAGS">
+              <MappingFragment StoreEntitySet="PRODUCT_TAGS">
+                <ScalarProperty Name="PRODUCT_TAG_ID" ColumnName="PRODUCT_TAG_ID" />
+                <ScalarProperty Name="PRODUCT_ID" ColumnName="PRODUCT_ID" />
+                <ScalarProperty Name="TAG_NAME" ColumnName="TAG_NAME" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PRODUCT_TYPES">
+            <EntityTypeMapping TypeName="GROCERY.PRODUCT_TYPES">
+              <MappingFragment StoreEntitySet="PRODUCT_TYPES">
+                <ScalarProperty Name="PRODUCT_TYPE_ID" ColumnName="PRODUCT_TYPE_ID" />
+                <ScalarProperty Name="PRODUCT_ID" ColumnName="PRODUCT_ID" />
+                <ScalarProperty Name="TYPE_NAME" ColumnName="TYPE_NAME" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PRODUCTS">
+            <EntityTypeMapping TypeName="GROCERY.PRODUCT">
+              <MappingFragment StoreEntitySet="PRODUCTS">
+                <ScalarProperty Name="PRODUCT_ID" ColumnName="PRODUCT_ID" />
+                <ScalarProperty Name="OLD_PRODUCT_ID" ColumnName="OLD_PRODUCT_ID" />
+                <ScalarProperty Name="NAME" ColumnName="NAME" />
+                <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
+                <ScalarProperty Name="SUB_CATEGORY_ID" ColumnName="SUB_CATEGORY_ID" />
+                <ScalarProperty Name="UNIT_OF_MEASUREMENT" ColumnName="UNIT_OF_MEASUREMENT" />
+                <ScalarProperty Name="AVG_COST" ColumnName="AVG_COST" />
+                <ScalarProperty Name="PRICE" ColumnName="PRICE" />
+                <ScalarProperty Name="DISCOUNT_PERCENTAGE" ColumnName="DISCOUNT_PERCENTAGE" />
+                <ScalarProperty Name="IMPORTED" ColumnName="IMPORTED" />
+                <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
+                <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="MODIFIED_DATE" ColumnName="MODIFIED_DATE" />
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="COLOR" ColumnName="COLOR" />
+                <ScalarProperty Name="BRAND" ColumnName="BRAND" />
+                <ScalarProperty Name="FLAVOR" ColumnName="FLAVOR" />
+                <ScalarProperty Name="PACKING" ColumnName="PACKING" />
+                <ScalarProperty Name="TAG" ColumnName="TAG" />
+                <ScalarProperty Name="TYPES" ColumnName="TYPES" />
+                <ScalarProperty Name="DISCOUNT" ColumnName="DISCOUNT" />
+                <ScalarProperty Name="SEC_SUB_CATEGORY_A" ColumnName="SEC_SUB_CATEGORY_A" />
+                <ScalarProperty Name="SEC_SUB_CATEGORY_B" ColumnName="SEC_SUB_CATEGORY_B" />
+                <ScalarProperty Name="PRICE2" ColumnName="PRICE2" />
+                <ScalarProperty Name="HAS_IMAGE" ColumnName="HAS_IMAGE" />
+                <ScalarProperty Name="HAS_THUMBNAIL_IMAGE" ColumnName="HAS_THUMBNAIL_IMAGE" />
+                <ScalarProperty Name="VENDOR_ID" ColumnName="VENDOR_ID" />
+                <ScalarProperty Name="CATEGORY_ID" ColumnName="CATEGORY_ID" />
+                <ScalarProperty Name="IS_FEATURED" ColumnName="IS_FEATURED" />
+                <ScalarProperty Name="THRESHOLD" ColumnName="THRESHOLD" />
+                <ScalarProperty Name="IS_EXEMPTED" ColumnName="IS_EXEMPTED" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProductTests">
+            <EntityTypeMapping TypeName="GROCERY.ProductTest">
+              <MappingFragment StoreEntitySet="ProductTest">
+                <ScalarProperty Name="PRODUCT_ID" ColumnName="PRODUCT_ID" />
+                <ScalarProperty Name="OLD_PRODUCT_ID" ColumnName="OLD_PRODUCT_ID" />
+                <ScalarProperty Name="NAME" ColumnName="NAME" />
+                <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
+                <ScalarProperty Name="SUB_CATEGORY_ID" ColumnName="SUB_CATEGORY_ID" />
+                <ScalarProperty Name="UNIT_OF_MEASUREMENT" ColumnName="UNIT_OF_MEASUREMENT" />
+                <ScalarProperty Name="AVG_COST" ColumnName="AVG_COST" />
+                <ScalarProperty Name="PRICE" ColumnName="PRICE" />
+                <ScalarProperty Name="DISCOUNT_PERCENTAGE" ColumnName="DISCOUNT_PERCENTAGE" />
+                <ScalarProperty Name="IMPORTED" ColumnName="IMPORTED" />
+                <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
+                <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="MODIFIED_DATE" ColumnName="MODIFIED_DATE" />
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="COLOR" ColumnName="COLOR" />
+                <ScalarProperty Name="BRAND" ColumnName="BRAND" />
+                <ScalarProperty Name="FLAVOR" ColumnName="FLAVOR" />
+                <ScalarProperty Name="PACKING" ColumnName="PACKING" />
+                <ScalarProperty Name="TAG" ColumnName="TAG" />
+                <ScalarProperty Name="TYPES" ColumnName="TYPES" />
+                <ScalarProperty Name="DISCOUNT" ColumnName="DISCOUNT" />
+                <ScalarProperty Name="SEC_SUB_CATEGORY_A" ColumnName="SEC_SUB_CATEGORY_A" />
+                <ScalarProperty Name="SEC_SUB_CATEGORY_B" ColumnName="SEC_SUB_CATEGORY_B" />
+                <ScalarProperty Name="PRICE2" ColumnName="PRICE2" />
+                <ScalarProperty Name="HAS_IMAGE" ColumnName="HAS_IMAGE" />
+                <ScalarProperty Name="HAS_THUMBNAIL_IMAGE" ColumnName="HAS_THUMBNAIL_IMAGE" />
+                <ScalarProperty Name="VENDOR_ID" ColumnName="VENDOR_ID" />
+                <ScalarProperty Name="CATEGORY_ID" ColumnName="CATEGORY_ID" />
+                <ScalarProperty Name="IS_FEATURED" ColumnName="IS_FEATURED" />
+                <ScalarProperty Name="THRESHOLD" ColumnName="THRESHOLD" />
+                <ScalarProperty Name="IS_EXEMPTED" ColumnName="IS_EXEMPTED" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PS000">
+            <EntityTypeMapping TypeName="GROCERY.PS000">
+              <MappingFragment StoreEntitySet="PS000">
+                <ScalarProperty Name="LOCNO" ColumnName="LOCNO" />
+                <ScalarProperty Name="ITEM_CODE" ColumnName="ITEM_CODE" />
+                <ScalarProperty Name="QTY" ColumnName="QTY" />
+                <ScalarProperty Name="WH_QTY" ColumnName="WH_QTY" />
+                <ScalarProperty Name="T_QTY" ColumnName="T_QTY" />
+                <ScalarProperty Name="FLOOR_NO" ColumnName="FLOOR_NO" />
+                <ScalarProperty Name="COUNTER" ColumnName="COUNTER" />
+                <ScalarProperty Name="SHELF" ColumnName="SHELF" />
+                <ScalarProperty Name="SHELF_QTY" ColumnName="SHELF_QTY" />
+                <ScalarProperty Name="SHELF_FACING" ColumnName="SHELF_FACING" />
+                <ScalarProperty Name="LSDATE" ColumnName="LSDATE" />
+                <ScalarProperty Name="LPDATE" ColumnName="LPDATE" />
+                <ScalarProperty Name="ALLOW_NEGATIVE" ColumnName="ALLOW_NEGATIVE" />
+                <ScalarProperty Name="AreaCovered" ColumnName="AreaCovered" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="MAX_QTY" ColumnName="MAX_QTY" />
+                <ScalarProperty Name="MIN_QTY" ColumnName="MIN_QTY" />
+                <ScalarProperty Name="OP_STOCK" ColumnName="OP_STOCK" />
+                <ScalarProperty Name="OP_STOCK_VAL" ColumnName="OP_STOCK_VAL" />
+                <ScalarProperty Name="NeedsReplication" ColumnName="NeedsReplication" />
+                <ScalarProperty Name="NeedsUpdation" ColumnName="NeedsUpdation" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SMS">
+            <EntityTypeMapping TypeName="GROCERY.SM">
+              <MappingFragment StoreEntitySet="SMS">
+                <ScalarProperty Name="SMS_ID" ColumnName="SMS_ID" />
+                <ScalarProperty Name="SENDER" ColumnName="SENDER" />
+                <ScalarProperty Name="TEXT" ColumnName="TEXT" />
+                <ScalarProperty Name="RESPONSE" ColumnName="RESPONSE" />
+                <ScalarProperty Name="SENT_ON" ColumnName="SENT_ON" />
+                <ScalarProperty Name="SMS_TYPE_ID" ColumnName="SMS_TYPE_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SMS_TYPES">
+            <EntityTypeMapping TypeName="GROCERY.SMS_TYPES">
+              <MappingFragment StoreEntitySet="SMS_TYPES">
+                <ScalarProperty Name="SMS_TYPE_ID" ColumnName="SMS_TYPE_ID" />
+                <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="STOCKs">
+            <EntityTypeMapping TypeName="GROCERY.STOCK">
+              <MappingFragment StoreEntitySet="STOCK">
+                <ScalarProperty Name="BRANCH_ID" ColumnName="BRANCH_ID" />
+                <ScalarProperty Name="PRODUCT_ID" ColumnName="PRODUCT_ID" />
+                <ScalarProperty Name="QTY" ColumnName="QTY" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SUB_CATEGORIES">
+            <EntityTypeMapping TypeName="GROCERY.SUB_CATEGORIES">
+              <MappingFragment StoreEntitySet="SUB_CATEGORIES">
+                <ScalarProperty Name="SUB_CATEGORY_ID" ColumnName="SUB_CATEGORY_ID" />
+                <ScalarProperty Name="CATEGORY_ID" ColumnName="CATEGORY_ID" />
+                <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="MODIFIED_DATE" ColumnName="MODIFIED_DATE" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="APP_IMAGE_PATH" ColumnName="APP_IMAGE_PATH" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="GROCERY.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TEMP_CUSTOMERS">
+            <EntityTypeMapping TypeName="GROCERY.TEMP_CUSTOMERS">
+              <MappingFragment StoreEntitySet="TEMP_CUSTOMERS">
+                <ScalarProperty Name="TEMP_CUSTOMER_ID" ColumnName="TEMP_CUSTOMER_ID" />
+                <ScalarProperty Name="NAME" ColumnName="NAME" />
+                <ScalarProperty Name="PHONE" ColumnName="PHONE" />
+                <ScalarProperty Name="ADDRESS" ColumnName="ADDRESS" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="USER_ADDRESSES">
+            <EntityTypeMapping TypeName="GROCERY.USER_ADDRESSES">
+              <MappingFragment StoreEntitySet="USER_ADDRESSES">
+                <ScalarProperty Name="USER_ADDRESS_ID" ColumnName="USER_ADDRESS_ID" />
+                <ScalarProperty Name="USER_ID" ColumnName="USER_ID" />
+                <ScalarProperty Name="ADDRESS" ColumnName="ADDRESS" />
+                <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="CREATED_ON" ColumnName="CREATED_ON" />
+                <ScalarProperty Name="UPDATED_BY" ColumnName="UPDATED_BY" />
+                <ScalarProperty Name="UPDATED_ON" ColumnName="UPDATED_ON" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="USER_FAVOURITES">
+            <EntityTypeMapping TypeName="GROCERY.USER_FAVOURITES">
+              <MappingFragment StoreEntitySet="USER_FAVOURITES">
+                <ScalarProperty Name="USER_FAVOURITE_ID" ColumnName="USER_FAVOURITE_ID" />
+                <ScalarProperty Name="USER_ID" ColumnName="USER_ID" />
+                <ScalarProperty Name="PRODUCT_ID" ColumnName="PRODUCT_ID" />
+                <ScalarProperty Name="CREATED_ON" ColumnName="CREATED_ON" />
+                <ScalarProperty Name="UPDATED_ON" ColumnName="UPDATED_ON" />
+                <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="USER_TYPES">
+            <EntityTypeMapping TypeName="GROCERY.USER_TYPES">
+              <MappingFragment StoreEntitySet="USER_TYPES">
+                <ScalarProperty Name="USER_TYPE_ID" ColumnName="USER_TYPE_ID" />
+                <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="USERS">
+            <EntityTypeMapping TypeName="GROCERY.USER">
+              <MappingFragment StoreEntitySet="USERS">
+                <ScalarProperty Name="USER_ID" ColumnName="USER_ID" />
+                <ScalarProperty Name="USERNAME" ColumnName="USERNAME" />
+                <ScalarProperty Name="PASSWORD" ColumnName="PASSWORD" />
+                <ScalarProperty Name="USER_TYPE" ColumnName="USER_TYPE" />
+                <ScalarProperty Name="BRANCH_ID" ColumnName="BRANCH_ID" />
+                <ScalarProperty Name="MOBILE_NO" ColumnName="MOBILE_NO" />
+                <ScalarProperty Name="ADDRESS" ColumnName="ADDRESS" />
+                <ScalarProperty Name="CITY" ColumnName="CITY" />
+                <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
+                <ScalarProperty Name="CREATED_ON" ColumnName="CREATED_ON" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="UPDATED_ON" ColumnName="UPDATED_ON" />
+                <ScalarProperty Name="UPDATED_BY" ColumnName="UPDATED_BY" />
+                <ScalarProperty Name="IS_AVAILABLE" ColumnName="IS_AVAILABLE" />
+                <ScalarProperty Name="VEHICLE_NUMBER" ColumnName="VEHICLE_NUMBER" />
+                <ScalarProperty Name="VEHICLE_DESCRIPTION" ColumnName="VEHICLE_DESCRIPTION" />
+                <ScalarProperty Name="DEVICE_ID" ColumnName="DEVICE_ID" />
+                <ScalarProperty Name="IMAGE_PATH" ColumnName="IMAGE_PATH" />
+                <ScalarProperty Name="EMAIL" ColumnName="EMAIL" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VENDOR_BRANCHES">
+            <EntityTypeMapping TypeName="GROCERY.VENDOR_BRANCHES">
+              <MappingFragment StoreEntitySet="VENDOR_BRANCHES">
+                <ScalarProperty Name="VENDOR_BRANCH_ID" ColumnName="VENDOR_BRANCH_ID" />
+                <ScalarProperty Name="VENDOR_ID" ColumnName="VENDOR_ID" />
+                <ScalarProperty Name="NAME" ColumnName="NAME" />
+                <ScalarProperty Name="ADDRESS" ColumnName="ADDRESS" />
+                <ScalarProperty Name="LATITUDE" ColumnName="LATITUDE" />
+                <ScalarProperty Name="LONGITUDE" ColumnName="LONGITUDE" />
+                <ScalarProperty Name="PHONE" ColumnName="PHONE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VENDORS">
+            <EntityTypeMapping TypeName="GROCERY.VENDOR">
+              <MappingFragment StoreEntitySet="VENDORS">
+                <ScalarProperty Name="VENDOR_ID" ColumnName="VENDOR_ID" />
+                <ScalarProperty Name="CLIENT_TYPE" ColumnName="CLIENT_TYPE" />
+                <ScalarProperty Name="VENDOR_NAME" ColumnName="VENDOR_NAME" />
+                <ScalarProperty Name="ADDR1" ColumnName="ADDR1" />
+                <ScalarProperty Name="CITY" ColumnName="CITY" />
+                <ScalarProperty Name="COUNTRY" ColumnName="COUNTRY" />
+                <ScalarProperty Name="CONT_PERSON1" ColumnName="CONT_PERSON1" />
+                <ScalarProperty Name="TITLE1" ColumnName="TITLE1" />
+                <ScalarProperty Name="MOBILE1" ColumnName="MOBILE1" />
+                <ScalarProperty Name="PHONE1" ColumnName="PHONE1" />
+                <ScalarProperty Name="FAX1" ColumnName="FAX1" />
+                <ScalarProperty Name="ADDR2" ColumnName="ADDR2" />
+                <ScalarProperty Name="CITY2" ColumnName="CITY2" />
+                <ScalarProperty Name="COUNTRY2" ColumnName="COUNTRY2" />
+                <ScalarProperty Name="CONT_PERSON2" ColumnName="CONT_PERSON2" />
+                <ScalarProperty Name="TITLE2" ColumnName="TITLE2" />
+                <ScalarProperty Name="MOBILE2" ColumnName="MOBILE2" />
+                <ScalarProperty Name="PHONE2" ColumnName="PHONE2" />
+                <ScalarProperty Name="FAX2" ColumnName="FAX2" />
+                <ScalarProperty Name="WHATSAPP" ColumnName="WHATSAPP" />
+                <ScalarProperty Name="EMAIL" ColumnName="EMAIL" />
+                <ScalarProperty Name="URL" ColumnName="URL" />
+                <ScalarProperty Name="NTN" ColumnName="NTN" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="MODIFIED_DATE" ColumnName="MODIFIED_DATE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BarcodeNewTests">
+            <EntityTypeMapping TypeName="GROCERY.BarcodeNewTest">
+              <MappingFragment StoreEntitySet="BarcodeNewTest">
+                <ScalarProperty Name="LOCNO" ColumnName="LOCNO" />
+                <ScalarProperty Name="ITEM_CODE" ColumnName="ITEM_CODE" />
+                <ScalarProperty Name="PACK_CODE" ColumnName="PACK_CODE" />
+                <ScalarProperty Name="PACK_DESC" ColumnName="PACK_DESC" />
+                <ScalarProperty Name="UNIT" ColumnName="UNIT" />
+                <ScalarProperty Name="bDEFAULT" ColumnName="bDEFAULT" />
+                <ScalarProperty Name="BAR_CODE" ColumnName="BAR_CODE" />
+                <ScalarProperty Name="BARTYPE" ColumnName="BARTYPE" />
+                <ScalarProperty Name="UNIT_PRICE" ColumnName="UNIT_PRICE" />
+                <ScalarProperty Name="DEALER_PRICE1" ColumnName="DEALER_PRICE1" />
+                <ScalarProperty Name="DEALER_PRICE2" ColumnName="DEALER_PRICE2" />
+                <ScalarProperty Name="RF_MARGIN" ColumnName="RF_MARGIN" />
+                <ScalarProperty Name="CUSER" ColumnName="CUSER" />
+                <ScalarProperty Name="CDATE" ColumnName="CDATE" />
+                <ScalarProperty Name="MUSER" ColumnName="MUSER" />
+                <ScalarProperty Name="MDATE" ColumnName="MDATE" />
+                <ScalarProperty Name="bRandomDisc" ColumnName="bRandomDisc" />
+                <ScalarProperty Name="DiscStartDate" ColumnName="DiscStartDate" />
+                <ScalarProperty Name="DiscEndDate" ColumnName="DiscEndDate" />
+                <ScalarProperty Name="DiscStartTime" ColumnName="DiscStartTime" />
+                <ScalarProperty Name="DiscEndTime" ColumnName="DiscEndTime" />
+                <ScalarProperty Name="DISC_TYPE" ColumnName="DISC_TYPE" />
+                <ScalarProperty Name="DISC" ColumnName="DISC" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="NeedsReplication" ColumnName="NeedsReplication" />
+                <ScalarProperty Name="NeedsUpdation" ColumnName="NeedsUpdation" />
+                <ScalarProperty Name="L1P1NeedsUpdation" ColumnName="L1P1NeedsUpdation" />
+                <ScalarProperty Name="L1P2NeedsUpdation" ColumnName="L1P2NeedsUpdation" />
+                <ScalarProperty Name="L1P3NeedsUpdation" ColumnName="L1P3NeedsUpdation" />
+                <ScalarProperty Name="L1P4NeedsUpdation" ColumnName="L1P4NeedsUpdation" />
+                <ScalarProperty Name="L1P5NeedsUpdation" ColumnName="L1P5NeedsUpdation" />
+                <ScalarProperty Name="L1P6NeedsUpdation" ColumnName="L1P6NeedsUpdation" />
+                <ScalarProperty Name="L1P7NeedsUpdation" ColumnName="L1P7NeedsUpdation" />
+                <ScalarProperty Name="L1P8NeedsUpdation" ColumnName="L1P8NeedsUpdation" />
+                <ScalarProperty Name="L1P9NeedsUpdation" ColumnName="L1P9NeedsUpdation" />
+                <ScalarProperty Name="L1P10NeedsUpdation" ColumnName="L1P10NeedsUpdation" />
+                <ScalarProperty Name="L2P1NeedsUpdation" ColumnName="L2P1NeedsUpdation" />
+                <ScalarProperty Name="L2P2NeedsUpdation" ColumnName="L2P2NeedsUpdation" />
+                <ScalarProperty Name="L2P3NeedsUpdation" ColumnName="L2P3NeedsUpdation" />
+                <ScalarProperty Name="L3P1NeedsUpdation" ColumnName="L3P1NeedsUpdation" />
+                <ScalarProperty Name="L3P2NeedsUpdation" ColumnName="L3P2NeedsUpdation" />
+                <ScalarProperty Name="L3P3NeedsUpdation" ColumnName="L3P3NeedsUpdation" />
+                <ScalarProperty Name="L3P4NeedsUpdation" ColumnName="L3P4NeedsUpdation" />
+                <ScalarProperty Name="L3P5NeedsUpdation" ColumnName="L3P5NeedsUpdation" />
+                <ScalarProperty Name="L3P6NeedsUpdation" ColumnName="L3P6NeedsUpdation" />
+                <ScalarProperty Name="L3P7NeedsUpdation" ColumnName="L3P7NeedsUpdation" />
+                <ScalarProperty Name="L3P8NeedsUpdation" ColumnName="L3P8NeedsUpdation" />
+                <ScalarProperty Name="L4P1NeedsUpdation" ColumnName="L4P1NeedsUpdation" />
+                <ScalarProperty Name="L5P1NeedsUpdation" ColumnName="L5P1NeedsUpdation" />
+                <ScalarProperty Name="L6P1NeedsUpdation" ColumnName="L6P1NeedsUpdation" />
+                <ScalarProperty Name="L4P2NeedsUpdation" ColumnName="L4P2NeedsUpdation" />
+                <ScalarProperty Name="L4P3NeedsUpdation" ColumnName="L4P3NeedsUpdation" />
+                <ScalarProperty Name="L5P3NeedsUpdation" ColumnName="L5P3NeedsUpdation" />
+                <ScalarProperty Name="L6P3NeedsUpdation" ColumnName="L6P3NeedsUpdation" />
+                <ScalarProperty Name="L5P2NeedsUpdation" ColumnName="L5P2NeedsUpdation" />
+                <ScalarProperty Name="L6P2NeedsUpdation" ColumnName="L6P2NeedsUpdation" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BARCODES">
+            <EntityTypeMapping TypeName="GROCERY.BARCODE">
+              <MappingFragment StoreEntitySet="BARCODES">
+                <ScalarProperty Name="LOCNO" ColumnName="LOCNO" />
+                <ScalarProperty Name="ITEM_CODE" ColumnName="ITEM_CODE" />
+                <ScalarProperty Name="PACK_CODE" ColumnName="PACK_CODE" />
+                <ScalarProperty Name="PACK_DESC" ColumnName="PACK_DESC" />
+                <ScalarProperty Name="UNIT" ColumnName="UNIT" />
+                <ScalarProperty Name="bDEFAULT" ColumnName="bDEFAULT" />
+                <ScalarProperty Name="BAR_CODE" ColumnName="BAR_CODE" />
+                <ScalarProperty Name="BARTYPE" ColumnName="BARTYPE" />
+                <ScalarProperty Name="UNIT_PRICE" ColumnName="UNIT_PRICE" />
+                <ScalarProperty Name="DEALER_PRICE1" ColumnName="DEALER_PRICE1" />
+                <ScalarProperty Name="DEALER_PRICE2" ColumnName="DEALER_PRICE2" />
+                <ScalarProperty Name="RF_MARGIN" ColumnName="RF_MARGIN" />
+                <ScalarProperty Name="CUSER" ColumnName="CUSER" />
+                <ScalarProperty Name="CDATE" ColumnName="CDATE" />
+                <ScalarProperty Name="MUSER" ColumnName="MUSER" />
+                <ScalarProperty Name="MDATE" ColumnName="MDATE" />
+                <ScalarProperty Name="bRandomDisc" ColumnName="bRandomDisc" />
+                <ScalarProperty Name="DiscStartDate" ColumnName="DiscStartDate" />
+                <ScalarProperty Name="DiscEndDate" ColumnName="DiscEndDate" />
+                <ScalarProperty Name="DiscStartTime" ColumnName="DiscStartTime" />
+                <ScalarProperty Name="DiscEndTime" ColumnName="DiscEndTime" />
+                <ScalarProperty Name="DISC_TYPE" ColumnName="DISC_TYPE" />
+                <ScalarProperty Name="DISC" ColumnName="DISC" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="NeedsReplication" ColumnName="NeedsReplication" />
+                <ScalarProperty Name="NeedsUpdation" ColumnName="NeedsUpdation" />
+                <ScalarProperty Name="L1P1NeedsUpdation" ColumnName="L1P1NeedsUpdation" />
+                <ScalarProperty Name="L1P2NeedsUpdation" ColumnName="L1P2NeedsUpdation" />
+                <ScalarProperty Name="L1P3NeedsUpdation" ColumnName="L1P3NeedsUpdation" />
+                <ScalarProperty Name="L1P4NeedsUpdation" ColumnName="L1P4NeedsUpdation" />
+                <ScalarProperty Name="L1P5NeedsUpdation" ColumnName="L1P5NeedsUpdation" />
+                <ScalarProperty Name="L1P6NeedsUpdation" ColumnName="L1P6NeedsUpdation" />
+                <ScalarProperty Name="L1P7NeedsUpdation" ColumnName="L1P7NeedsUpdation" />
+                <ScalarProperty Name="L1P8NeedsUpdation" ColumnName="L1P8NeedsUpdation" />
+                <ScalarProperty Name="L1P9NeedsUpdation" ColumnName="L1P9NeedsUpdation" />
+                <ScalarProperty Name="L1P10NeedsUpdation" ColumnName="L1P10NeedsUpdation" />
+                <ScalarProperty Name="L2P1NeedsUpdation" ColumnName="L2P1NeedsUpdation" />
+                <ScalarProperty Name="L2P2NeedsUpdation" ColumnName="L2P2NeedsUpdation" />
+                <ScalarProperty Name="L2P3NeedsUpdation" ColumnName="L2P3NeedsUpdation" />
+                <ScalarProperty Name="L3P1NeedsUpdation" ColumnName="L3P1NeedsUpdation" />
+                <ScalarProperty Name="L3P2NeedsUpdation" ColumnName="L3P2NeedsUpdation" />
+                <ScalarProperty Name="L3P3NeedsUpdation" ColumnName="L3P3NeedsUpdation" />
+                <ScalarProperty Name="L3P4NeedsUpdation" ColumnName="L3P4NeedsUpdation" />
+                <ScalarProperty Name="L3P5NeedsUpdation" ColumnName="L3P5NeedsUpdation" />
+                <ScalarProperty Name="L3P6NeedsUpdation" ColumnName="L3P6NeedsUpdation" />
+                <ScalarProperty Name="L3P7NeedsUpdation" ColumnName="L3P7NeedsUpdation" />
+                <ScalarProperty Name="L3P8NeedsUpdation" ColumnName="L3P8NeedsUpdation" />
+                <ScalarProperty Name="L4P1NeedsUpdation" ColumnName="L4P1NeedsUpdation" />
+                <ScalarProperty Name="L5P1NeedsUpdation" ColumnName="L5P1NeedsUpdation" />
+                <ScalarProperty Name="L6P1NeedsUpdation" ColumnName="L6P1NeedsUpdation" />
+                <ScalarProperty Name="L4P2NeedsUpdation" ColumnName="L4P2NeedsUpdation" />
+                <ScalarProperty Name="L4P3NeedsUpdation" ColumnName="L4P3NeedsUpdation" />
+                <ScalarProperty Name="L5P3NeedsUpdation" ColumnName="L5P3NeedsUpdation" />
+                <ScalarProperty Name="L6P3NeedsUpdation" ColumnName="L6P3NeedsUpdation" />
+                <ScalarProperty Name="L5P2NeedsUpdation" ColumnName="L5P2NeedsUpdation" />
+                <ScalarProperty Name="L6P2NeedsUpdation" ColumnName="L6P2NeedsUpdation" />
+                <ScalarProperty Name="L7P1NeedsUpdation" ColumnName="L7P1NeedsUpdation" />
+                <ScalarProperty Name="L7P2NeedsUpdation" ColumnName="L7P2NeedsUpdation" />
+                <ScalarProperty Name="L7P3NeedsUpdation" ColumnName="L7P3NeedsUpdation" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PS000Test">
+            <EntityTypeMapping TypeName="GROCERY.PS000Test">
+              <MappingFragment StoreEntitySet="PS000Test">
+                <ScalarProperty Name="LOCNO" ColumnName="LOCNO" />
+                <ScalarProperty Name="ITEM_CODE" ColumnName="ITEM_CODE" />
+                <ScalarProperty Name="QTY" ColumnName="QTY" />
+                <ScalarProperty Name="WH_QTY" ColumnName="WH_QTY" />
+                <ScalarProperty Name="T_QTY" ColumnName="T_QTY" />
+                <ScalarProperty Name="FLOOR_NO" ColumnName="FLOOR_NO" />
+                <ScalarProperty Name="COUNTER" ColumnName="COUNTER" />
+                <ScalarProperty Name="SHELF" ColumnName="SHELF" />
+                <ScalarProperty Name="SHELF_QTY" ColumnName="SHELF_QTY" />
+                <ScalarProperty Name="SHELF_FACING" ColumnName="SHELF_FACING" />
+                <ScalarProperty Name="LSDATE" ColumnName="LSDATE" />
+                <ScalarProperty Name="LPDATE" ColumnName="LPDATE" />
+                <ScalarProperty Name="ALLOW_NEGATIVE" ColumnName="ALLOW_NEGATIVE" />
+                <ScalarProperty Name="AreaCovered" ColumnName="AreaCovered" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="MAX_QTY" ColumnName="MAX_QTY" />
+                <ScalarProperty Name="MIN_QTY" ColumnName="MIN_QTY" />
+                <ScalarProperty Name="OP_STOCK" ColumnName="OP_STOCK" />
+                <ScalarProperty Name="OP_STOCK_VAL" ColumnName="OP_STOCK_VAL" />
+                <ScalarProperty Name="NeedsReplication" ColumnName="NeedsReplication" />
+                <ScalarProperty Name="NeedsUpdation" ColumnName="NeedsUpdation" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TESTs">
+            <EntityTypeMapping TypeName="GROCERY.TEST">
+              <MappingFragment StoreEntitySet="TEST">
+                <ScalarProperty Name="OLD_PRODUCT_ID" ColumnName="OLD_PRODUCT_ID" />
+                <ScalarProperty Name="NAME" ColumnName="NAME" />
+                <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
+                <ScalarProperty Name="AVG_COST" ColumnName="AVG_COST" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

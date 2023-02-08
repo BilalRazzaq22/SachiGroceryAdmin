@@ -1,0 +1,874 @@
+﻿@model GROCERY.Models.PRODUCT
+
+@{
+    ViewBag.Title = "Orders";
+}
+<style>
+    .orderByCustomer{
+        background-color:red;
+        color: white;
+    }
+</style>
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script>
+
+    var orders = {};
+
+    var orderStatusesList = {};
+
+    $(document).ready(function () {
+       
+        loadDatesStartEnd();  //being used for default date setup
+        initializeOrdersList(0, null, null);
+        $("#btnLoad").click(function () {
+        
+            var selectedDateFrom = $("#orderDateFrom").val();
+            var selectedDateTo = $("#orderDateTo").val();
+
+            if (selectedDateFrom != "" && selectedDateTo != "") {
+                initializeOrdersList(0, null, null);
+                initializeOrdersList(1, selectedDateFrom, selectedDateTo);
+                initializeOrdersList(2, selectedDateFrom, selectedDateTo);
+                initializeOrdersList(3, selectedDateFrom, selectedDateTo);
+                initializeOrdersList(4, selectedDateFrom, selectedDateTo);
+                    
+            }
+            if (selectedDateFrom == "" || selectedDateTo == "")
+                alert('Please select date value');
+                
+        });
+
+    });
+
+    function loadAllOrders()
+    {
+        if ($.fn.DataTable.isDataTable('#table-15')) {
+            $('#table-15').DataTable().destroy();
+        }
+        var rows = '';
+        for (i = 0; i < orders.Table.length; i++) {
+            var item = orders.Table[i];
+            var bgclass = "";
+            if (item.ADDED_BY && item.ADDED_BY == 2) {
+                bgclass = "orderByCustomer";
+            }
+            rows = rows + '<tr class=' + bgclass + '><td>' + item.ORDER_ID + '</td><td>' + item.CUSTOMER_ID + '</td><td>' + item.NAME + '</td><td>'
+                        + item.MOBILE + '</td><td>' + item.ADDRESS + '</td><td>'
+                        + item.DELIVERY_DESCRIPTION + '</td><td>' + item.DELIVERY_TIME + '</td><td>'
+                        + item.MANUAL_DISCOUNT + '</td><td>' + item.COUPON_DISCOUNT + '</td><td>'
+                        + item.IS_PACKAGE + '</td><td>'
+                        + item.TOTAL_ITEMS + '</td><td>' + item.TOTAL_AMOUNT + '</td><td>' + item.STATUS_DESCRIPTION + '</td>'
+                        + '<td><a style="color:green" target="_blank" href = "View?oID=' + item.ORDER_ID + '">View</a></td></tr>';
+        }
+
+        $("#ordersTable5").html(rows);
+        loadDT5();
+    }
+
+    function initializeOrdersList(oStID, oDateFrom, oDateTo) {
+        $.ajax({
+            type: "GET",
+            url: '/api/order/orders?oStID=' + oStID + '&oDateFrom=' + oDateFrom + '&oDateTo=' + oDateTo,
+            contentType: 'application/json',
+            success: function (result) {
+                console.log("data: " + result);
+                orders = jQuery.parseJSON(result);
+                if (oStID == 1)
+                    populateOrdersTable();
+                else
+                    if (oStID == 2)
+                        populateAllocatedOrdersTable();
+                    else
+                        if (oStID == 3) {
+                            populateDispatchedOrdersTable();
+                        }
+                        else
+                            if (oStID == 4)
+                                populateShippedOrdersTable();
+                            else if (oStID == 0)
+                                loadAllOrders();
+            },
+            error: function (res) {
+                //console.log(res);
+                alert('failure: ' + res);
+            }
+        });
+    }
+
+    function populateOrdersTable() {
+        
+        if ($.fn.DataTable.isDataTable('#table-11')) {
+            $('#table-11').DataTable().destroy();
+        }
+
+        //$("#pendingOrders").show();
+        var rows = '';
+        for (i = 0; i < orders.Table.length; i++) {
+            var item = orders.Table[i];
+            rows = rows + '<tr><td>' + item.ORDER_ID + '</td><td>' + item.CUSTOMER_ID + '</td><td>' + item.NAME + '</td><td>'
+                        + item.MOBILE + '</td><td>' + item.ADDRESS + '</td><td>'
+                        + item.DELIVERY_DESCRIPTION + '</td><td>' + item.DELIVERY_TIME + '</td><td>'
+                        + item.MANUAL_DISCOUNT + '</td><td>' + item.COUPON_DISCOUNT + '</td><td>'
+                        + item.IS_PACKAGE + '</td><td>'
+                        + item.TOTAL_ITEMS + '</td><td>' + item.TOTAL_AMOUNT + '</td>'
+                        //+ '<td><a style="color:green" href="javascript:void(0);" onclick = "completeOrder(' + item.ORDER_ID + ')">Tracking</a></td>'
+                        + '<td><a style="color:green" target="_blank" href = "View?oID=' + item.ORDER_ID + '">View</a></td>'
+                        + '<td><button type="button" class="btn btn-xs btn-warning" onclick= javascript:allocateOrderByID(' + item.ORDER_ID + ') id="check-box-' + item.ORDER_ID + '" >Allocate</button></div></td>'
+                        + '</tr>';
+        }
+
+        $("#ordersTable").html(rows);
+        loadDT1();
+
+    }
+
+    function populateAllocatedOrdersTable() {
+        if ($.fn.DataTable.isDataTable('#table-12')) {
+            $('#table-12').DataTable().destroy();
+        }
+
+        var rows = '';
+        for (i = 0; i < orders.Table.length; i++) {
+            var item = orders.Table[i];
+            rows = rows + '<tr><td>' + item.ORDER_ID + '</td><td>' + item.CUSTOMER_ID + '</td><td>' + item.NAME + '</td><td>'
+                        + item.MOBILE + '</td><td>' + item.ADDRESS + '</td><td>'
+                        + item.TOTAL_ITEMS + '</td><td>' + item.TOTAL_AMOUNT + '</td>'
+//                        + '<td><input type="checkbox" onchange=         javascript:dispatchOrderByID(' + item.ORDER_ID + ') id="check-box-' + item.ORDER_ID + '"></input></div></td>'
+  //                      + '</tr>';
+            + '<td><button type="button" class="btn btn-xs btn-warning" onclick= loadDispatchModal(' + item.ORDER_ID + ') id="check-box-' + item.ORDER_ID + '" >Dispatch</button></div></td>'
+                                    + '</tr>';
+        }
+
+        $("#orderTable2").html(rows);
+        loadDT2();
+
+    }
+
+    function populateDispatchedOrdersTable() {
+        if ($.fn.DataTable.isDataTable('#table-13')) {
+            $('#table-13').DataTable().destroy();
+        }
+        var rows = '';
+        for (i = 0; i < orders.Table.length; i++) {
+            var item = orders.Table[i];
+            rows = rows + '<tr><td>' + item.ORDER_ID + '</td><td>' + item.CUSTOMER_ID + '</td><td>' + item.NAME + '</td><td>'
+                        + item.MOBILE + '</td><td>' + item.ADDRESS + '</td><td>'
+                        + item.TOTAL_ITEMS + '</td><td>' + item.TOTAL_AMOUNT + '</td>'
+                        + '</tr>';
+        }
+        $("#ordersTable3").html(rows);
+        loadDT3();
+
+    }
+
+    function populateShippedOrdersTable() {
+
+        if ($.fn.DataTable.isDataTable('#table-14')) {
+            $('#table-14').DataTable().destroy();
+        }
+
+        //$("#shippedOrders").show();
+        var rows = '';
+        for (i = 0; i < orders.Table.length; i++) {
+            var item = orders.Table[i];
+            rows = rows + '<tr><td>' + item.ORDER_ID + '</td><td>' + item.CUSTOMER_ID + '</td><td>' + item.NAME + '</td><td>'
+                        + item.MOBILE + '</td><td>' + item.ADDRESS + '</td><td>'
+                + item.TOTAL_ITEMS + '</td><td>' + item.TOTAL_AMOUNT + '</td>'
+                +'<td><a style="color:green" target="_blank" href = "View?oID=' + item.ORDER_ID + '">View</a></td></tr>';
+        }
+
+        $("#ordersTable4").html(rows);
+        loadDT4();
+
+    }
+
+   
+
+    function initializeOrderStatusesList() {
+        $.ajax({
+            type: "GET",
+            url: '/api/Order/Statuses',
+            contentType: 'application/json',
+            success: function (result) {
+                orderStatusesList = jQuery.parseJSON(result);
+                populateOrderStatusesDropDown();
+            },
+            error: function (res) {
+                alert('failure: ' + res);
+            }
+        });
+    }
+
+
+    function loadDatesStartEnd()
+    {
+        var today = new Date();
+
+        var dd = today.getDate();
+        var mm = today.getMonth() + 1; //January is 0!
+
+        var yyyy = today.getFullYear();
+        if (dd < 10) {
+            dd = '0' + dd;
+        }
+        if (mm < 10) {
+            mm = '0' + mm;
+        }
+        var todayDate = yyyy + '-' + mm + '-' + dd;
+
+        var today7 = new Date();
+        today7.setDate(today.getDate() - 27)
+        var dd1 = today7.getDate();
+        var mm1 = today7.getMonth() + 1; //January is 0!
+
+        var yyyy1 = today7.getFullYear();
+        if (dd1 < 10) {
+            dd1 = '0' + dd1;
+        }
+        if (mm1 < 10) {
+            mm1 = '0' + mm1;
+        }
+        var todayDate7 = yyyy1 + '-' + mm1 + '-' + dd1;
+
+        $("#orderDateFrom").val(todayDate7);
+        $("#orderDateTo").val(todayDate);
+
+        initializeOrdersList(0, null, null);
+        initializeOrdersList(1, todayDate7, todayDate);
+        initializeOrdersList(2, todayDate7, todayDate);
+        initializeOrdersList(3, todayDate7, todayDate);
+        initializeOrdersList(4, todayDate7, todayDate);
+
+    }
+
+    function populateOrderStatusesDropDown() {
+        var options = '<option value="-1">Select An Option</option>';
+        var optionsNew = '';
+
+        optionsNew = optionsNew + '<span class="radio-inline">' +
+                        '<label>' +
+                            '<input type="radio" name="optionsStatuses" value="' + 0 + '" checked> All</label>' +
+                    '</span>';
+        for (i = 0; i < orderStatusesList.Table.length; i++) {
+            var item = orderStatusesList.Table[i];
+            //options = options + '<option value="' + item.ORDER_STATUS_ID + '">' + item.DESCRIPTION + '</option>';
+
+            optionsNew = optionsNew + '<span class="radio-inline">' +
+                     '<label>' +
+                         '<input type="radio" name="optionsStatuses" value="' + item.ORDER_STATUS_ID + '"> ' + item.DESCRIPTION +
+                     '</label>' +
+                 '</span>';
+        }
+        //$("#order_sts").html(options);
+
+        $("#order_sts_new").html(optionsNew);
+        
+        
+        
+
+       // initializeOrdersList(1, today);
+    }
+
+    //function allocate(oStID, oDate){
+    //    $.ajax({
+    //        type: "GET",
+    //        url: '/api/Order/Allocate?oStID=' + oStID + '&oDate=' + oDate,
+    //        contentType: 'application/json',
+    //        success: function (result) {
+    //            initializeOrdersList(oStID, oDate);
+    //        },
+    //        error: function (res) {
+    //            alert('failure: ' + res);
+    //        }
+    //    });
+    //}
+
+    function loadDispatchModal(id)
+    {
+        $("#order_id").val(id);
+        jQuery("#modal-1").modal("show");
+    }
+
+    function dispatchOrderByID() {
+        var rID = $("#rider").val();
+        if (rID == -1) {
+            alert("Please select a rider");
+            return;
+        }
+
+        if (confirm("Ready to Dispatch?")) {
+            var ID = $("#order_id").val();
+            var element = $("#check-box-" + ID);
+            
+            //var selectedStatusID = $("#order_sts").val();
+            var selectedStatusID = $("input[name='optionsStatuses']:checked").val();
+            var selectedDateFrom = $("#orderDateFrom").val();
+            var selectedDateTo = $("#orderDateTo").val();
+            $.ajax({
+                type: "GET",
+                url: '/api/Order/Dispatch?orderID=' + ID + '&riderID=' + rID,
+                contentType: 'application/json',
+                success: function (result) {
+                    //initializeOrdersList(selectedStatusID, selectedDateFrom, selectedDateTo);
+                    jQuery('#modal-1').modal('toggle');
+                    var element = $("#check-box-" + ID);
+                    element.attr("disabled", "disabled");
+                    element.text("Dispatched");
+                    element.attr("class", "btn btn-black btn-xs");
+                },
+                error: function (res) {
+                    alert('failure: ' + res);
+                }
+            });
+        }
+
+    }
+
+    function allocateOrderByID(ID) {
+        var element = $("#check-box-" + ID);
+        //var selectedStatusID = $("#order_sts").val();
+        var selectedStatusID = $("input[name='optionsStatuses']:checked").val();
+        var selectedDateFrom = $("#orderDateFrom").val();
+        var selectedDateTo = $("#orderDateTo").val();
+        $.ajax({
+            type: "GET",
+            url: '/api/Order/Allocate?oID=' + parseInt(ID),
+            contentType: 'application/json',
+            success: function (result) {
+                // initializeOrdersList(selectedStatusID, selectedDateFrom, selectedDateTo);
+                element.attr("disabled", "disabled");
+                element.text("Allocated");
+                element.attr("class", "btn btn-black btn-xs");
+            },
+            error: function (res) {
+                alert('failure: ' + res);
+            }
+        });
+
+    }
+
+</script>
+
+
+<ol class="breadcrumb">
+    <li class="breadcrumb-item">
+        <a href="/Home/Index">Grocery Store</a>
+    </li>
+    <li>Order Management</li>
+    <li class="breadcrumb-item active">Manage Orders</li>
+</ol>
+
+<h2>Orders</h2>
+
+<br />
+
+
+<div class="row">
+    <div class="col-md-12">
+
+        <div class="form-group">
+            <label for="order status" class="control-label">Order Status</label>
+            <div class="form-group">
+                <span class="col-sm-offset-1 col-sm-12" id="order_sts_new">
+
+                </span>
+            </div>
+            @*<select class="form-control" id="order_sts" >
+                    <option value="-1">Select An Option</option>
+                </select>*@
+        </div>
+
+    </div>
+
+    <div class="col-md-12">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="order status" class="control-label">Order Date From</label>
+
+                <input type="date" class="form-control" style="line-height:15px"  id="orderDateFrom" />
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="order status" class="control-label">Order Date To</label>
+
+                <input type="date" class="form-control" style="line-height:15px" id="orderDateTo" />
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+
+<div class="row">
+    <div class="col-md-6">
+    </div>
+
+    <div class="col-md-6">
+        <button class="btn btn-info pull-right btn-lg" id="btnLoad">Load</button>
+    </div>
+</div>
+
+<div class="col-md-12">
+
+    <ul class="nav nav-tabs bordered">
+        <!-- available classes "bordered", "right-aligned" -->
+        <li class="active">
+            <a href="#tab-all" data-toggle="tab">
+                <span class="visible-xs"><i class="entypo-home"></i></span>
+                <span class="hidden-xs">All</span>
+            </a>
+        </li>
+        <li>
+            <a href="#tab-pendingOrders" data-toggle="tab">
+                <span class="visible-xs"><i class="entypo-user"></i></span>
+                <span class="hidden-xs">Pending Orders</span>
+            </a>
+        </li>
+        <li>
+            <a href="#tab-allocateOrders" data-toggle="tab">
+                <span class="visible-xs"><i class="entypo-mail"></i></span>
+                <span class="hidden-xs">Allocate Orders/Assign to Floor Man</span>
+            </a>
+        </li>
+        <li>
+            <a href="#tab-dispatchOrders" data-toggle="tab">
+                <span class="visible-xs"><i class="entypo-cog"></i></span>
+                <span class="hidden-xs">Dispatched Orders</span>
+            </a>
+        </li>
+        <li>
+            <a href="#tab-shippedOrders" data-toggle="tab">
+                <span class="visible-xs"><i class="entypo-cog"></i></span>
+                <span class="hidden-xs">Shipped Orders</span>
+            </a>
+        </li>
+        
+    </ul>
+
+    <div class="tab-content">
+        <div class="tab-pane active" id="tab-all">
+            <div id="allOrders">
+
+                <table class="table table-bordered datatable" style=" table-layout: fixed;" id="table-15">
+                    <thead>
+                        <tr>
+                            <th style="width: 8%; word-wrap: break-word">Order ID</th>
+                            <th style="width: 5%; word-wrap: break-word">Customer ID</th>
+                            <th style="width: 13%; word-wrap: break-word">Name</th>
+                            <th style="width: 10%; word-wrap: break-word">Mobile</th>
+                            <th style="width: 15%; word-wrap: break-word">Address</th>
+                            <th style="width: 12%; word-wrap: break-word">Message</th>
+                            <th style="width: 10%; word-wrap: break-word">Time</th>
+                            <th style="width: 5%; word-wrap: break-word">Manual Disc</th>
+                            <th style="width: 5%; word-wrap: break-word">Coupon Disc</th>
+                            <th style="width: 3%; word-wrap: break-word">Package</th>
+                            <th style="width: 4%; word-wrap: break-word">Items</th>
+                            <th style="width: 5%; word-wrap: break-word">Amount</th>
+                            <th style="width: 5%; word-wrap: break-word">Status</th>
+                            <th style="width: 10%; word-wrap: break-word">Action</th>
+
+
+                        </tr>
+                    </thead>
+                    <tbody id="ordersTable5"></tbody>
+                    <tfoot>
+                        <tr>
+                            <th style="width: 8%; word-wrap: break-word">Order ID</th>
+                            <th style="width: 5%; word-wrap: break-word">Customer ID</th>
+                            <th style="width: 13%; word-wrap: break-word">Name</th>
+                            <th style="width: 10%; word-wrap: break-word">Mobile</th>
+                            <th style="width: 15%; word-wrap: break-word">Address</th>
+                            <th style="width: 12%; word-wrap: break-word">Message</th>
+                            <th style="width: 10%; word-wrap: break-word">Time</th>
+                            <th style="width: 5%; word-wrap: break-word">Manual Disc</th>
+                            <th style="width: 5%; word-wrap: break-word">Coupon Disc</th>
+                            <th style="width: 3%; word-wrap: break-word">Package</th>
+                            <th style="width: 4%; word-wrap: break-word">Items</th>
+                            <th style="width: 5%; word-wrap: break-word">Amount</th>
+                            <th style="width: 5%; word-wrap: break-word">Status</th>
+                            <th style="width: 10%; word-wrap: break-word">Action</th>
+
+
+                        </tr>
+                    </tfoot>
+                </table>
+
+            </div>
+        </div>
+
+        <div class="tab-pane" id="tab-pendingOrders">
+
+            <div id="pendingOrders">
+
+    <table class="table table-bordered datatable" id="table-11">
+        <thead>
+            <tr>
+                <th>Order ID</th>
+                <th>Customer ID</th>
+                <th>Name</th>
+                <th>Mobile</th>
+                <th>Address</th>
+                
+                <th>Message</th>
+                <th>Time</th>
+                <th>Manual Disc</th>
+                <th>Coupon Disc</th>
+                <th>Package</th>
+                <th>Items</th>
+                <th>Amount</th>
+                <th>Action</th>
+                <th>Allocate</th>
+            </tr>
+        </thead>
+        <tbody id="ordersTable"></tbody>
+        <tfoot>
+            <tr>
+                <th>Order ID</th>
+                <th>Customer ID</th>
+                <th>Name</th>
+                <th>Mobile</th>
+                <th>Address</th>
+                
+                <th>Message</th>
+                <th>Time</th>
+                <th>Manual Disc</th>
+                <th>Coupon Disc</th>
+                <th>Package</th>
+                <th>Items</th>
+                <th>Amount</th>
+                <th>Action</th>
+                <th>Allocate</th>
+            </tr>
+        </tfoot>
+    </table>
+
+            </div>
+
+        </div>
+
+        <div class="tab-pane" id="tab-allocateOrders">
+            <div id="allocatedOrders">
+
+                <table class="table table-bordered datatable" id="table-12">
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Customer ID</th>
+                            <th>Name</th>
+                            <th>Mobile</th>
+                            <th>Address</th>
+                            <th>Items</th>
+                            <th>Amount</th>
+                            <th>Dispatch</th>
+                        </tr>
+                    </thead>
+                    <tbody id="orderTable2"></tbody>
+                    <tfoot>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Customer ID</th>
+                            <th>Name</th>
+                            <th>Mobile</th>
+                            <th>Address</th>
+                            <th>Items</th>
+                            <th>Amount</th>
+                            <th>Dispatch</th>
+                        </tr>
+                    </tfoot>
+                </table>
+
+
+            </div>
+        </div>
+
+        <div class="tab-pane" id="tab-dispatchOrders">
+            <div id="dispatchedOrders">
+                <table class="table table-bordered datatable" id="table-13">
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Customer ID</th>
+                            <th>Name</th>
+                            <th>Mobile</th>
+                            <th>Address</th>
+                            <th>Items</th>
+                            <th>Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ordersTable3"></tbody>
+                    <tfoot>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Customer ID</th>
+                            <th>Name</th>
+                            <th>Mobile</th>
+                            <th>Address</th>
+                            <th>Items</th>
+                            <th>Amount</th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+
+        <div class="tab-pane" id="tab-shippedOrders">
+            <div id="shippedOrders">
+                <table class="table table-bordered datatable" id="table-14">
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Customer ID</th>
+                            <th>Name</th>
+                            <th>Mobile</th>
+                            <th>Address</th>
+                            <th>Items</th>
+                            <th>Amount</th>
+                            <th>Action</th>
+
+                        </tr>
+                    </thead>
+                    <tbody id="ordersTable4"></tbody>
+                    <tfoot>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Customer ID</th>
+                            <th>Name</th>
+                            <th>Mobile</th>
+                            <th>Address</th>
+                            <th>Items</th>
+                            <th>Amount</th>
+                            <th>Action</th>
+
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+
+
+<br />
+
+
+
+
+<div class="modal fade" id="modal-1" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h4 class="modal-title">Dispatch Details</h4>
+            </div>
+            <form action="/Order/Update" method="post">
+                <div class="modal-body">
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <input type="hidden" value="" id="order_id"/>
+                                @Html.Label("Rider", new { @class = "control-label col-md-2" })
+
+                                <select class="form-control" name="riders" id="rider">
+                                    <option value="-1">---Select An Option---</option>
+                                    @{
+                                        foreach (var item in ViewBag.Riders)
+                                        {
+                                            <option value="@item.USER_ID">@item.USERNAME (@item.VEHICLE_NUMBER)</option>
+                                        }
+                                    }
+
+                                </select>
+                            </div>
+                        </div>
+                        
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" id="mClose" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-info" onclick="javascript:dispatchOrderByID()">Dispatch Order</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var responsiveHelper;
+    var breakpointDefinition = {
+        tablet: 1024,
+        phone: 480
+    };
+    var tableContainer = null;
+
+    function loadDT1() {
+        //if (tableContainer != null) {
+        //    tableContainer.dataTable().destroy();
+        //}
+        tableContainer = $("#table-11");
+
+        tableContainer.dataTable({
+            "sPaginationType": "bootstrap",
+            "aLengthMenu": [[30, 100, 1000, -1], [30, 100, 1000, "All"]],
+            "bStateSave": true,
+            "sDom": "<'row'<'col-xs-6 col-left'l><'col-xs-6 col-right'<'export-data'T>f>r>t<'row'<'col-xs-6 col-left'i><'col-xs-6 col-right'p>>",
+            "oTableTools": {
+            },
+
+            // Responsive Settings
+            bAutoWidth: false,
+            fnPreDrawCallback: function () {
+                // Initialize the responsive datatables helper once.
+                if (!responsiveHelper) {
+                    responsiveHelper = new ResponsiveDatatablesHelper(tableContainer, breakpointDefinition);
+                }
+            },
+            //fnRowCallback: function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+            //    responsiveHelper.createExpandIcon(nRow);
+            //},
+            //fnDrawCallback: function (oSettings) {
+            //    responsiveHelper.respond();
+            //}
+        });
+    }
+
+    function loadDT2() {
+        //if (tableContainer != null) {
+        //    tableContainer.dataTable().destroy();
+        //}
+        tableContainer = $("#table-12");
+
+        tableContainer.dataTable({
+            "sPaginationType": "bootstrap",
+            "aLengthMenu": [[30, 100, 1000, -1], [30, 100, 1000, "All"]],
+            "bStateSave": true,
+            "oTableTools": {
+            },
+
+            // Responsive Settings
+            bAutoWidth: false,
+            fnPreDrawCallback: function () {
+                // Initialize the responsive datatables helper once.
+                if (!responsiveHelper) {
+                    responsiveHelper = new ResponsiveDatatablesHelper(tableContainer, breakpointDefinition);
+                }
+            },
+            //fnRowCallback: function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+            //    responsiveHelper.createExpandIcon(nRow);
+            //},
+            //fnDrawCallback: function (oSettings) {
+            //    responsiveHelper.respond();
+            //}
+        });
+    }
+
+    function loadDT3() {
+        
+        tableContainer = $("#table-13");
+
+        tableContainer.dataTable({
+            "sPaginationType": "bootstrap",
+            "aLengthMenu": [[30, 100, 1000, -1], [30, 100, 1000, "All"]],
+            "bStateSave": true,
+            "oTableTools": {
+            },
+
+            // Responsive Settings
+            bAutoWidth: false,
+            fnPreDrawCallback: function () {
+                // Initialize the responsive datatables helper once.
+                if (!responsiveHelper) {
+                    responsiveHelper = new ResponsiveDatatablesHelper(tableContainer, breakpointDefinition);
+                }
+            },
+            //fnRowCallback: function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+            //    responsiveHelper.createExpandIcon(nRow);
+            //},
+            //fnDrawCallback: function (oSettings) {
+            //    responsiveHelper.respond();
+            //}
+        });
+    }
+
+    function loadDT4() {
+
+        tableContainer = $("#table-14");
+
+        tableContainer.dataTable({
+            "sPaginationType": "bootstrap",
+            "aLengthMenu": [[30, 100, 1000, -1], [30, 100, 1000, "All"]],
+            "bStateSave": true,
+            "oTableTools": {
+            },
+
+            // Responsive Settings
+            bAutoWidth: false,
+            fnPreDrawCallback: function () {
+                // Initialize the responsive datatables helper once.
+                if (!responsiveHelper) {
+                    responsiveHelper = new ResponsiveDatatablesHelper(tableContainer, breakpointDefinition);
+                }
+            },
+        //    fnRowCallback: function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+        //        responsiveHelper.createExpandIcon(nRow);
+        //    },
+        //    fnDrawCallback: function (oSettings) {
+        //        responsiveHelper.respond();
+        //    }
+        });
+    }
+
+    function loadDT5() {
+
+        tableContainer = $("#table-15");
+
+        tableContainer.dataTable({
+            "sPaginationType": "bootstrap",
+            "aLengthMenu": [[30, 100, 1000, -1], [30, 100, 1000, "All"]],
+            "bStateSave": true,
+            
+            "oTableTools": {
+            },
+
+            // Responsive Settings
+            bAutoWidth: false,
+            fnPreDrawCallback: function () {
+                // Initialize the responsive datatables helper once.
+                if (!responsiveHelper) {
+                    responsiveHelper = new ResponsiveDatatablesHelper(tableContainer, breakpointDefinition);
+                }
+            },
+            //fnRowCallback: function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+            //    responsiveHelper.createExpandIcon(nRow);
+            //},
+            fnDrawCallback: function (oSettings) {
+                responsiveHelper.respond();
+            }
+        });
+    }
+</script>
+
+<br />
+
+
+<!-- Imported styles on this page -->
+<link rel="stylesheet" href="~/assets/js/datatables/responsive/css/datatables.responsive.css">
+<link rel="stylesheet" href="~/assets/js/select2/select2-bootstrap.css">
+<link rel="stylesheet" href="~/assets/js/select2/select2.css">
+<!-- Bottom scripts (common) -->
+<script src="~/assets/js/jquery.dataTables.min.js"></script>
+<script src="~/assets/js/datatables/TableTools.min.js"></script>
+
+<!-- Imported scripts on this page -->
+<script src="~/assets/js/dataTables.bootstrap.js"></script>
+<script src="~/assets/js/datatables/jquery.dataTables.columnFilter.js"></script>
+<script src="~/assets/js/datatables/lodash.min.js"></script>
+<script src="~/assets/js/datatables/responsive/js/datatables.responsive.js"></script>

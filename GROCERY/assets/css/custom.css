@@ -1,0 +1,14 @@
+/**
+ *
+ * Apply Here your Custom CSS
+ *
+*/
+
+body {
+	
+}
+
+.disable-maindiv {
+	pointer-events: none;
+	opacity: 0.4;
+}

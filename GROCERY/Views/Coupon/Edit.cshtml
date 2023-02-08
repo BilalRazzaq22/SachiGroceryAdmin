@@ -1,0 +1,152 @@
+﻿@model GROCERY.Models.COUPON
+
+@{
+    ViewBag.Title = "Coupon Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Create</h2>
+
+<ol class="breadcrumb">
+    <li class="breadcrumb-item">
+        <a href="/Home/Index">Grocery Store</a>
+    </li>
+    <li>Coupon Management</li>
+    <li class="breadcrumb-item active">Edit Coupon</li>
+</ol>
+
+<h2>Coupons</h2>
+
+@using (Html.BeginForm("Update", "Coupon"))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="row">
+        <div class="col-md-12">
+
+            <div class="panel panel-primary" data-collapsed="0">
+
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        Edit Coupon
+                    </div>
+
+                    <div class="panel-options">
+                        <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                    </div>
+                </div>
+
+
+                <div class="panel-body">
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="product_name" class="control-label">Promo ID</label>
+                                @Html.TextBoxFor(model => model.COUPON_ID, new { @class = "form-control", placeholder = "Coupon ID", Required = "Required", @readonly = "readonly" })
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="product_name" class="control-label">Promo Name</label>
+                                @Html.TextBoxFor(model => model.PROMO_TEXT, new { @class = "form-control", placeholder = "Name", Required = "Required", @readonly = "readonly" })
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="product_name" class="control-label">Promo</label>
+                                @Html.TextBoxFor(model => model.PROMO, new { @class = "form-control", @readonly = "readonly" })
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="product_name" class="control-label">Promo Value</label>
+                                @Html.TextBoxFor(model => model.VALUE, new { @class = "form-control", placeholder = "Promo Value", Required = "Required", type = "Number" })
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="product_name" class="control-label">Promo Validity Amount</label>
+                                @Html.TextBoxFor(model => model.UNLOCK_AMOUNT, new { @class = "form-control", placeholder = "Unlock Amount", Required = "Required", type = "Number" })
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="product_name" class="control-label">Promo Start Date</label>
+                                @Html.TextBoxFor(model => model.START_DATE, new { @class = "form-control", disabled = "disabled" })
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="product_name" class="control-label">Promo Expiry Date</label>
+                                @Html.TextBoxFor(model => model.EXPIRY_DATE, new { @class = "form-control", disabled = "disabled" })
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="product_name" class="control-label">Promo Active</label>
+                                @{
+    if (Model.IS_ACTIVE == true)
+    {
+        <select name="IS_ACTIVE" class="form-control">
+            <option value="true" selected>Yes</option>
+            <option value="false">No</option>
+        </select>
+    }
+    else
+    {
+        <select name="IS_ACTIVE" class="form-control">
+            <option value="true">Yes</option>
+            <option value="false" selected>No</option>
+        </select>
+    }
+                                }
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="product_name" class="control-label">Promo Used</label>
+                                @{
+    if (Model.IS_USED == true)
+    {
+        <select name="IS_USED" class="form-control">
+            <option value="true" selected>Yes</option>
+            <option value="false">No</option>
+        </select>
+    }
+    else
+    {
+        <select name="IS_USED" class="form-control">
+            <option value="true">Yes</option>
+            <option value="false" selected>No</option>
+        </select>
+    }
+                                }
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="reset" class="btn btn-default" data-dismiss="modal">Reset</button>
+                    <button type="submit" class="btn btn-info">Edit Promo</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

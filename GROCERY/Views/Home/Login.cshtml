@@ -1,0 +1,86 @@
+﻿@{
+    Layout = null;
+}
+
+
+
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>
+        Login | Grocery Store
+    </title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!--webfonts-->
+
+    <link rel="stylesheet" href="~/assets/js/jquery-ui/css/no-theme/jquery-ui-1.10.3.custom.min.css">
+
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:600italic,400,300,600,700" rel="stylesheet" type="text/css" />
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <script src="~/assets/js/jquery-1.11.0.min.js"></script>
+    <style>
+        body {
+            background: #fff no-repeat center fixed;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+            position: relative;
+            font-family: 'Open Sans', sans-serif;
+        }
+        .loginImage {
+            width: 100px;
+            height: 100px;
+            margin-left: 120px;
+            margin-bottom: 30px;
+        }
+    </style>
+
+    <script>
+        $(document).ready(function () {
+            $("#uName").focus(function () {
+                $("#errorLB").text("");
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="container">
+
+        <form method="post" action="~/User/LoginCheck" id="ctl01" style="max-width: 400px; margin: 0 auto">
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <div>
+                <br />
+                <br />
+                <br />
+                <img src="~/assets/images/logo.png" class="loginImage" />
+                <input name="uName" type="text" id="uName" class="form-control" placeholder="user name" style="height:50px;" required/>
+                <span><br/></span>
+                <input name="uPassword" type="password" id="uPassword" class="form-control" placeholder="password" style="height:50px;" required />
+            </div>
+
+            <div class="row">
+                <div class="col-md-12 pull-right">
+                    @{
+
+                        string errorMsg = (string)Session["LoginError"];
+                        <label style="color:red" id="errorLB">@errorMsg</label>
+                        Session["LoginError"] = "";
+                    }
+                    <input type="submit" name="loginBtn" value="LOGIN IN" id="loginBtn" class="btn btn-lg btn-primary btn-block" />
+                </div>
+            </div>
+        </form>
+
+    </div>
+    <!-- /container -->
+
+</body>
+</html>

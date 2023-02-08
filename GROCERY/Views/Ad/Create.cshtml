@@ -1,0 +1,65 @@
+﻿@model GROCERY.Models.AD
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Create</h2>
+<ol class="breadcrumb">
+    <li class="breadcrumb-item">
+        <a href="/Home/Index">Grocery Store</a>
+    </li>
+    <li>Ad Management</li>
+    <li class="breadcrumb-item active">Add Ad</li>
+</ol>
+
+<h2>Advertisement</h2>
+
+@using (Html.BeginForm("Save", "Ad", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+
+    <div class="row">
+        <div class="col-md-12">
+
+            <div class="panel panel-primary" data-collapsed="0">
+
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        Add New Advertisement
+                    </div>
+
+                    <div class="panel-options">
+                        <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                    </div>
+                </div>
+
+
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="product_name" class="control-label">Text</label>
+                                @Html.TextBoxFor(model => model.TEXT, new { @class = "form-control", placeholder = "Text", Required = "Required" })
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="product_name" class="control-label">Text</label>
+                                <input type="file" name="file" id="file" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="reset" class="btn btn-default" data-dismiss="modal">Reset</button>
+                    <button type="submit" class="btn btn-info">Add Ad</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+}

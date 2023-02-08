@@ -1,0 +1,871 @@
+﻿@model GROCERY.Models.PRODUCT
+
+@{
+    ViewBag.Title = "Update Product";
+}
+
+
+<script src="~/assets/js/fileinput.js"></script>
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+
+<script>
+
+    var categoriesList = {};
+    var subCategoriesList = {};
+    var vendorsList = {};
+    var groupsList = {};
+    var flag = true;
+    $(document).ready(function () {
+        initializeCategoriesList();
+        initializeSubCategoriesList();
+
+        initializeGroupsList();
+        //initializeVendorsList();
+
+        initializeProductImage();
+        $("#group_ID").change(function () {
+            $("#cat_ID").empty();
+            populateCategoriesDropDown();
+
+            $("#sub_cat_ID").empty();
+            populateSubCategoriesDropDown();
+        });
+        $("#form-update-product").submit(function (e) {
+            var subCatID = $("#sub_cat_ID").val();
+            if (subCatID == -1) {
+                alert("Please select a Sub-Category.");
+                e.preventDefault();
+            }
+        });
+        $("#cat_ID").change(function () {
+            $("#sub_cat_ID").empty();
+            //$("#sec_A_sub_cat_ID").empty();
+            //$("#sec_B_sub_cat_ID").empty();
+
+            populateSubCategoriesDropDown();
+            //populateAllSubCategoriesDropDown();
+
+
+        });
+    });
+
+    jQuery(window).load(function () {
+        //alert('page is loaded');
+
+        setTimeout(function () {
+            //alert('page is loaded and 1 minute has passed');
+            applyDropDowns();
+        }, 2000);
+
+    });
+
+    function initializeCategoriesList() {
+        $.ajax({
+            type: "GET",
+            url: '/api/Product/Categories',
+            contentType: 'application/json',
+            success: function (result) {
+                categoriesList = jQuery.parseJSON(result);
+                populateCategoriesDropDown();
+            },
+            error: function (res) {
+                alert('failure: ' + res);
+            }
+        });
+    }
+
+    function initializeSubCategoriesList() {
+        $.ajax({
+            type: "GET",
+            url: '/api/Product/SubCategories',
+            contentType: 'application/json',
+            success: function (result) {
+                subCategoriesList = jQuery.parseJSON(result);
+                populateSubCategoriesDropDown();
+                populateAllSubCategoriesDropDown();
+            },
+            error: function (res) {
+                alert('failure: ' + res);
+            }
+        });
+    }
+
+    function initializeVendorsList() {
+        $.ajax({
+            type: "GET",
+            url: '/api/Product/Vendors',
+            contentType: 'application/json',
+            success: function (result) {
+                vendorsList = jQuery.parseJSON(result);
+                populateVendorsDropDown();
+            },
+            error: function (res) {
+                alert('failure: ' + res);
+            }
+        });
+    }
+
+    function populateCategoriesDropDown() {
+        var options = '<option value="-1">Select An Option</option>';
+        var selectedgroupID = $("#group_ID").val();
+        for (i = 0; i < categoriesList.Table.length; i++) {
+            var item = categoriesList.Table[i];
+
+            if (selectedgroupID == item.GROUP_ID)
+                options = options + '<option value="' + item.CATEGORY_ID + '">' + item.DESCRIPTION + '</option>';
+        }
+        $("#cat_ID").html(options);
+    }
+
+    function populateSubCategoriesDropDown() {
+        var options = '<option value="-1">Select An Option</option>';
+        var selectedCatID = $("#cat_ID").val();
+        for (i = 0; i < subCategoriesList.Table.length; i++) {
+            var item = subCategoriesList.Table[i];
+            if (selectedCatID == item.CATEGORY_ID)
+                options = options + '<option value="' + item.SUB_CATEGORY_ID + '">' + item.DESCRIPTION + '</option>';
+        }
+        $("#sub_cat_ID").html(options);
+        //$("#sec_A_sub_cat_ID").html(options);
+        //$("#sec_B_sub_cat_ID").html(options);
+    }
+
+    function populateAllSubCategoriesDropDown() {
+        var options = '<option value="-1">Select An Option</option>';
+        //var selectedCatID = $("#cat_ID").val();
+        for (i = 0; i < subCategoriesList.Table.length; i++) {
+            var item = subCategoriesList.Table[i];
+            //if (selectedCatID == item.CATEGORY_ID)
+            options = options + '<option value="' + item.SUB_CATEGORY_ID + '">' + item.DESCRIPTION + '</option>';
+        }
+        //$("#sub_cat_ID").html(options);
+        $("#sec_A_sub_cat_ID").html(options);
+        $("#sec_B_sub_cat_ID").html(options);
+
+
+    }
+
+    function populateVendorsDropDown() {
+        var options = '<option value="-1">Select An Option</option>';
+        for (i = 0; i < vendorsList.Table.length; i++) {
+            var item = vendorsList.Table[i];
+            options = options + '<option value="' + item.VENDOR_ID + '">' + item.VENDOR_NAME + '</option>';
+        }
+        $("#ven_ID").html(options);
+    }
+
+    function initializeGroupsList() {
+        $.ajax({
+            type: "GET",
+            url: '/api/product/groups',
+            contentType: 'application/json',
+            success: function (result) {
+                groupsList = jQuery.parseJSON(result);
+                populateGroupsDropDown();
+            },
+            error: function (res) {
+                alert('failure: ' + res);
+            }
+        });
+    }
+
+    function populateGroupsDropDown() {
+        var options = '<option value="-1">Select An Option</option>';
+        for (i = 0; i < groupsList.Table.length; i++) {
+            var item = groupsList.Table[i];
+            options = options + '<option value="' + item.GROUP_ID + '">' + item.NAME + '</option>';
+        }
+        $("#group_ID").html(options);
+    }
+
+    //cat list, sub cat list, vendors list
+    function applyDropDowns() {
+        var subCatID = $("#SUB_CATEGORY_ID").val();
+        if (subCatID != "") {
+            var subCatItem = $.grep(subCategoriesList.Table, function (element) {
+                return element.SUB_CATEGORY_ID == subCatID;
+            });
+
+            var catItem = $.grep(categoriesList.Table, function (element) { return element.CATEGORY_ID == subCatItem[0].CATEGORY_ID; });
+
+            $("#group_ID").val(catItem[0].GROUP_ID);
+            populateCategoriesDropDown();
+            $("#cat_ID").val(catItem[0].CATEGORY_ID);
+            populateSubCategoriesDropDown();
+            $("#sub_cat_ID").val(subCatID);
+        }
+
+        var secCatA = $("#SEC_SUB_CATEGORY_A").val();
+        if (secCatA != "" && secCatA != null) {
+            $("#sec_A_sub_cat_ID").val(secCatA);
+        }
+
+        var secCatB = $("#SEC_SUB_CATEGORY_B").val();
+        if (secCatB != "" && secCatB != null) {
+            $("#sec_B_sub_cat_ID").val(secCatB);
+        }
+        //var vendorID = $("#VENDOR_ID").val();
+        //if (vendorID != "")
+        //    $("#ven_ID").val(vendorID);
+
+        $("#SUB_CATEGORY_ID").hide();
+        $("#SEC_SUB_CATEGORY_A").hide();
+        $("#SEC_SUB_CATEGORY_B").hide();
+    }
+
+
+    function initializeProductImage() {
+        var pID = $("#PRODUCT_ID").val();
+        //alert(pID);
+        $.ajax({
+            type: "GET",
+            url: '/api/Product/imgPath?pID=' + pID,
+            contentType: 'application/json',
+            success: function (result) {
+                images = jQuery.parseJSON(result);
+                var len = images.Table.length;
+                if (len != 0) {
+                    var imgSrcNew = images.Table[0].ADMIN_IMAGE_PATH;
+                    //alert(imgSrcNew);
+                    //alert($("#pImageID").attr('src'));
+                    $("#pImageID").attr('src', imgSrcNew);
+                }
+            },
+            error: function (res) {
+                alert('failure: ' + res);
+            }
+        });
+    }
+</script>
+
+<ol class="breadcrumb">
+    <li class="breadcrumb-item">
+        <a href="/Home/Index">Grocery Store</a>
+    </li>
+    <li>Product Management</li>
+    <li class="breadcrumb-item active">Update Product</li>
+</ol>
+
+<h2>Products</h2>
+
+
+<form role="form" action="UploadImage" method="post" id="form-image-product" enctype="multipart/form-data">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-primary" data-collapsed="0">
+
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        Product Image
+@*                        @Model.SEC_SUB_CATEGORY_A*@
+                    </div>
+
+                    <div class="panel-options">
+                        <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                    </div>
+                </div>
+
+
+                <div class="panel-body">
+
+
+                    <div class="row">
+
+                        <div class="col-md-12">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="product_name" class="control-label">Product ID</label>
+                                    @Html.TextBoxFor(model => model.PRODUCT_ID, new { @class = "form-control", @readonly = "readonly" })
+                                </div>
+                                <div>
+                                    <div class="col-md-1"></div>
+
+                                    <div class="col-md-11">
+                                        <div class="fileinput fileinput-new" data-provides="fileinput">
+                                            <div class="fileinput-new thumbnail" style="width: auto; height: auto;" data-trigger="fileinput">
+
+                                            </div>
+                                            <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px"></div>
+                                            <div>
+                                                <span class="btn btn-white btn-file">
+                                                    <span class="fileinput-new">Select File</span>
+                                                    <span class="fileinput-exists">Change</span>
+                                                    <input type="file" id="file" name="file" required />
+                                                </span>
+                                                <a href="#" class="btn btn-orange fileinput-exists" data-dismiss="fileinput">Remove</a>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+
+                            </div>
+
+                            <div class="col-md-6">
+                                    <img src="@ViewBag.Image" id="pImageID" width="200" />
+                            </div>
+                        </div>
+                    </div>
+                    
+
+
+                    <div class="modal-footer">
+                        <button type="reset" class="btn btn-default" data-dismiss="modal">Reset</button>
+                        <button type="submit" class="btn btn-info">Upload</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</form>
+
+<form role="form" action="UploadImageThumbnail" method="post" id="form-image-thumbnail-product" enctype="multipart/form-data">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-primary" data-collapsed="0">
+
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        Product Thumbnail
+                        @*                        @Model.SEC_SUB_CATEGORY_A*@
+                    </div>
+
+                    <div class="panel-options">
+                        <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                    </div>
+                </div>
+
+
+                <div class="panel-body">
+
+
+                    <div class="row">
+
+                        <div class="col-md-12">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="product_name" class="control-label">Product ID</label>
+                                    @Html.TextBoxFor(model => model.PRODUCT_ID, new { @class = "form-control", @readonly = "readonly" })
+                                </div>
+                                <div>
+                                    <div class="col-md-1"></div>
+
+                                    <div class="col-md-11">
+                                        <div class="fileinput fileinput-new" data-provides="fileinput">
+                                            <div class="fileinput-new thumbnail" style="width: auto; height: auto;" data-trigger="fileinput">
+
+                                            </div>
+                                            <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px"></div>
+                                            <div>
+                                                <span class="btn btn-white btn-file">
+                                                    <span class="fileinput-new">Select File</span>
+                                                    <span class="fileinput-exists">Change</span>
+                                                    <input type="file" id="thumbnail" name="thumbnail" required />
+                                                </span>
+                                                <a href="#" class="btn btn-orange fileinput-exists" data-dismiss="fileinput">Remove</a>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+
+                            </div>
+
+                            <div class="col-md-6">
+                                <img src="@ViewBag.Thumbnail" id="pImageThumnailID" width="200" />
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <div class="modal-footer">
+                        <button type="reset" class="btn btn-default" data-dismiss="modal">Reset</button>
+                        <button type="submit" class="btn btn-info">Upload</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</form>
+
+<form role="form" action="updateProduct" method="post" id="form-update-product">
+    <div class="row">
+        <div class="col-md-12">
+
+            <div class="panel panel-primary" data-collapsed="0">
+
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        Update Product
+                    </div>
+
+                    <div class="panel-options">
+                        <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                    </div>
+                </div>
+
+
+                <div class="panel-body">
+
+                    <div class="row">
+                        <div class="col-md-6">
+
+                            <div class="form-group">
+                                <label for="product_name" class="control-label">Product ID</label>
+                                @Html.TextBoxFor(model => model.PRODUCT_ID, new { @class = "form-control", @readonly = "readonly" })
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-6">
+
+                            <div class="form-group">
+                                <label for="product_name" class="control-label">Name</label>
+                                @Html.TextBoxFor(model => model.NAME, new { @class = "form-control", placeholder = "Name", Required = "Required" })
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="product_desc" class="control-label">Description</label>
+                                @Html.TextAreaFor(model => model.DESCRIPTION, new { @class = "form-control", placeholder = "Description" })
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="product_oldId" class="control-label">Old ID</label>
+                                @Html.TextBoxFor(model => model.OLD_PRODUCT_ID, new { @class = "form-control", placeholder = "OLD ID", Type = "Number", Min = "0", @readonly = "readonly" })
+                            </div>
+                        </div>
+                    </div>
+
+
+                    @*<div class="row">
+                            <div class="col-md-6">
+
+                                <div class="form-group">
+                                    <label for="product_cat" class="control-label">Category</label>
+
+                                    <select class="form-control" name="model.Category_ID" id="cat_ID">
+                                        <option value="-1">Select An Option</option>
+                                    </select>
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-6">
+
+                                <div class="form-group">
+                                    <label for="product_sub_cat" class="control-label">Sub Category</label>
+                                    @Html.DropDownListFor(model => model.SUB_CATEGORY_ID, new List<SelectListItem>(), "Select An Option", new { @class = "form-control", @id = "sub_cat_ID" })
+                                </div>
+
+                            </div>
+
+
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+
+                                <div class="form-group">
+                                    <label for="product_vendor" class="control-label">Vendor</label>
+                                    @Html.DropDownListFor(model => model.VENDOR_ID, new List<SelectListItem>(), "Select An Option", new { @class = "form-control", @id = "ven_ID" })
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-6">
+
+                                <div class="form-group">
+                                    <label for="product_status" class="control-label">Product Status</label>
+                                    @{
+                                        List<SelectListItem> listActive = new List<SelectListItem>();
+                                        listActive.Add(new SelectListItem
+                                        {
+                                            Text = "Yes",
+                                            Value = "true",
+                                            Selected = true
+                                        });
+                                        listActive.Add(new SelectListItem
+                                        {
+                                            Text = "No",
+                                            Value = "false"
+                                        });
+                                    }
+                                    @Html.DropDownListFor(model => model.IS_ACTIVE, listActive, null, new { @class = "form-control" })
+                                </div>
+
+                            </div>
+                        </div>
+
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="product_uom" class="control-label">Measurement Unit</label>
+                                    @Html.TextBoxFor(model => model.UNIT_OF_MEASUREMENT, new { @class = "form-control", placeholder = "Unit of Measurement", Type = "Text" })
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="product_avg_cost" class="control-label">AVG Cost</label>
+                                    @Html.TextBoxFor(model => model.AVG_COST, new { @class = "form-control", placeholder = "AVG Cost", Type = "number", Step = "0.1", Min = "0" })
+                                </div>
+                            </div>
+                        </div>*@
+
+                    @*<div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="product_cost" class="control-label">Tag</label>
+                                    @Html.TextBoxFor(model => model.TAGS, new { @class = "form-control", placeholder = "Tags" })
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="product_tax_age" class="control-label">Flavors</label>
+                                    @Html.TextBoxFor(model => model.FLAVORS, new { @class = "form-control", placeholder = "Flavor", Type = "Text" })
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="product_tax_age" class="control-label">Type</label>
+                                    @Html.TextBoxFor(model => model.TYPE, new { @class = "form-control", placeholder = "Type", Type = "Text" })
+                                </div>
+                            </div>
+                        </div>*@
+
+                    @*<div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="product_quantity" class="control-label">Quantity</label>
+                                    @Html.TextBoxFor(model => model.QUANTITY, new { @class = "form-control", placeholder = "Quantity", Type = "Number", Min = "0", Required = "Required" })
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="product_sale_price" class="control-label">Sale Price</label>
+                                    @Html.TextBoxFor(model => model.SALE_PRICE, new { @class = "form-control", placeholder = "Sale Price", Type = "Number", Min = "0" })
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="product_packing" class="control-label">Packing</label>
+                                    @Html.TextBoxFor(model => model.PACKING, new { @class = "form-control", placeholder = "Packing", Type = "Number", Min = "0" })
+                                </div>
+                            </div>
+                        </div>*@
+
+                    @*<div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="product_desc" class="control-label">Description</label>
+                                    @Html.TextAreaFor(model => model.DESCRIPTION, new { @class = "form-control", placeholder = "Description" })
+                                </div>
+                            </div>
+                        </div>*@
+                    <div class="row">
+                        <div class="col-md-12">
+
+                            <div class="form-group">
+                                <label for="product_grp" class="control-label">Group</label>
+
+                                <select class="form-control" name="model.GROUP_ID" id="group_ID">
+                                    <option value="-1">Select An Option</option>
+                                </select>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+
+                            <div class="form-group">
+                                <label for="product_cat" class="control-label">Category</label>
+
+                                <select class="form-control" name="model.Category_ID" id="cat_ID">
+                                    <option value="-1">Select An Option</option>
+                                </select>
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-6">
+
+                            <div class="form-group">
+                                <label for="product_sub_cat" class="control-label">Sub Category</label>
+                                @{
+                                    List<SelectListItem> listItems = new List<SelectListItem>();
+                                }
+                                @Html.DropDownListFor(model => model.SUB_CATEGORY_ID, listItems, "Select An Option", new { @class = "form-control", @id = "sub_cat_ID" })
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="product_sub_cat" class="control-label">Sec. Sub Category A</label>
+                                @{
+                                    List<SelectListItem> sec_A = new List<SelectListItem>();
+                                }
+                                @Html.DropDownListFor(model => model.SEC_SUB_CATEGORY_A, sec_A, "Select An Option", new { @class = "form-control", @id = "sec_A_sub_cat_ID" })
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="product_sub_cat" class="control-label">Sec. Sub Category B</label>
+                                @{
+                                    List<SelectListItem> sec_B = new List<SelectListItem>();
+                                }
+                                @Html.DropDownListFor(model => model.SEC_SUB_CATEGORY_B, sec_B, "Select An Option", new { @class = "form-control", @id = "sec_B_sub_cat_ID" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4">
+
+                            <div class="form-group">
+                                <label for="product_discount_percentage" class="control-label">Discount %</label>
+                                @Html.TextBoxFor(model => model.DISCOUNT_PERCENTAGE, new { @class = "form-control", placeholder = "Discount %", Type = "Number", Min = "0" })
+                            </div>
+
+                        </div>
+                        <div class="col-md-4">
+
+                            <div class="form-group">
+                                <label for="product_featured" class="control-label">Featured</label>
+                                @{
+                                    List<SelectListItem> listFeature = new List<SelectListItem>();
+                                    listFeature.Add(new SelectListItem
+                                    {
+                                        Text = "Yes",
+                                        Value = "true",
+                                        Selected = true
+                                    });
+                                    listFeature.Add(new SelectListItem
+                                    {
+                                        Text = "No",
+                                        Value = "false"
+                                    });
+                                }
+
+                                @Html.DropDownListFor(model => model.IS_FEATURED, listFeature, null, new { @class = "form-control" })
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-4">
+
+                            <div class="form-group">
+                                <label for="product_status" class="control-label">Active Product</label>
+                                @{
+                                    List<SelectListItem> listActive = new List<SelectListItem>();
+                                    listActive.Add(new SelectListItem
+                                    {
+                                        Text = "Yes",
+                                        Value = "true",
+                                        Selected = true
+                                    });
+                                    listActive.Add(new SelectListItem
+                                    {
+                                        Text = "No",
+                                        Value = "false"
+                                    });
+                                }
+                                @Html.DropDownListFor(model => model.IS_ACTIVE, listActive, null, new { @class = "form-control" })
+                            </div>
+
+                        </div>
+                    </div>
+
+                    @*<div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="product_uom" class="control-label">Measurement Unit</label>
+                                    @Html.TextBoxFor(model => model.UNIT_OF_MEASUREMENT, new { @class = "form-control", placeholder = "Unit of Measurement", Type = "Text" })
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="product_avg_cost" class="control-label">AVG Cost</label>
+                                    @Html.TextBoxFor(model => model.AVG_COST, new { @class = "form-control", placeholder = "AVG Cost", Type = "Decimal", Min = "0" })
+                                </div>
+                            </div>
+                        </div>*@
+
+                    <div class="row">
+                        @*<div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="product_uom" class="control-label">Measurement Unit</label>
+                                    @Html.TextBoxFor(model => model.UNIT_OF_MEASUREMENT, new { @class = "form-control", placeholder = "Unit of Measurement", Type = "Text" })
+                                </div>
+                            </div>*@
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="product_oldId" class="control-label">Discount</label>
+                                @Html.TextBoxFor(model => model.DISCOUNT, new { @class = "form-control", placeholder = "Discount", Type = "Number", Min = "0" })
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="product_oldId" class="control-label">Quantity</label>
+                                <input type="text" value="@ViewBag.Quantity" class="form-control" disabled />
+                            </div>
+                        </div>
+
+                        <div class="col-md-6" hidden>
+                            <div class="form-group">
+                                <label for="product_avg_cost" class="control-label">AVG Cost</label>
+                                @Html.TextBoxFor(model => model.AVG_COST, new { @class = "form-control", placeholder = "AVG Cost", Type = "Decimal", Min = "0" })
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="product_cost" class="control-label">Tag</label>
+                                @Html.TextBoxFor(model => model.TAG, new { @class = "form-control", placeholder = "Tags" })
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="product_tax_age" class="control-label">Flavors</label>
+                                @Html.TextBoxFor(model => model.FLAVOR, new { @class = "form-control", placeholder = "Flavor", Type = "Text" })
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="product_tax_age" class="control-label">Type</label>
+                                @Html.TextBoxFor(model => model.TYPES, new { @class = "form-control", placeholder = "Type", Type = "Text" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="product_cost" class="control-label">Color</label>
+                                @Html.TextBoxFor(model => model.COLOR, new { @class = "form-control", placeholder = "red,green.." })
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="product_tax_age" class="control-label">Packing</label>
+                                @Html.TextBoxFor(model => model.PACKING, new { @class = "form-control", placeholder = "Flavor", Type = "Text" })
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="product_tax_age" class="control-label">Brand</label>
+                                @Html.TextBoxFor(model => model.BRAND, new { @class = "form-control", placeholder = "Brand", Type = "Text" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="product_uom" class="control-label">Price</label>
+                                @Html.TextBoxFor(model => model.PRICE, new { @class = "form-control", placeholder = "Price", Type = "Number", Min = "0" })
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="product_barcode" class="control-label">Imported</label>
+                                @{
+                                    List<SelectListItem> listImported = new List<SelectListItem>();
+                                    listImported.Add(new SelectListItem
+                                    {
+                                        Text = "Yes",
+                                        Value = "true",
+                                        Selected = true
+                                    });
+                                    listImported.Add(new SelectListItem
+                                    {
+                                        Text = "No",
+                                        Value = "false"
+                                    });
+                                }
+                                @Html.DropDownListFor(model => model.IMPORTED, listImported, null, new { @class = "form-control" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="product_uom" class="control-label">Threshold</label>
+                                @Html.TextBoxFor(model => model.THRESHOLD, new { @class = "form-control", placeholder = "Threshold", Type = "Number", Min = "0", Required = "Required" })
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="product_barcode" class="control-label">Exempted</label>
+                                @{
+                                    List<SelectListItem> listExempted = new List<SelectListItem>();
+                                    listExempted.Add(new SelectListItem
+                                    {
+                                        Text = "No",
+                                        Value = "false",
+                                        Selected = true
+                                    });
+                                    listExempted.Add(new SelectListItem
+                                    {
+                                        Text = "Yes",
+                                        Value = "true"
+                                    });
+
+                                }
+                                @Html.DropDownListFor(model => model.IS_EXEMPTED, listExempted, null, new { @class = "form-control" })
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    @Html.TextBoxFor(model => model.SUB_CATEGORY_ID, new { @type = "hidden" })
+                    @Html.TextBoxFor(model => model.SEC_SUB_CATEGORY_A, new { @type = "hidden" })
+                    @Html.TextBoxFor(model => model.SEC_SUB_CATEGORY_B, new { @type = "hidden" })
+                    @*@Html.TextBoxFor(model => model.VENDOR_ID, new { @type = "hidden" })*@
+                    <div class="modal-footer">
+                        <button type="reset" class="btn btn-default" data-dismiss="modal">Reset</button>
+                        <button type="submit" class="btn btn-info">Update Product</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</form>

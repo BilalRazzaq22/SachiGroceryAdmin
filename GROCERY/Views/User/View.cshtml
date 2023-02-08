@@ -1,0 +1,187 @@
+﻿@model GROCERY.Models.USER
+
+@{
+    ViewBag.Title = "User View";
+}
+
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+
+
+<script>
+
+    var userTypesList = {};
+
+    $(document).ready(function () {
+
+        jQuery(window).load(function () {
+            //alert('page is loaded');
+
+            setTimeout(function () {
+                //alert('page is loaded and 1 minute has passed');
+                //var userType_ID = $("#USER_TYPE_ID").val();
+                $("#userType_ID").val($("#USER_TYPE").val());
+                $("#USER_TYPE").hide();
+
+                var uTypeID = $("#userType_ID").val();
+                if (uTypeID != 5)
+                    $("#vDetails").hide();
+                else
+                    $("#vDetails").show();
+            }, 600);
+
+        });
+
+        initializeUserTypesList();
+    });
+
+
+    function initializeUserTypesList() {
+        $.ajax({
+            type: "GET",
+            url: '/api/admin/usertypes',
+            contentType: 'application/json',
+            success: function (result) {
+                userTypesList = jQuery.parseJSON(result);
+                populateUserTypesDropDown();
+            },
+            error: function (res) {
+                alert('failure: ' + res);
+            }
+        });
+    }
+
+    function populateUserTypesDropDown() {
+        var options = "";
+        for (i = 0; i < userTypesList.Table.length; i++) {
+            var item = userTypesList.Table[i];
+            options = options + '<option value="' + item.USER_TYPE_ID + '">' + item.DESCRIPTION + '</option>';
+        }
+        $("#userType_ID").html(options);
+    }
+
+</script>
+
+<ol class="breadcrumb">
+    <li class="breadcrumb-item">
+        <a href="/Home/Index">Grocery Store</a>
+    </li>
+    <li>Users Management</li>
+    <li class="breadcrumb-item active">View User</li>
+</ol>
+
+<h2>Users</h2>
+    <div class="row">
+
+        @{
+            var flag = (string)TempData["showSuccessMsg"];
+            if(flag=="addedFlag")
+            {                
+                <div class="col-md-12">
+                    <div class="alert alert-success"><strong>Success!</strong> Following user is successfully addded to system.</div>
+                </div>
+            } else
+            if(flag=="updatedFlag")
+            {                
+                <div class="col-md-12">
+                    <div class="alert alert-success"><strong>Success!</strong> Following user is successfully updated in system.</div>
+                </div>
+            }       
+        }
+
+        <div class="row">
+            <div class="col-md-12">
+                <hr />
+                <div class="panel panel-primary" data-collapsed="0">
+
+                    <div class="panel-heading">
+                        <div class="panel-title">
+                            View User Details
+                        </div>
+
+                        <div class="panel-options">
+                            <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                        </div>
+                    </div>
+
+
+                    <div class="panel-body">
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="user_name" class="control-label">Name</label>
+                                    @Html.TextBoxFor(model => model.USERNAME, new { @class = "form-control", placeholder = "User Name", @readonly = "readonly" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="user_status" class="control-label">Active User</label>
+                                    @{
+                                        List<SelectListItem> listActive = new List<SelectListItem>();
+                                        listActive.Add(new SelectListItem
+                                        {
+                                            Text = "Yes",
+                                            Value = "true",
+                                            Selected = true
+                                        });
+                                        listActive.Add(new SelectListItem
+                                        {
+                                            Text = "No",
+                                            Value = "false"
+                                        });
+                                    }
+                                    @Html.DropDownListFor(model => model.IS_ACTIVE, listActive, null, new { @class = "form-control", @readonly = "readonly" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="user_status" class="control-label">User Type</label>
+                                    @{
+                                        List<SelectListItem> listUserTypes = new List<SelectListItem>();
+                                    }
+                                    @Html.DropDownListFor(model => model.USER_TYPE, listUserTypes, null, new { @class = "form-control", @id = "userType_ID", @readonly = "readonly" })
+                                </div>
+                            </div>
+
+                        </div>
+                        @Html.TextBoxFor(model => model.USER_TYPE, new { @type = "text" })
+
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="user_password" class="control-label">Address</label>
+                                    @Html.TextBoxFor(model => model.ADDRESS, new { @class = "form-control", @placeholder = "Address", @required = "Required", @readonly = "readonly" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row" id="vDetails" hidden>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="user_password" class="control-label">Vehicle Number</label>
+                                    @Html.TextBoxFor(model => model.VEHICLE_NUMBER, new { @class = "form-control", @placeholder = "Vehicle Number", @readonly = "readonly" })
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="user_password" class="control-label">Vehicle Description</label>
+                                    @Html.TextBoxFor(model => model.VEHICLE_DESCRIPTION, new { @class = "form-control", @placeholder = "Vehicle Description", @readonly = "readonly" })
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>

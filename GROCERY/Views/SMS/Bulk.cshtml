@@ -1,0 +1,57 @@
+﻿@model GROCERY.Models.SM 
+@{
+    ViewBag.Title = "Bulk";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $('#countDiv').hide();
+        $('#btnSend').click(function () {
+            debugger;
+            var msg = document.getElementById("textmsg").value;
+            $.ajax({
+                type: "GET",
+               // url: '/api/SMS/SendBulk?msg=' + msg,
+                url: "@Url.Action("SendBulk", "Sms")",
+                data:{"msg" : msg},
+                //data: JSON.stringify(,
+                contentType: 'application/json',
+                success: function (result) {
+                    debugger;
+                    $('#countDiv').show();
+                    $('#countDiv').text('Total ' + result + ' SMS sent');
+                },
+                error: function (res) {
+                    alert('failure: ' + res);
+                }
+            });
+
+        });
+
+
+
+    });
+</script>
+    <h2>Bulk Marketing</h2>
+
+        <div class="row" id="countDiv" style="background-color: cadetblue; color: white; font-weight: bolder; height: 50px;font-size:25px;line-height:2;text-align:center">
+            <div class="col-md-12">
+
+            </div>
+        </div>
+        <div class="row" style="margin :30px 0px;">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label for="product_desc" class="control-label">SMS Marketing !! Send message to all your contacts in one go</label>
+                        @Html.TextAreaFor(model => model.TEXT, new { @class = "form-control" ,style="Height:300px", id="textmsg"})
+                </div>
+            </div>
+        </div>
+
+        <div class="row" style="margin-bottom :30px ;">
+            <div class="col-md-12">
+                <button class="btn btn-lg btn-success" id="btnSend">SEND </button>
+            </div>
+        </div>

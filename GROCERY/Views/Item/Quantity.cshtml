@@ -1,0 +1,116 @@
+﻿@model GROCERY.Models.ProductQuantity
+
+@{
+    ViewBag.Title = "Quantity";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<ol class="breadcrumb">
+    <li class="breadcrumb-item">
+        <a href="/Home/Index">Grocery Store</a>
+    </li>
+    <li>Product Management</li>
+    <li class="breadcrumb-item active">Stock Management</li>
+</ol>
+
+<h2>Manage Product Stock</h2>
+@using (Html.BeginForm("Stock", "Item"))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="row">
+        <div class="col-md-12">
+
+            <div class="panel panel-primary" data-collapsed="0">
+
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        Manage Product Stock
+                    </div>
+
+                    <div class="panel-options">
+                        <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                    </div>
+                </div>
+
+
+
+                <div class="panel-body">
+                    <div class="row">
+                        <table class="table table-striped">
+                            <tr>
+                                <td><div class="col-md-8"><h4><strong>Porduct ID</strong></h4></div></td>
+                                <td><div class="col-md-4"><h4>@Model.item.PRODUCT_ID</h4></div></td>
+                            </tr>
+                            <tr>
+                                <td><div class="col-md-8"><h4><strong>Old Porduct ID</strong></h4></div></td>
+                                <td><div class="col-md-4"><h4>@Model.item.OLD_PRODUCT_ID</h4></div></td>
+                            </tr>
+                            <tr>
+                                <td><div class="col-md-6"><h4><strong>Product Name</strong></h4></div></td>
+                                <td><div class="col-md-6"><h4>@Model.item.NAME</h4></div></td>
+                            </tr>
+                        </table>
+
+
+                    </div>    
+                    @Html.TextBoxFor(x => x.item.OLD_PRODUCT_ID, new { @Hidden="Hidden"})
+                    <table class="table table-responsive table-bordered">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <h4><strong>Branch</strong></h4>
+                                </th>
+                                <th>
+                                    <h4><strong>Quantity</strong></h4>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                foreach (var b in Model.branches)
+                                {
+                                    var stk = Model.stocks.Where(x => x.BRANCH_ID == b.BRANCH_ID); 
+                                    if(stk.Any())
+                                    {
+                                        var qty = (int)Math.Round(stk.First().QTY);
+                                        <tr>
+                                        <td>
+                                            @b.BRANCH_NAME
+                                        </td>
+                                        <td>
+                                            <input type="number" value="@qty" class=" form-control" min="0" id="Branch_@b.BRANCH_ID" name ="Branch_@b.BRANCH_ID" />
+                                        </td>
+                                    </tr>
+                            }
+                                    else
+                                    {
+                                        <tr>
+                                        <td>
+                                            @b.BRANCH_NAME
+                                        </td>
+                                        <td>
+                                            <input type="number" value="0" class="form-control" min="0" id="Branch_@b.BRANCH_ID" name="Branch_@b.BRANCH_ID" />
+                                        </td>
+                                    </tr>
+                                    }
+                                }
+                            }
+
+                        </tbody>
+                    </table>
+
+                   
+
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-info">Update Stock</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "List")
+</div>

@@ -1,0 +1,370 @@
+﻿@model GROCERY.Models.ORDER
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+
+<script>
+
+
+    $(document).ready(function () {
+        $("select[name='rejectionStatus']").change(function () {
+            var rejectionStatus = $("select[name='rejectionStatus']").val();
+            if (rejectionStatus == 0) {
+                $("#REJECTED_REASON").val("");
+                jQuery('#modal-1').modal('show');
+            }
+        });
+
+        $("#mRClose").click(function () {
+
+            jQuery('#modal-1').modal('toggle');
+            $("select[name='rejectionStatus']").val(1);
+            $("#REJECTED_REASON").val("");
+        });
+
+        $("#updateOrderBtn").click(function () {
+
+            var orders = {
+                items: []
+            };
+
+            var flagOK = true;
+
+            $('#tbl-ord tr').each(function () {
+                var pID = parseInt($(this).find("td").eq(0).html());
+                var amountAvailable = parseInt($("#availableQty-" + pID).html());
+                var amountOdering = parseInt($("#orderQty-" + pID).val());
+                var pName = $(this).find("td").eq(1).html() + "";
+                var status = $("#flag-" + pID).val();
+
+                if (amountOdering < 0) {
+                    flagOK = false;
+                    alert("Quantity ordered should be greater than zero where product id is " + pID);
+                }
+                if (amountAvailable < amountOdering) {
+                    flagOK = false;
+                    alert("Quantity ordered is more than available quantity where product id is " + pID);
+                }
+                var newItem = {
+                    "product_id": pID,
+                    "product_name": status == "true" ? pName : "-1",
+                    "amountOrdered": amountOdering
+                };
+                orders.items.push(newItem);
+            });
+            console.log(flagOK);
+            if (flagOK)
+                updateOrders(orders);
+
+        });
+
+    });
+
+    function updateOrders(orders)
+    {
+        var callOrders_new = {
+            CustomerID: $("#CUSTOMER_ID").val(),
+            OrderID: $("#ORDER_ID").val(),
+            CustomerName: $("#NAME").val(),
+            MobileNumber: $("#MOBILE").val(),
+            Address: $("#ADDRESS").val(),
+            cOrders: orders.items
+        };
+
+        $.ajax({
+            url: "@Url.Action("UpdateOrder", "Order")",
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({ custOrd: callOrders_new }),
+            success: function (response) {
+            if (response == "True")
+            {    
+                alert("Order updated successfully.");
+                $("#form-orders").submit();
+            }
+            else
+                alert("Order updating failed. Retry!");
+        }
+        });
+    }
+
+    function removeItem(id) {
+        var element = $("#btn-" + id);
+        element.attr("disabled", "disabled");
+        element.text("Removed");
+        element.attr("class", "btn btn-black btn-xs");
+
+        $("#orderQty-" + id).attr("disabled", "disabled");
+        $("#flag-" + id).val(false);
+    }
+    
+
+    
+</script>
+
+<ol class="breadcrumb">
+    <li class="breadcrumb-item">
+        <a href="/Home/Index">Grocery Store</a>
+    </li>
+    <li>Order Management</li>
+    <li class="breadcrumb-item active">Edit</li>
+</ol>
+
+<h2>Edit Order</h2>
+@{
+    int oID = -1;
+    if(Model == null)
+    {
+        oID = -1;
+
+    }
+    else
+    {
+        oID = Model.ORDER_ID;
+    }
+    if (oID == -1)
+    {
+        using (Html.BeginForm("Edit", "Order"))
+        {
+
+    @Html.AntiForgeryToken()
+    <div class="row">
+        @Html.ValidationSummary(true)
+        <div class="col-md-12">
+
+            <div class="panel panel-primary" data-collapsed="0">
+
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        Search Order
+                    </div>
+
+                    <div class="panel-options">
+                        <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    @{
+                                if (Model == null)
+                                {
+                        <div class="col-md-12">
+                            <div class="alert alert-danger"><strong>Error!</strong> Order you are searching for does not exist.</div>
+                        </div>
+
+                                }
+                                else
+                                {
+                                    if(ViewBag.Status != "")
+                                    {
+                        <div class="col-md-12">
+                            <div class="alert alert-info"><strong>Alert!</strong> @ViewBag.Status</div>
+                        </div>
+                                    }
+                                }
+                    }
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.ORDER_ID, new { @class = "control-label col-md-2" })
+                                @Html.TextBoxFor(model => model.ORDER_ID, new { @class = "form-control", placeholder = "Order Number", type = "number", min = "1", Required = "Required", @Value = "" })
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <button type="submit" class="btn btn-info pull-right" id="btnSearchOrder">Search</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+        }
+    }
+    else
+    {
+        using (Html.BeginForm("Index", "Home", FormMethod.Get, new { @Id="form-orders"}))
+        {
+
+    @Html.AntiForgeryToken()
+    <div class="row">
+        @Html.ValidationSummary(true)
+        <div class="col-md-12">
+
+            <div class="panel panel-primary" data-collapsed="0">
+
+
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        Edit Order
+                    </div>
+
+                    <div class="panel-options">
+                        <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.ORDER_ID, new { @class = "control-label col-md-2" })
+                                @Html.TextBoxFor(model => model.ORDER_ID, new { @class = "form-control", placeholder = "Order Number", type = "number", min = "1", Required = "Required", @Readonly = "Readonly" })
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <div class="form-group">
+                                    <label class="control-label col-md-2">Rejected</label>
+                                    @{
+            if (Model.IS_ACTIVE == 0)
+            {
+                                        <select class="form-control" name="rejectionStatus">
+                                            <option value="0" selected>Yes</option>
+                                            <option value="1">No</option>
+                                        </select>
+            }
+            else if (Model.IS_ACTIVE == 1)
+            {
+                                        <select class="form-control" name="rejectionStatus">
+                                            <option value="0">Yes</option>
+                                            <option value="1" selected>No</option>
+                                        </select>
+            }
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.CUSTOMER_ID, new { @class = "control-label col-md-2" })
+                                @Html.TextBoxFor(model => model.CUSTOMER_ID, new { @class = "form-control", @readonly = "readonly" })
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.MOBILE, new { @class = "control-label col-md-2" })
+                                @Html.TextBoxFor(model => model.MOBILE, new { @class = "form-control", placeholder = "Mobile Number", Required = "Required" })
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-4">
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.NAME, new { @class = "control-label col-md-2" })
+                                @Html.TextBoxFor(model => model.NAME, new { @class = "form-control", placeholder = "Customer Name", Required = "Required" })
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.ADDRESS, new { @class = "control-label col-md-2" })
+                                @Html.TextAreaFor(model => model.ADDRESS, new { @class = "form-control", placeholder = "Address", Required = "Required" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <h2>Order Details</h2>
+
+                    <table class="table table-bordered datatable" >
+                        <thead>
+                            <tr>
+                                <th>Product ID</th>
+                                <th>Name</th>
+                                <th>Qty Available</th>
+                                <th>Qty Ordered</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbl-ord">
+                            @{
+            var list = ViewBag.oDetails;
+            foreach (var item in list)
+            {
+                                <tr>
+                                    <td>@item.product_id</td>
+                                    <td>@item.product_name</td>
+                                    <td id="availableQty-@item.product_id">@item.availableQty</td>
+                                    <td><input type=number value="@item.amountOrdered" id="orderQty-@item.product_id" min=0 required /></td>
+                                    <td><input type="hidden" value="true" id="flag-@item.product_id" /> <button class="btn-default btn-xs btn-red" type="button" id="btn-@item.product_id" onclick="removeItem(@item.product_id)">Remove</button></td>
+                                </tr>
+            }
+                            }
+                            </tbody>
+<tfoot>
+                            <tr>
+                                <th>Product ID</th>
+                                <th>Name</th>
+                                <th>Qty Available</th>
+                                <th>Qty Ordered</th>
+                                <th>Action</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+
+                    <input type="button" value="Submit" id="updateOrderBtn" class="btn btn-info pull-right"/>
+
+
+                </div>
+
+
+
+            </div>
+            
+
+        </div>
+    </div>
+        }
+
+
+    }
+}
+
+
+<div class="modal fade" id="modal-1" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h4 class="modal-title">Rejection Details</h4>
+            </div>
+            <form action="/Order/Update" method="post">
+                <div class="modal-body">
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.ORDER_ID, new { @class = "control-label col-md-2" })
+                                @Html.TextBoxFor(model => model.ORDER_ID, new { @class = "form-control", @Readonly = "Readonly" })
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.REJECTED_REASON, new { @class = "control-label col-md-2" })
+                                @Html.TextAreaFor(model => model.REJECTED_REASON, new { @class = "form-control", placeholder = "Rejection Reason", Required = "Required", @Value = "" })
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" id="mRClose">Close</button>
+                    <button type="submit" class="btn btn-info">Reject Order</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

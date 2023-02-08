@@ -1,0 +1,99 @@
+﻿@model GROCERY.Models.BRANCH
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Edit</h2>
+
+@using (Html.BeginForm("Edit", "Branch"))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="row">
+        <div class="col-md-12">
+
+            <div class="panel panel-primary" data-collapsed="0">
+
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        Update Branch
+                    </div>
+
+                    <div class="panel-options">
+                        <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                    </div>
+                </div>
+
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="product_desc" class="control-label">Branch</label>
+                                @Html.DropDownListFor(model => model.BRANCH_ID, ViewBag.BranchList as SelectList, new { @class = "form-control", @readonly = "true" })
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="product_oldId" class="control-label">Latitude</label>
+                                @Html.TextBoxFor(model => model.LATITUDE, new { @class = "form-control", placeholder = "LATITUDE" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="product_desc" class="control-label">Longitude</label>
+                                @Html.TextBoxFor(model => model.LONGITUDE, new { @class = "form-control", placeholder = "LONGITUDE" })
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="product_desc" class="control-label">Phone</label>
+                                @Html.TextBoxFor(model => model.PHONE, new { @class = "form-control", placeholder = "PHONE" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="product_oldId" class="control-label">Is Active</label>
+                                @{
+                                    List<SelectListItem> listActive = new List<SelectListItem>();
+                                    listActive.Add(new SelectListItem
+                                    {
+                                        Text = "Yes",
+                                        Value = "true",
+                                        Selected = true
+                                    });
+                                    listActive.Add(new SelectListItem
+                                    {
+                                        Text = "No",
+                                        Value = "false"
+                                    });
+                                }
+                                @Html.DropDownListFor(model => model.IS_ACTIVE, listActive, null, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="product_oldId" class="control-label">Address</label>
+                                @Html.TextAreaFor(model => model.ADDRESS, new { @class = "form-control", placeholder = "ADDRESS" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-info">Update Branch</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

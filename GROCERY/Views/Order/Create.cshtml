@@ -1,0 +1,1444 @@
+﻿@model GROCERY.Models.ORDER
+
+@{
+    ViewBag.Title = "On Call Orders";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+
+<style>
+    .headingbackcolor {
+        background: lightseagreen;
+    }
+
+    #myInput {
+        background-position: 10px 12px; /* Position the search icon */
+        background-repeat: no-repeat; /* Do not repeat the icon image */
+        width: 100%; /* Full-width */
+        font-size: 16px; /* Increase font-size */
+        padding: 6px 2px 2px 2px; /* Add some padding */
+        border: 1px solid #ddd; /* Add a grey border */
+        margin-bottom: 12px; /* Add some space below the input */
+    }
+
+    #myTable {
+        border-collapse: collapse; /* Collapse borders */
+        width: 100%; /* Full-width */
+        border: 1px solid #ddd; /* Add a grey border */
+        font-size: 14px; /* Increase font-size */
+    }
+
+        #myTable th, #myTable td {
+            text-align: left; /* Left-align text */
+            padding: 2px; /* Add padding */
+        }
+
+        #myTable tr {
+            /* Add a bottom border to all table rows */
+            border-bottom: 1px solid #ddd;
+        }
+
+            #myTable tr.header, #myTable tr:hover {
+                /* Add a grey background color to the table header and on hover */
+                background-color: #f1f1f1;
+            }
+</style>
+<script type="text/javascript">
+    //$(".form_datetime").datetimepicker({ format: 'yyyy-mm-dd hh:ii' });
+</script>
+<script>
+    //$(function () {
+    //    $('#datetimepicker1').datetimepicker({
+    //        language: 'pt-BR'
+    //    });
+    //});
+
+    function resetIt() {
+        $("#table-11-div").show();
+        $("#product-all").hide();
+    }
+    function searchIt() {
+
+        var input = document.getElementById("myInput").value;
+        if (input.length == 0)
+            return;
+
+        var scID = -1;
+        var bID = $("#userBranch").val();
+        $.ajax({
+            type: "GET",
+            url: '/api/product/searchit?scID=' + scID + '&bID=' + bID + '&key=' + escape(input),
+            contentType: 'application/json',
+            success: function (result) {
+                products = jQuery.parseJSON(result);
+                populateProductsTable();
+            },
+            error: function (res) {
+                alert('failure: ' + res);
+            }
+        });
+
+        //// Declare variables
+
+        //var input, filter, table, tr, td, i;
+        //input = document.getElementById("myInput");
+        //if (input.value.length == 0)
+        //    return;
+        //filter = input.value.toUpperCase();
+        //if (filter == "" || filter == null)
+        //    return;
+
+        //table = document.getElementById("product-all");
+        //tr = table.getElementsByTagName("tr");
+
+        //$("#product-all").show();
+        //$("#table-11-div").hide();
+
+        //// Loop through all table rows, and hide those who don't match the search query
+
+        //var filterArray = filter.split(" ");
+
+        //if (filterArray.length == 1) {
+        //    for (i = 0; i < tr.length; i++) {
+        //        td = tr[i].getElementsByTagName("td")[1];
+
+        //        if (td) {
+
+        //            if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+        //                tr[i].style.display = "";
+        //            } else {
+        //                tr[i].style.display = "none";
+        //            }
+        //        }
+        //    }
+        //} else {
+        //    for (i = 0; i < tr.length; i++) {
+        //        td = tr[i].getElementsByTagName("td")[1];
+
+
+        //        var re1 = new RegExp(filterArray[0], 'gi');
+        //        var re2 = new RegExp(filterArray[1], 'gi');
+
+        //        if (td) {
+        //            var str = td.innerHTML;
+
+        //            var res1 = str.match(re1);
+        //            var res2 = str.match(re2);
+        //            if (res1) {
+        //                if (res2) {
+        //                    tr[i].style.display = "";
+        //                }
+        //                else {
+        //                    tr[i].style.display = "none";
+        //                }
+        //            } else {
+        //                tr[i].style.display = "none";
+        //            }
+        //        }
+        //    }
+        //}
+    }
+</script>
+
+<script>
+    var tempAmount = 1;
+    var categoriesList = {};
+    var subCategoriesList = {};
+
+    var products = {};
+    var branches = {};
+
+    var orders = {
+        items: []
+    };
+
+    $(document).ready(function () {
+        
+        $(".txtManualDiscount").val(0);
+        
+        $("#txtCouponDisc").val(0);
+        $("#myInput").keypress(function (e) {
+            if (e.which == 13) {
+                searchIt();
+            }
+        });
+
+        $(".txtManualDiscount").blur(function (e) {
+
+            var ele = document.getElementById("txtTotalSum");
+            var sum = 0;
+
+            for (i2 = 0; i2 < orders.items.length; i2++) {
+                var oItm = orders.items[i2];
+                sum = sum + oItm.total;
+            }
+
+            ele.value = sum - $(".txtManualDiscount").val() - $("#txtCouponDisc").val();
+
+        });
+
+        $("#txtCouponCode").blur(function (e) {
+            var code = $("#txtCouponCode").val();
+            $.ajax({
+                type: "GET",
+                url: '/api/admin/couponInfo?code=' + code,
+                contentType: 'application/json',
+                success: function (result) {
+                    var coupon = jQuery.parseJSON(result);
+                    $('#modal-2').modal('show');
+                    if (coupon.Table.length != 0)
+                    {
+                        $("#txtCouponId").val(code);
+                        $("#txtUnlock").val(coupon.Table[0].UNLOCK_AMOUNT);
+                        $("#txtCouponValue").val(coupon.Table[0].VALUE);
+                        $("#txtCouponDisc").val(coupon.Table[0].VALUE);
+                        $("#txtCouponMsg").val('Coupon is Valid ');
+
+                        var ele = document.getElementById("txtTotalSum");
+                        var sum = 0;
+
+                        for (i2 = 0; i2 < orders.items.length; i2++) {
+                            var oItm = orders.items[i2];
+                            sum = sum + oItm.total;
+                        }
+
+                        ele.value = sum - $(".txtManualDiscount").val() - $("#txtCouponDisc").val();
+                        
+                    }
+                    else
+                    {
+                        $("#txtCouponId").val(code);
+                        $("#txtUnlock").val('N/A');
+                        $("#txtCouponValue").val(0);
+                        $("#txtCouponDisc").val(0);
+                        $("#txtCouponMsg").val('Coupon is used already/or invalid code');
+
+                        var ele = document.getElementById("txtTotalSum");
+                        var sum = 0;
+
+                        for (i2 = 0; i2 < orders.items.length; i2++) {
+                            var oItm = orders.items[i2];
+                            sum = sum + oItm.total;
+                        }
+
+                        ele.value = sum - $(".txtManualDiscount").val() - $("#txtCouponDisc").val();
+                    }
+
+                },
+                error: function (res) {
+                    alert('failure: ' + res);
+                }
+            });
+            
+
+        });
+        
+        var sum = 0;
+        $("#cat_ID").change(function () {
+            $("#sub_cat_ID").empty();
+            populateSubCategoriesDropDown();
+        });
+        $("#group_ID").change(function () {
+            $("#cat_ID").empty();
+            populateCategoriesDropDown();
+
+            $("#sub_cat_ID").empty();
+            populateSubCategoriesDropDown();
+        });
+
+        $("#cat_ID").change(function () {
+            $("#sub_cat_ID").empty();
+            populateSubCategoriesDropDown();
+        });
+
+        $("#userBranch").change(function () {
+            var selectedCatID = $("#cat_ID").val();
+            var selectedSubCatID = $("#sub_cat_ID").val();
+            var BranchID = $("#userBranch").val();
+            if (BranchID == -1) {
+                alert("Please select a Branch");
+            }
+            else {
+                initializeProductsList(-1, BranchID);
+                //initializeProductsList2(-1, BranchID);
+
+            }
+        });
+        $("#prevAddress").change(function () {
+            var BranchID = $("#prevAddress").val();
+            if (BranchID != -1) {
+                $("#ADDRESS").val($("#prevAddress option:selected").text());
+            }
+        });
+
+        $("#sub_cat_ID").change(function () {
+            var selectedCatID = $("#cat_ID").val();
+            var selectedSubCatID = $("#sub_cat_ID").val();
+            var BranchID = $("#userBranch").val();
+            if (selectedCatID == -1 || selectedSubCatID == -1)
+                alert("Please select a sub category.");
+            else
+                initializeProductsList(selectedSubCatID, BranchID);
+        });
+
+        $("#MOBILE").blur(function () {
+            mobNum = $("#MOBILE").val();
+            if (mobNum != "") {
+                checkCustomerExistence(mobNum);
+            }
+        });
+
+
+        $("#btnGenerateOrder").click(function (event) {
+
+            var mobNum = $("#MOBILE").val();
+            if (mobNum.length != 12) {
+                alert('Mobile number must have 12 characters');
+                return;
+            }
+            var str = mobNum.substring(0, 2);
+            if (str != "92") {
+                alert('Mobile number must start with 92');
+                return;
+            }
+
+            var CustomerName = $("#NAME").val();
+            var MobileNumber = $("#MOBILE").val();
+            var Address = $("#ADDRESS").val();
+            var BranchID = $("#userBranch").val();
+            var PaymentMode = $("#paymentMode").val();
+            var Package = $("#ddlpackage").val();
+            var DeliveryDescription = $("#DELIVERY_DESCRIPTION").val();
+            var DeliveryTime = $("#txtDeliveryTime").val();
+            var extraDisc = $("#MANUAL_DISCOUNT").val();
+            var coupon = $("#txtCouponCode").val();
+            var couponDisc = $("#txtCouponDisc").val();
+            if (CustomerName == "")
+                alert("Customer Name is required.");
+            else
+                if (MobileNumber == "")
+                    alert("Customer Mobile Numbar is required.");
+                else
+                    if (Address == "")
+                        alert("Customer Address is required.");
+                    else
+                        if (BranchID == -1)
+                            alert("Branch is required.");
+                        else
+                            if (orders.items.length <= 0)
+                                alert("Please Create Order.");
+                            else
+                                if (PaymentMode == -1)
+                                    alert("Please Select Mode.");
+                                else
+                                    if (Package == -1)
+                                        alert("Please Select Package Type.");
+                                else
+                                    generateOrder();
+
+        });
+
+        initializeBranchesList();
+        initializePaymentModes();
+        populatePackage();
+        
+    });
+
+
+
+    function initializeCategoriesList() {
+        $.ajax({
+            type: "GET",
+            url: '/api/product/categories',
+            contentType: 'application/json',
+            success: function (result) {
+                categoriesList = jQuery.parseJSON(result);
+                populateCategoriesDropDown();
+            },
+            error: function (res) {
+                alert('failure: ' + res);
+            }
+        });
+    }
+
+    function initializeSubCategoriesList() {
+        $.ajax({
+            type: "GET",
+            url: '/api/product/subcategories',
+            contentType: 'application/json',
+            success: function (result) {
+                subCategoriesList = jQuery.parseJSON(result);
+                populateSubCategoriesDropDown();
+            },
+            error: function (res) {
+                alert('failure: ' + res);
+            }
+        });
+    }
+    function initializeProductsList2(scID, bID) {
+        $.ajax({
+            type: "GET",
+            url: '/api/product/ProductsQ?scID=' + scID + '&bID=' + bID,
+            contentType: 'application/json',
+            success: function (result) {
+                products = jQuery.parseJSON(result);
+                //populateProductsTable();
+            },
+            error: function (res) {
+                console.log(res);
+                alert('failure: ' + res);
+            }
+        });
+
+    }
+    function initializeProductsList(scID, bID) {
+        $.ajax({
+            type: "GET",
+            url: '/api/product/ProductsBarCodes?scID=' + scID + '&bID=' + bID,
+            contentType: 'application/json',
+            success: function (result) {
+
+                products = jQuery.parseJSON(result);
+                populateProductsTable();
+            },
+            error: function (res) {
+                console.log(res);
+                alert('failure: ' + res);
+            }
+        });
+    }
+
+
+
+    function initializeGroupsList() {
+        $.ajax({
+            type: "GET",
+            url: '/api/product/groups',
+            contentType: 'application/json',
+            success: function (result) {
+                groupsList = jQuery.parseJSON(result);
+                populateGroupsDropDown();
+            },
+            error: function (res) {
+                alert('failure: ' + res);
+            }
+        });
+    }
+    function checkCustomerExistence(mobileNumber) {
+        $.ajax({
+            type: "GET",
+            url: '/api/admin/customercheck?mobNo=' + mobileNumber,
+            contentType: 'application/json',
+            success: function (result) {
+                if (jQuery.parseJSON(result).Table.length > 0) {
+                    var customer = jQuery.parseJSON(result).Table[0];
+                    $("#CUSTOMER_ID").val(customer.USER_ID);
+                    $("#MOBILE").val(customer.MOBILE_NO);
+                    $("#NAME").val(customer.USERNAME);
+                    $("#ADDRESS").val(customer.ADDRESS);
+                    $("#userBranch").val(customer.BRANCH_ID);
+                    initializePrevAddress(customer.USER_ID);
+                    initializeProductsList(-1, customer.BRANCH_ID);
+                    //initializeProductsList2(-1, customer.BRANCH_ID);
+                }
+                else {
+                    $("#CUSTOMER_ID").val("");
+                    $("#NAME").val("");
+                    $("#ADDRESS").val("");
+                    $("#DELIVERY_DESCRIPTION").val("");
+                    initializeBranchesList();
+                    initializePrevAddress(0);
+                }
+            },
+            error: function (res) {
+                alert('failure: ' + res);
+            }
+        });
+    }
+
+    function populateGroupsDropDown() {
+        var options = '<option value="-1">---Select an option---</option>';
+        for (i = 0; i < groupsList.Table.length; i++) {
+            var item = groupsList.Table[i];
+            options = options + '<option value="' + item.GROUP_ID + '">' + item.NAME + '</option>';
+        }
+        $("#group_ID").html(options);
+    }
+
+    function populateCategoriesDropDown() {
+        var options = '<option value="-1">---Select an option---</option>';
+        var selectedgroupID = $("#group_ID").val();
+        for (i = 0; i < categoriesList.Table.length; i++) {
+            var item = categoriesList.Table[i];
+            if (selectedgroupID == item.GROUP_ID)
+                options = options + '<option value="' + item.CATEGORY_ID + '">' + item.DESCRIPTION + '</option>';
+        }
+        $("#cat_ID").html(options);
+    }
+
+    function populateSubCategoriesDropDown() {
+        var options = '<option value="-1">---Select an option---</option>';
+        var selectedCatID = $("#cat_ID").val();
+        for (i = 0; i < subCategoriesList.Table.length; i++) {
+            var item = subCategoriesList.Table[i];
+            if (selectedCatID == item.CATEGORY_ID)
+                options = options + '<option value="' + item.SUB_CATEGORY_ID + '">' + item.DESCRIPTION + '</option>';
+        }
+        $("#sub_cat_ID").html(options);
+    }
+
+
+    function populateProductsTable() {
+        if ($.fn.DataTable.isDataTable('#table-11')) {
+            $('#table-11').DataTable().destroy();
+        }
+
+        var rows = '';
+        //id="rid_' + item.BAR_CODE + '"
+        for (i = 0; i < products.Table.length; i++) {
+            var item = products.Table[i];
+            if(item.AVAILABLE == "NO" && item.IS_EXEMPTED == 0)
+            {
+                rows = rows + '<tr style="background-color : darkgrey"><td>' + item.PRODUCT_ID + '-' + item.BAR_CODE + '</td><td>' + item.PRODUCT_DESCRIPTION + '</td><td>'
+
+                + item.PRICE + '</td><td>'
+                + item.DISCOUNT + '</td><td>'
+                + '<input type=number placeholder="Qty Order" name="oAmtInp" value = 1 min= 1 id = "orderAmount-' + item.PRODUCT_ID + item.BAR_CODE + '" onblur=myfunction(this.value) /></td><td>'
+                + '<button type="button" class="btn btn-green" onclick=addToList(' + item.PRODUCT_ID + item.BAR_CODE + ')>Add</button></td><td>'
+                + '<button type="button" class="btn btn-white" onclick=showDetails(' + item.PRODUCT_ID + ')>Details</button></td></tr>';
+            }
+            else
+            {
+                rows = rows + '<tr ><td>' + item.PRODUCT_ID + '-' + item.BAR_CODE + '</td><td>' + item.PRODUCT_DESCRIPTION + '</td><td>'
+
+                + item.PRICE + '</td><td>'
+                + item.DISCOUNT + '</td><td>'
+                + '<input type=number placeholder="Qty Order" name="oAmtInp" value = 1 min= 1 id = "orderAmount-' + item.PRODUCT_ID + item.BAR_CODE + '" onblur=myfunction(this.value) /></td><td>'
+                + '<button type="button" class="btn btn-green" onclick=addToList(' + item.PRODUCT_ID + item.BAR_CODE + ')>Add</button></td><td>'
+                + '<button type="button" class="btn btn-white" onclick=showDetails(' + item.PRODUCT_ID + ')>Details</button></td></tr>';
+            }
+        }
+
+        $("#productsTable").html(rows);
+
+        $("#productsTable1").html(rows);
+
+        $("#searchBtn-div").show();
+
+        loadDT();
+
+    }
+    function myfunction(amt) {
+        tempAmount = amt;
+    }
+    function addToList(id) {
+
+        var amountOrdered = tempAmount;
+        tempAmount = 1;
+        var bID = parseInt($("#userBranch").val());
+        if (amountOrdered == null || amountOrdered == "")
+            alert("Please enter order quantity.");
+        else {
+            for (i = 0; i < products.Table.length; i++) {
+                var item = products.Table[i];
+                if (item.PRODUCT_ID + '' + item.BAR_CODE == id) {
+
+                    debugger;
+                    var bool = true;
+                    for (i1 = 0; i1 < orders.items.length; i1++) {
+                        var oItem = orders.items[i1];
+                        if (oItem.barcode == item.BAR_CODE) {
+                            debugger;
+                            orders.items[i1].amountOrdered = parseInt(orders.items[i1].amountOrdered) + parseInt(amountOrdered);
+                            orders.items[i1].total = orders.items[i1].amountOrdered * (orders.items[i1].price - item.DISCOUNT);
+                            bool = false;
+                        }
+                    }
+
+                    if (bool) {
+                        debugger;
+                        var newItem = {
+                            "product_id": item.PRODUCT_ID,
+                            "product_name": item.PRODUCT_DESCRIPTION,
+                            "amountOrdered": amountOrdered,
+                            "price": item.PRICE,
+                            "total": (item.PRICE - item.DISCOUNT) * amountOrdered,
+                            "discount": item.DISCOUNT,
+                            "barcode": item.BAR_CODE
+                        };
+
+
+                        orders.items.push(newItem);
+                    }
+                    var ordRows = '';
+
+
+                    var ele = document.getElementById("txtTotalSum");
+                    var sum = 0;
+
+                    for (i2 = 0; i2 < orders.items.length; i2++) {
+                        var oItm = orders.items[i2];
+                        sum = sum + oItm.total;
+                        ordRows = ordRows + '<tr><td>' + oItm.product_id + '-' + oItm.barcode + '</td><td>' +
+                            oItm.product_name + '</td><td><input type=number value=' + oItm.amountOrdered + ' id = updateOrderedAmount-' + ' class = quantity' +
+                            oItm.barcode + ' onblur=addToListUpdated(this.value,' + oItm.product_id + oItm.barcode + ') min=0 /></td><td>' + oItm.price + '</td><td>' +
+                            oItm.discount + '</td><td>' + oItm.total + '</td><td><button type="button" class="btn btn-small btn-red" onClick=removeFromList(' + oItm.barcode + ') >Remove</button></td></tr>';
+                    }
+
+                    ele.value = sum - $(".txtManualDiscount").val() - $("#txtCouponDisc").val();
+                    $("#ordersCart").html(ordRows);
+                }
+            }
+        }
+
+        $('input[name=oAmtInp]').val(1);
+    }
+
+
+    //function addToListUpdated(amt, id) {
+    //    var amountOrdered = amt;
+
+    //    if (amountOrdered == null || amountOrdered == "")
+    //        alert("Please enter order quantity.");
+    //    else {
+    //        for (i = 0; i < products.Table.length; i++) {
+    //            var item = products.Table[i];
+    //            if (item.PRODUCT_ID+''+item.BAR_CODE == id) {
+    //                //var q = item.QUANTITY;
+    //                var bool = true;
+
+    //                for (i1 = 0; i1 < orders.items.length; i1++) {
+    //                    var oItem = orders.items[i1];
+    //                    if (oItem.barcode == item.BAR_CODE) {
+    //                        orders.items[i1].amountOrdered = parseInt(amountOrdered);
+    //                        orders.items[i1].total = orders.items[i1].amountOrdered * orders.items[i1].price;
+    //                        bool = false;
+    //                    }
+    //                }
+
+
+    //                if (bool) {
+    //                    var newItem = {
+    //                        "product_id": item.PRODUCT_ID,
+    //                        "product_name": item.PRODUCT_DESCRIPTION,
+    //                        "amountOrdered": amountOrdered,
+    //                        "price": item.PRICE,
+    //                        "total": item.PRICE * amountOrdered,
+    //                        "discount": item.DISCOUNT,
+    //                        "barcode" : item.BAR_CODE
+    //                    };
+    //                    orders.items.push(newItem);
+    //                }
+    //                var ordRows = '';
+    //                var ele = document.getElementById("txtTotalSum");
+    //                var sum = 0;
+    //                for (i2 = 0; i2 < orders.items.length; i2++) {
+    //                    var oItm = orders.items[i2];
+    //                    sum = sum + oItm.total;
+    //                    ordRows = ordRows + '<tr><td>' + oItm.product_id + '-' + oItm.barcode + '</td><td>' + oItm.product_name +
+    //                        '</td><td><input type=number value=' + oItm.amountOrdered + ' id = updateOrderedAmount-' + oItm.barcode +
+    //                        ' onblur=addToListUpdated(this.value,' + oItm.product_id + oItm.barcode + ') min = 0/></td><td>' + oItm.price + '</td><td>' + oItm.discount +
+    //                        '</td><td>' + oItm.total + '</td><td><button type="button" class="btn btn-small btn-red" onClick=removeFromList(' + oItm.barcode + ') >Remove</button></td></tr>';
+    //                }
+    //                ele.value = sum - $(".txtManualDiscount").val();
+    //                $("#ordersCart").html(ordRows);
+    //            }
+    //        }
+    //    }
+    //}
+    function addToListUpdated(amt, id) {
+        var amountOrdered = amt;
+
+        if (amountOrdered == null || amountOrdered == "")
+            alert("Please enter order quantity.");
+        else {
+            //var q = item.QUANTITY;
+            for (i1 = 0; i1 < orders.items.length; i1++) {
+                var oItem = orders.items[i1];
+                if (oItem.product_id + '' + oItem.barcode == id) {
+
+                    orders.items[i1].amountOrdered = parseInt(amountOrdered);
+                    orders.items[i1].total = orders.items[i1].amountOrdered * (orders.items[i1].price - orders.items[i1].discount);
+
+                }
+            }
+
+
+            var ordRows = '';
+            var ele = document.getElementById("txtTotalSum");
+            var sum1 = 0;
+            for (i2 = 0; i2 < orders.items.length; i2++) {
+                var oItm = orders.items[i2];
+                sum1 = sum1 + oItm.total;
+                ordRows = ordRows + '<tr><td>' + oItm.product_id + '-' + oItm.barcode + '</td><td>' + oItm.product_name +
+                    '</td><td><input type=number value=' + oItm.amountOrdered + ' id = updateOrderedAmount-' + oItm.barcode +
+                    ' onblur=addToListUpdated(this.value,' + oItm.product_id + '' + oItm.barcode + ') min = 0/></td><td>' + oItm.price + '</td><td>' + oItm.discount +
+                    '</td><td>' + oItm.total + '</td><td><button type="button" class="btn btn-small btn-red" onClick=removeFromList(' + oItm.barcode + ') >Remove</button></td></tr>';
+            }
+            debugger;
+            ele.value = sum1 - $(".txtManualDiscount").val() - $("#txtCouponDisc").val();
+            $("#ordersCart").html(ordRows);
+        }
+    }
+
+
+    function showDetails(pID) {
+        var bID = $("#userBranch").val();
+        $.ajax({
+            type: "GET",
+            url: '/api/Product/Details?pID=' + pID + '&bID=' + bID,
+            contentType: 'application/json',
+            success: function (result) {
+                document.getElementById("txtName").value = result.PRODUCTS[0].NAME;
+                document.getElementById("txtPrice").value = result.PRODUCTS[0].PRICE;
+
+
+                if (result.PRODUCTS[0].ADMIN_IMAGE_PATH == "" || result.PRODUCTS[0].ADMIN_IMAGE_PATH == null)
+                    document.getElementById("imgProduct").src = "../../Product_Images/default.jpg";
+                else
+                    document.getElementById("imgProduct").src = result.PRODUCTS[0].ADMIN_IMAGE_PATH;
+
+                $('#modal-1').modal('show');
+            },
+            error: function (res) {
+                alert('failure: ' + res);
+            }
+        });
+    }
+    function getName(pID) {
+        var p_name = "";
+        $.ajax({
+            type: "GET",
+            url: '/api/Product/Name?pID=' + pID,
+            contentType: 'application/json',
+            success: function (result) {
+                p_name = result;
+            },
+            error: function (res) {
+                alert('failure: ' + res);
+            }
+        });
+
+        return p_name;
+    }
+
+    function closemodal() {
+        $('#modal-1').modal('hide');
+    }
+    function closemodal2() {
+        $('#modal-2').modal('hide');
+    }
+
+    /*function updateStock(pID, amtOrd, bID) {
+        $.ajax({
+            type: "GET",
+            url: '/api/Order/UpdateStock?pID=' + pID + '&amountOrdered=' + amtOrd + '&bID=' + bID,
+            contentType: 'application/json',
+            success: function (result) {
+                var selectedCatID = $("#cat_ID").val();
+                var selectedSubCatID = $("#sub_cat_ID").val();
+                //$("#productsTable").html('');
+                //initializeProductsList(selectedSubCatID, bID);
+            },
+            error: function (res) {
+                alert('failure: ' + res);
+            }
+        });
+    }*/
+
+    function generateOrder() {
+        var callOrders_new = {
+            CustomerName: $("#NAME").val(),
+            MobileNumber: $("#MOBILE").val(),
+            Address: $("#ADDRESS").val(),
+            BranchID: $("#userBranch").val(),
+            PaymentMode: $("#paymentMode").val(),
+            DeliveryDescription: $("#DELIVERY_DESCRIPTION").val(),
+            Package: $("#ddlpackage").val(),
+            DeliveryTime: $("#txtDeliveryTime").val(),
+            extraDisc: $("#MANUAL_DISCOUNT").val(),
+            coupon: $("#txtCouponCode").val(),
+            couponDisc: $("#txtCouponDisc").val(),
+            totalAmount: $("#txtTotalSum").val(),
+            cOrders: orders.items
+        };
+        debugger;
+        $.ajax({
+            url: "@Url.Action("ProcessOrder", "Order")",
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({ custOrd: callOrders_new }),
+            success: function (response) {
+                if (response == "True") {
+                    alert("Order created successfully.");
+                    $("#form-orders").submit();
+                }
+                else
+                    alert("Order Creation failed. Retry!");
+            }
+        });
+    }
+
+
+    function populateBranchesDropDown() {
+        var options = "";
+        options = options + '<option value="' + -1 + '"> Please Select </option>';
+        for (i = 0; i < branches.Table.length; i++) {
+            var item = branches.Table[i];
+            options = options + '<option value="' + item.BRANCH_ID + '">' + item.BRANCH_NAME + '</option>';
+        }
+        $("#userBranch").html(options);
+    }
+    function populatePaymentModes() {
+        var options = "";
+        //options = options + '<option value="' + -1 + '"> Please Select </option>';
+        for (i = 0; i < modes.Table.length; i++) {
+            var item = modes.Table[i];
+            options = options + '<option value="' + item.PAYMENT_MODE_ID + '">' + item.DESCRIPTION + '</option>';
+        }
+        $("#paymentMode").html(options);
+    }
+    function populatePackage() {
+        var options = "";
+        //options = options + '<option value="' + -1 + '"> Please Select </option>';
+        options = options + '<option value="' + 0 + '"> No </option>';
+        options = options + '<option value="' + 1 + '"> Yes </option>';
+        
+
+        $("#ddlpackage").html(options);
+    }
+    
+    function populatePrevAddress() {
+        var options = "";
+        options = options + '<option value="' + -1 + '"> Please Select </option>';
+        for (i = 0; i < modes.Table.length; i++) {
+            var item = modes.Table[i];
+            options = options + '<option value="' + item.USER_ADDRESS_ID + '">' + item.ADDRESS + '</option>';
+        }
+        $("#prevAddress").html(options);
+    }
+    function initializeBranchesList() {
+        $.ajax({
+            type: "GET",
+            url: '/api/admin/branches',
+            contentType: 'application/json',
+            success: function (result) {
+                branches = jQuery.parseJSON(result);
+                populateBranchesDropDown();
+            },
+            error: function (res) {
+                alert('failure: ' + res);
+            }
+        });
+    }
+
+    function initializePaymentModes() {
+        $.ajax({
+            type: "GET",
+            url: '/api/admin/modes',
+            contentType: 'application/json',
+            success: function (result) {
+                modes = jQuery.parseJSON(result);
+                populatePaymentModes();
+            },
+            error: function (res) {
+                alert('failure: ' + res);
+            }
+        });
+    }
+    function initializePrevAddress(userId) {
+        $.ajax({
+            type: "GET",
+            url: '/api/admin/PrevAddress?userId=' + userId,
+            contentType: 'application/json',
+            success: function (result) {
+                modes = jQuery.parseJSON(result);
+                populatePrevAddress();
+            },
+            error: function (res) {
+                alert('failure: ' + res);
+            }
+        });
+    }
+
+    function removeFromList(id) {
+        var r = confirm("Are you sure you want to delete this item?? Press OK if Yes otherwise Cancel!");
+        if (r == true) {
+            var updatedOrderItems = {
+                items: []
+            };
+            for (i = 0; i < orders.items.length; i++) {
+                var item = orders.items[i];
+
+                if (item.barcode != id) {
+                    updatedOrderItems.items.push(item);
+                }
+            }
+            orders = updatedOrderItems;
+            var ordRows = '';
+
+
+            var ele = document.getElementById("txtTotalSum");
+            var sum = 0;
+
+            for (i2 = 0; i2 < orders.items.length; i2++) {
+                var oItm = orders.items[i2];
+                // alert(oItm.amountOrdered);
+                sum = sum + oItm.total;
+                ordRows = ordRows + '<tr><td>' + oItm.product_id + '-' + oItm.barcode + '</td><td>' +
+                    oItm.product_name + '</td><td><input type=number value=' + oItm.amountOrdered + ' id = updateOrderedAmount-' +
+                    oItm.barcode + ' onblur=addToListUpdated(this.value,' + oItm.product_id + oItm.barcode + ') min=0 /></td><td>' + oItm.price + '</td><td>' +
+                    oItm.discount + '</td><td>' + oItm.total + '</td><td><button type="button" class="btn btn-small btn-red" onClick=removeFromList(' + oItm.barcode + ') >Remove</button></td></tr>';
+            }
+
+            ele.value = sum - $(".txtManualDiscount").val() -$("#txtCouponDisc").val();
+            $("#ordersCart").html(ordRows);
+        }
+    }
+</script>
+
+<ol class="breadcrumb" style="display:none">
+    <li clas
+        s="breadcrumb-item">
+        <a href="/Home/Index">Grocery Store</a>
+    </li>
+    <li>Order Management</li>
+    <li class="breadcrumb-item active">On Call Order(s)</li>
+</ol>
+
+<h2>Create Order</h2>
+
+@using (Html.BeginForm("List", "Order", FormMethod.Post, new { id = "form-orders" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="row">
+        @Html.ValidationSummary(true)
+        <div class="col-md-12">
+
+            <div class="panel panel-primary" data-collapsed="0">
+
+                <div class="panel-heading headingbackcolor" style="background:lightseagreen;color:white;font-size:large">
+                    <div class="panel-title">
+                        Add Customer Information
+                    </div>
+
+                    <div class="panel-options">
+                        <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                    </div>
+                </div>
+
+
+                <div class="panel-body">
+
+                    <div class="row">
+                        <div class="col-md-3">
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.CUSTOMER_ID, new { @class = "control-label col-md-2" })
+                                @Html.TextBoxFor(model => model.CUSTOMER_ID, new { @class = "form-control", @readonly = "readonly" })
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.MOBILE, new { @class = "control-label col-md-2" })
+                                @Html.TextBoxFor(model => model.MOBILE, new { @class = "form-control", placeholder = "Mobile Number", Required = "Required" })
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-3">
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.NAME, new { @class = "control-label col-md-2" })
+                                @Html.TextBoxFor(model => model.NAME, new { @class = "form-control", placeholder = "Customer Name", Required = "Required" })
+                            </div>
+
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="user_status" class="control-label">Branch</label>
+                                <select name="BRANCH_ID" id="userBranch" class="form-control"></select>
+                            </div>
+                        </div>
+
+
+
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.ADDRESS, new { @class = "control-label col-md-2" })
+                                @Html.TextAreaFor(model => model.ADDRESS, new { @class = "form-control", placeholder = "Address", Required = "Required" })
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="user_status" class="control-label">Prev. Address</label>
+                                <select name="USER_ID" id="prevAddress" class="form-control"></select>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                    <div class="row" style="display:none">
+                        <div class="col-md-4">
+
+                            <div class="form-group">
+                                <label for="product_grp" class="control-label">Group</label>
+
+                                <select class="form-control" name="model.GROUP_ID" id="group_ID">
+                                    <option value="-1">Select An Option</option>
+                                </select>
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-4">
+
+                            <div class="form-group">
+                                <label for="product_cat" class="control-label">Category</label>
+
+                                <select class="form-control" name="Category_ID" id="cat_ID">
+                                    <option value="-1">Select An Option</option>
+                                </select>
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-4">
+
+                            <div class="form-group">
+                                <label for="product_sub_cat" class="control-label">Sub Category</label>
+                                <select class="form-control" name="Sub_Category_ID" id="sub_cat_ID">
+                                    <option value="-1">Select An Option</option>
+                                </select>
+                            </div>
+
+                        </div>
+
+
+                    </div>
+                </div>
+
+            </div>
+
+
+        </div>
+
+        <div class="col-md-12">
+
+            <div class="panel panel-primary" data-collapsed="0">
+
+                <div class="panel-heading headingbackcolor" style="background: lightseagreen; color: white; font-size: large">
+                    <div class="panel-title">
+                        Products
+                    </div>
+
+                    <div class="panel-options">
+                        <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                    </div>
+                </div>
+
+
+                <div class="panel-body">
+                    <div class="row" id="searchBtn-div" hidden>
+                        <div class="col-md-8"><input type="text" id="myInput" placeholder="Search for products.."></div>
+                        @*<div class="col-md-2"><button type="button" onclick="searchIt()" class="btn btn-info" > Search </button></div>*@
+                        <div class="col-md-2"><button type="button" onclick="resetIt()" class="btn btn-default"> Reset </button></div>
+                    </div>
+
+
+                    <table class="table table-bordered table-responsive" id="product-all" hidden>
+
+                        <thead>
+                            <tr class="header">
+                                <th>Product ID - Bar Code</th>
+                                <th>Description</th>
+                                @*<th>Bar Code</th>*@
+                                @*<th>Qty In Stock</th>*@
+                                @*<th>Unit/Packing</th>*@
+                                <th>Price</th>
+                                <th>Discount</th>
+                                <th>Qty Ordered</th>
+                                <th>Order</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="productsTable1"></tbody>
+                        <tfoot>
+                            <tr>
+                                <th>Product ID - Bar Code</th>
+                                <th>Description</th>
+                                @*<th>Bar Code</th>*@
+                                @*<th>Qty In Stock</th>*@
+                                @*<th>Unit/Packing</th>*@
+                                <th>Price</th>
+                                <th>Discount</th>
+                                <th>Qty Ordered</th>
+                                <th>Order</th>
+                                <th>Action</th>
+                            </tr>
+                        </tfoot>
+
+                    </table>
+
+
+                    <div id="table-11-div">
+                        <table class="table table-bordered datatable" id="table-11" hidden>
+                            <thead>
+                                <tr>
+                                    <th>Product ID - Bar Code</th>
+                                    <th>Description</th>
+                                    @*<th>Bar Code</th>*@
+                                    @*<th>Qty In Stock</th>*@
+                                    @*<th>Unit/Packing</th>*@
+                                    <th>Price</th>
+                                    <th>Discount</th>
+                                    <th>Qty Ordered</th>
+                                    <th>Order</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="productsTable"></tbody>
+                            <tfoot>
+                                <tr>
+                                    <th>Product ID - BAR CODE</th>
+                                    <th>Description</th>
+                                    @*<th>Bar Code</th>*@
+                                    @*                                    <th>Qty In Stock</th>*@
+                                    @*<th>Unit/Packing</th>*@
+                                    <th>Price</th>
+                                    <th>Discount</th>
+                                    <th>Qty Ordered</th>
+                                    <th>Order</th>
+                                    <th>Action</th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+
+                    <script type="text/javascript">
+                        var responsiveHelper;
+                        var breakpointDefinition = {
+                            tablet: 1024,
+                            phone: 480
+                        };
+                        var tableContainer = null;
+
+                        function loadDT() {
+                            tableContainer = $("#table-11");
+
+                            tableContainer.show();
+
+                            tableContainer.dataTable({
+                                "sPaginationType": "bootstrap",
+                                "aLengthMenu": [[30, 100, 300, -1], [30, 100, 300, "All"]],
+                                "bStateSave": true,
+
+
+                                // Responsive Settings
+                                bAutoWidth: false,
+                                fnPreDrawCallback: function () {
+                                    // Initialize the responsive datatables helper once.
+                                    if (!responsiveHelper) {
+                                        responsiveHelper = new ResponsiveDatatablesHelper(tableContainer, breakpointDefinition);
+                                    }
+                                },
+                                fnRowCallback: function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+                                    responsiveHelper.createExpandIcon(nRow);
+                                },
+                                fnDrawCallback: function (oSettings) {
+                                    responsiveHelper.respond();
+                                }
+                            });
+
+                        }
+                    </script>
+
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-md-12">
+
+            <div class="panel panel-primary" data-collapsed="0">
+
+                <div class="panel-heading headingbackcolor" style="background: lightseagreen;color:white; font-size: large">
+                    <div class="panel-title">
+                        Customer Order
+                    </div>
+
+                    <div class="panel-options">
+                        <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                    </div>
+                </div>
+
+
+                <div class="panel-body">
+
+                    <table class="table table-bordered " id="table-12">
+                        <thead>
+                            <tr>
+                                <th>Product ID - BAR CODE</th>
+                                <th>Name</th>
+                                <th>Qty Ordered</th>
+                                <th>Price</th>
+                                <th>Discount</th>
+                                <th>Total</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ordersCart"></tbody>
+                        <tfoot>
+                            <tr>
+                                <th>Product ID - BAR CODE</th>
+                                <th>Name</th>
+                                <th>Qty Ordered</th>
+                                <th>Price</th>
+                                <th>Discount</th>
+                                <th>Total</th>
+                                <th>Action</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="user_status" class="control-label">Payment Mode</label>
+                                <select name="PAYMENT_MODE_ID" id="paymentMode" class="form-control"></select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="user_status" class="control-label">Delivery Message</label>
+                                @Html.TextAreaFor(model => model.DELIVERY_DESCRIPTION, new { @class = "form-control", placeholder = "Delivery Message" })
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="user_status" class="control-label">Delivery Time</label>
+                                <input type="datetime-local" id="txtDeliveryTime" class="form-control">
+                                @*@Html.TextAreaFor(model => model.DELIVERY_TIME, new { @class = "form-control ",  placeholder = "" , })*@
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="user_status" class="control-label">Package</label>
+                                <select name="IS_PACKAGE" id="ddlpackage" class="form-control"></select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="user_status" class="control-label">Coupon</label>
+                                @Html.TextBoxFor(model => model.COUPON_ID, new { @class = "form-control", placeholder = "Coupon", type = "text" ,id="txtCouponCode"})
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="user_status" class="control-label">Coupon Discount</label>
+                                @Html.TextBoxFor(model => model.COUPON_DISCOUNT, new { @class = "form-control", placeholder = "Coupon Discount", type = "Number", id = "txtCouponDisc", @readonly = "readonly", value = 0 })
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="user_status" class="control-label">Extra Discount</label>
+                                @Html.TextBoxFor(model => model.MANUAL_DISCOUNT, new { @class = "form-control txtManualDiscount", placeholder = "Discount", type = "Number", value = "0" })
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="user_status" class="control-label">Total Bill</label>
+                                <input type="text" id="txtTotalSum" class="form-control" value="0" readonly />
+
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-info" id="btnGenerateOrder">Generate</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+
+    </div>
+
+}
+
+<div class="modal fade" id="modal-1" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h4 class="modal-title">Product Detail</h4>
+            </div>
+            <form action="#" method="post">
+                <div class="modal-body">
+
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <img src="" alt="product image" width="200px" height="150px" id="imgProduct" />
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="product_name" class="control-label">Product ID</label>
+                                <input class="form-control"
+                                       id="txtName"
+                                       name="txtName"
+                                       type="text"
+                                       value="" disabled />
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="form-group">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="product_name" class="control-label">Price</label>
+                                <input class="form-control"
+                                       id="txtPrice"
+                                       name="txtPrice"
+                                       type="text"
+                                       value="" disabled />
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="mRClose" onclick="closemodal()">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-2" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h4 class="modal-title">Coupon Detail</h4>
+            </div>
+            <form action="#" method="post">
+                <div class="modal-body">
+                    
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="product_name" class="control-label">Coupon ID</label>
+                                <input class="form-control"
+                                       id="txtCouponId"
+                                       name="txtCouponId"
+                                       type="text"
+                                       value="" disabled />
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="product_name" class="control-label">Unlock Amount</label>
+                                <input class="form-control"
+                                       id="txtUnlock"
+                                       name="txtUnlock"
+                                       type="text"
+                                       value="" disabled />
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="product_name" class="control-label">Discount</label>
+                                <input class="form-control"
+                                       id="txtCouponValue"
+                                       name="txtCouponValue"
+                                       type="text"
+                                       value="" disabled />
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-2">
+                            <div class="form-group">
+
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                
+                                <input class="form-control"
+                                       id="txtCouponMsg"
+                                       name="txtCouponMsg"
+                                       type="text"
+                                       value="" disabled />
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                            </div>
+                        </div>
+
+                    </div>
+
+
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="mRClose2" onclick="closemodal2()">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Imported styles on this page -->
+<link rel="stylesheet" href="~/assets/js/datatables/responsive/css/datatables.responsive.css">
+<link rel="stylesheet" href="~/assets/js/select2/select2-bootstrap.css">
+<link rel="stylesheet" href="~/assets/js/select2/select2.css">
+<!-- Bottom scripts (common) -->
+<script src="~/assets/js/jquery.dataTables.min.js"></script>
+<script src="~/assets/js/datatables/TableTools.min.js"></script>
+
+<!-- Imported scripts on this page -->
+<script src="~/assets/js/dataTables.bootstrap.js"></script>
+<script src="~/assets/js/datatables/jquery.dataTables.columnFilter.js"></script>
+<script src="~/assets/js/datatables/lodash.min.js"></script>
+<script src="~/assets/js/datatables/responsive/js/datatables.responsive.js"></script>
+
+

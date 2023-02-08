@@ -1,0 +1,1193 @@
+﻿@model GROCERY.Models.ORDER
+
+@{
+    ViewBag.Title = "View";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>View</h2>
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+
+<script>
+    var tempAmount = 1;
+    var categoriesList = {};
+    var subCategoriesList = {};
+
+    var products = {};
+    var branches = {};
+
+    var orders = {
+        items: []
+    };
+    jQuery(window).load(function () {
+        //    alert('page is loaded');
+        orders.items = @Html.Raw(Json.Encode(ViewBag.oDetails));
+        var ordRows = '';
+
+        var ele = document.getElementById("txtTotalSum");
+        var sum = 0;
+
+        for (i2 = 0; i2 < orders.items.length; i2++) {
+            var oItm = orders.items[i2];
+            sum = sum + oItm.total;
+            ordRows = ordRows + '<tr><td>' + oItm.product_id + '-' + oItm.barcode + '</td><td>' +
+                oItm.product_name + '</td><td><input type=number class=quantity value=' + oItm.amountOrdered + ' id = updateOrderedAmount-' +
+                oItm.barcode + ' onblur=addToListUpdated(this.value,' + oItm.product_id + oItm.barcode + ') min=0 /></td><td>' + oItm.price + '</td><td>' +
+                oItm.disc + '</td><td>' + oItm.total + '</td><td><button type="button" class="btn btn-small btn-red" onClick=removeFromList(' + oItm.barcode + ') >Remove</button></td></tr>';
+        }
+        debugger;
+        ele.value = sum - $(".txtManualDiscount").val() - $("#txtCouponDisc").val();
+        $("#tbl-ord").html(ordRows);
+    });
+
+    $(document).ready(function () {
+        debugger;
+        $(".txtManualDiscount").val(@ViewBag.Discount);
+        $("#txtCouponDisc").val(@ViewBag.CPNDiscount);
+
+        $("#txtCouponCode").blur(function (e) {
+            var code = $("#txtCouponCode").val();
+            $.ajax({
+                type: "GET",
+                url: '/api/admin/couponInfo?code=' + code,
+                contentType: 'application/json',
+                success: function (result) {
+                    var coupon = jQuery.parseJSON(result);
+                    $('#modal-2').modal('show');
+                    if (coupon.Table.length != 0)
+                    {
+                        $("#txtCouponId").val(code);
+                        $("#txtUnlock").val(coupon.Table[0].UNLOCK_AMOUNT);
+                        $("#txtCouponValue").val(coupon.Table[0].VALUE);
+                        $("#txtCouponDisc").val(coupon.Table[0].VALUE);
+                        $("#txtCouponMsg").val('Coupon is Valid ');
+
+                        var ele = document.getElementById("txtTotalSum");
+                        var sum = 0;
+
+                        for (i2 = 0; i2 < orders.items.length; i2++) {
+                            var oItm = orders.items[i2];
+                            sum = sum + oItm.total;
+                        }
+
+                        ele.value = sum - $(".txtManualDiscount").val() - $("#txtCouponDisc").val();
+
+                    }
+                    else
+                    {
+                        $("#txtCouponId").val(code);
+                        $("#txtUnlock").val('N/A');
+                        $("#txtCouponValue").val(0);
+                        $("#txtCouponDisc").val(0);
+                        $("#txtCouponMsg").val('Coupon is used already/or invalid code');
+
+                        var ele = document.getElementById("txtTotalSum");
+                        var sum = 0;
+
+                        for (i2 = 0; i2 < orders.items.length; i2++) {
+                            var oItm = orders.items[i2];
+                            sum = sum + oItm.total;
+                        }
+
+                        ele.value = sum - $(".txtManualDiscount").val() - $("#txtCouponDisc").val();
+                    }
+
+                },
+                error: function (res) {
+                    alert('failure: ' + res);
+                }
+            });
+
+
+        });
+        $('.quantity').keypress(function(){
+            alert('hi');
+        });
+        $(".txtManualDiscount").blur(function (e) {
+            //debugger;
+
+            var ele = document.getElementById("txtTotalSum");
+            var sum = 0;
+
+            for (i2 = 0; i2 < orders.items.length; i2++) {
+                var oItm = orders.items[i2];
+                sum = sum + oItm.total;
+            }
+
+            ele.value = sum - $(".txtManualDiscount").val()- $("#txtCouponDisc").val();
+
+        });
+
+        initializeProductsList(-1, @ViewBag.BranchId);
+        initializePaymentModes();
+        populatePackage();
+        debugger;
+        //$("#txtDeliveryTime").val(@ViewBag.Time);
+
+        //$("#ddlpackage").val(@ViewBag.Package);
+
+
+        $('#divProducts').hide();
+        $("select[name='rejectionStatus']").change(function () {
+            var rejectionStatus = $("select[name='rejectionStatus']").val();
+            if (rejectionStatus == 0) {
+                $("#REJECTED_REASON").val("");
+                jQuery('#modal-1').modal('show');
+            }
+        });
+
+        $("#mRClose").click(function () {
+
+            jQuery('#modal-1').modal('toggle');
+            $("select[name='rejectionStatus']").val(1);
+            $("#REJECTED_REASON").val("");
+        });
+        //$("#addOrderBtn").click(function () {
+        //    $('#divProducts').show();
+
+        //});
+        //$("#updateOrderBtn").click(function () {
+
+        //    var orders = {
+        //        items: []
+        //    };
+
+        //    var flagOK = true;
+
+        //    $('#tbl-ord tr').each(function () {
+        //        var ID = ($(this).find("td").eq(0).html());
+        //        var res = ID.split("-");
+        //        var amountOdering = $("#updateOrderedAmount-" + res[1]).val();
+        //        var pName = $(this).find("td").eq(1).html() + "";
+
+
+
+        //        console.log(amountOdering);
+        //        if (amountOdering < 0) {
+        //            flagOK = false;
+        //            alert("Quantity ordered should be greater than zero where barcode is " + ID);
+        //        }
+        //        var newItem = {
+        //            "product_id": parseInt(res[0]),
+        //            "barcode": res[1],
+        //            "product_name": pName,
+        //            "amountOrdered": amountOdering
+        //        };
+        //        orders.items.push(newItem);
+        //        console.log(orders);
+        //    });
+        //    if (flagOK)
+        //        updateOrders(orders);
+
+        //});
+
+        $("#myInput").keypress(function (e) {
+            if (e.which == 13) {
+                searchIt();//alert('You pressed enter!');
+            }
+        });
+
+        var sum = 0;
+
+        $("#btnGenerateOrder").click(function (event) {
+            var CustomerName = $("#NAME").val();
+            var MobileNumber = $("#MOBILE").val();
+            var Address = $("#ADDRESS").val();
+            var BranchID = @ViewBag.BranchId;
+            var PaymentMode = $("#paymentMode").val();
+            var DeliveryDescription = $("#DELIVERY_DESCRIPTION").val();
+            var extraDisc = $("#MANUAL_DISCOUNT").val();
+            if (CustomerName == "")
+                alert("Customer Name is required.");
+            else
+                if (MobileNumber == "")
+                    alert("Customer Mobile Numbar is required.");
+                else
+                    if (Address == "")
+                        alert("Customer Address is required.");
+                    else
+                        if (BranchID == -1)
+                            alert("Branch is required.");
+                        else
+                            if (orders.items.length <= 0)
+                                alert("Please Create Order.");
+                            else
+                                if (PaymentMode == -1)
+                                    alert("Please Select Mode.");
+                                else
+                                    generateOrder();
+
+        });
+
+    });
+    function initializePaymentModes() {
+        $.ajax({
+            type: "GET",
+            url: '/api/admin/modes',
+            contentType: 'application/json',
+            success: function (result) {
+                modes = jQuery.parseJSON(result);
+                populatePaymentModes();
+            },
+            error: function (res) {
+                alert('failure: ' + res);
+            }
+        });
+    }
+    function populatePackage() {
+        var options = "";
+        var chk = @ViewBag.Package;
+        if(chk ==0)
+        {
+            options = options + '<option selected value="' + 0 + '"> No </option>';
+            options = options + '<option value="' + 1 + '"> Yes </option>';
+
+        }
+        else
+        {
+            options = options + '<option value="' + 0 + '"> No </option>';
+            options = options + '<option selected value="' + 1 + '"> Yes </option>';
+
+        }
+
+
+        $("#ddlpackage").html(options);
+    }
+    function initializeProductsList(scID, bID) {
+        $.ajax({
+            type: "GET",
+            url: '/api/product/ProductsBarCodes?scID=' + scID + '&bID=' + bID,
+            contentType: 'application/json',
+            success: function (result) {
+                if ($.fn.DataTable.isDataTable('#table-11')) {
+                    $('#table-11').DataTable().destroy();
+                }
+
+                products = jQuery.parseJSON(result);
+                populateProductsTable();
+            },
+            error: function (res) {
+                console.log(res);
+                alert('failure: ' + res);
+            }
+        });
+    }
+
+    function populatePaymentModes() {
+        var options = "";
+        debugger;
+        var chk = @ViewBag.PaymentMode;
+        //options = options + '<option value="' + -1 + '"> Please Select </option>';
+        for (i = 0; i < modes.Table.length; i++) {
+
+            var item = modes.Table[i];
+
+            if(i+1 == chk)
+                options = options + '<option selected value="' + item.PAYMENT_MODE_ID + '">' + item.DESCRIPTION + '</option>';
+            else
+                options = options + '<option value="' + item.PAYMENT_MODE_ID + '">' + item.DESCRIPTION + '</option>';
+        }
+        $("#paymentMode").html(options);
+    }
+    function populateProductsTable() {
+        if ($.fn.DataTable.isDataTable('#table-11')) {
+            $('#table-11').DataTable().destroy();
+        }
+
+        var rows = '';
+        //id="rid_' + item.BAR_CODE + '"
+        for (i = 0; i < products.Table.length; i++) {
+            var item = products.Table[i];
+            rows = rows + '<tr ><td>' + item.PRODUCT_ID + '-' + item.BAR_CODE + '</td><td>' + item.PRODUCT_DESCRIPTION + '</td><td>'
+                //+ item.BAR_CODE + '</td><td>'
+                //+ item.QUANTITY + '</td><td>'
+                + item.UNIT + '</td><td>'
+                + item.PRICE + '</td><td>'
+                + item.DISCOUNT + '</td><td>'
+                + '<input type=number placeholder="Qty Order" name="oAmtInp" value = 1 min= 1 id = "orderAmount-' +item.PRODUCT_ID + item.BAR_CODE + '" onblur=myfunction(this.value) /></td><td>'
+                + '<button type="button" class="btn btn-green" onclick=addToList(' + item.PRODUCT_ID + item.BAR_CODE + ')>Add</button></td><td>'
+                + '<button type="button" class="btn btn-white" onclick=showDetails(' + item.PRODUCT_ID + ')>Details</button></td></tr>';
+        }
+
+        $("#productsTable").html(rows);
+
+        $("#productsTable1").html(rows);
+
+        $("#searchBtn-div").show();
+
+        loadDT();
+
+    }
+    function myfunction(amt) {
+        tempAmount = amt;
+    }
+    function addToList(id) {
+
+        var amountOrdered = tempAmount;
+        tempAmount = 1;
+        //var bID = parseInt($("#userBranch").val());
+        var bID = @ViewBag.BranchId;
+        if (amountOrdered == null || amountOrdered == "")
+            alert("Please enter order quantity.");
+        else {
+            for (i = 0; i < products.Table.length; i++) {
+                var item = products.Table[i];
+                if (item.PRODUCT_ID+''+item.BAR_CODE == id) {
+
+                    //var q = item.QUANTITY;
+                    var bool = true;
+                    for (i1 = 0; i1 < orders.items.length; i1++) {
+                        var oItem = orders.items[i1];
+                        console.log(oItem);
+                        if (oItem.barcode == item.BAR_CODE) {
+                            orders.items[i1].amountOrdered = parseInt(orders.items[i1].amountOrdered) + parseInt(amountOrdered);
+                            orders.items[i1].total = orders.items[i1].amountOrdered * (orders.items[i1].price - orders.items[i1].disc);
+                            bool = false;
+                        }
+                    }
+                    if (bool) {
+                        var newItem = {
+                            "product_id": item.PRODUCT_ID,
+                            "product_name": item.PRODUCT_DESCRIPTION,
+                            "amountOrdered": amountOrdered,
+                            "price": item.PRICE,
+                            "total": (item.PRICE - item.DISCOUNT) * amountOrdered,
+                            "disc": item.DISCOUNT,
+                            "barcode": item.BAR_CODE
+                        };
+
+                        orders.items.push(newItem);
+                    }
+                    var ordRows = '';
+
+                    var ele = document.getElementById("txtTotalSum");
+                    var sum = 0;
+
+                    for (i2 = 0; i2 < orders.items.length; i2++) {
+                        var oItm = orders.items[i2];
+                        sum = sum + oItm.total;
+                        ordRows = ordRows + '<tr><td>' +oItm.product_id + '-' + oItm.barcode + '</td><td>' +
+                            oItm.product_name + '</td><td><input type=number class=quantity value=' + oItm.amountOrdered + ' id = updateOrderedAmount-'+
+                            oItm.barcode + ' onblur=addToListUpdated(this.value,' + oItm.product_id + oItm.barcode + ') min=0 /></td><td>' + oItm.price + '</td><td>' +
+                            oItm.disc + '</td><td>' + oItm.total + '</td><td><button type="button" class="btn btn-small btn-red" onClick=removeFromList(' + oItm.barcode + ') >Remove</button></td></tr>';
+                    }
+                    ele.value = sum - $(".txtManualDiscount").val() - $("#txtCouponDisc").val();
+                    $("#tbl-ord").html(ordRows);
+                }
+            }
+        }
+
+        $('input[name=oAmtInp]').val(1);
+    }
+
+
+    function addToListUpdated(amt, id) {
+        var amountOrdered = amt;
+
+        if (amountOrdered == null || amountOrdered == "")
+            alert("Please enter order quantity.");
+        else {
+            //var q = item.QUANTITY;
+            for (i1 = 0; i1 < orders.items.length; i1++) {
+                var oItem = orders.items[i1];
+                if (oItem.product_id + '' + oItem.barcode == id) {
+                    orders.items[i1].amountOrdered = parseInt(amountOrdered);
+                    orders.items[i1].total = orders.items[i1].amountOrdered * (orders.items[i1].price - orders.items[i1].disc);
+                }
+            }
+
+
+            var ordRows = '';
+            var ele = document.getElementById("txtTotalSum");
+            var sum = 0;
+            for (i2 = 0; i2 < orders.items.length; i2++) {
+                var oItm = orders.items[i2];
+                sum = sum + oItm.total;
+                ordRows = ordRows + '<tr><td>' + oItm.product_id + '-' + oItm.barcode + '</td><td>' + oItm.product_name +
+                    '</td><td><input type=number value=' + oItm.amountOrdered + ' id = updateOrderedAmount-' + oItm.barcode +
+                    ' onblur=addToListUpdated(this.value,' + oItm.product_id + '' + oItm.barcode + ') min = 0/></td><td>' + oItm.price + '</td><td>' + oItm.disc +
+                    '</td><td>' + oItm.total + '</td><td><button type="button" class="btn btn-small btn-red" onClick=removeFromList(' + oItm.barcode + ') >Remove</button></td></tr>';
+            }
+            ele.value = sum - $(".txtManualDiscount").val()- $("#txtCouponDisc").val();
+            $("#tbl-ord").html(ordRows);
+        }
+    }
+
+    function showDetails(pID) {
+        $.ajax({
+            type: "GET",
+            url: '/api/Product/Details?pID=' + pID,
+            contentType: 'application/json',
+            success: function (result) {
+                document.getElementById("txtName").value = result.PRODUCTS[0].NAME;
+                document.getElementById("txtPrice").value = result.PRODUCTS[0].PRICE;
+
+
+                if (result.PRODUCTS[0].ADMIN_IMAGE_PATH == "" || result.PRODUCTS[0].ADMIN_IMAGE_PATH == null)
+                    document.getElementById("imgProduct").src = "../../Product_Images/default.jpg";
+                else
+                    document.getElementById("imgProduct").src = result.PRODUCTS[0].ADMIN_IMAGE_PATH;
+
+                $('#modal-3').modal('show');
+            },
+            error: function (res) {
+                alert('failure: ' + res);
+            }
+        });
+    }
+
+    function getName(pID) {
+        var p_name = "";
+        $.ajax({
+            type: "GET",
+            url: '/api/Product/Name?pID=' + pID,
+            contentType: 'application/json',
+            success: function (result) {
+                p_name = result;
+            },
+            error: function (res) {
+                alert('failure: ' + res);
+            }
+        });
+
+        return p_name;
+    }
+
+    function closemodal() {
+        $('#modal-1').modal('hide');
+    }
+    function closemodal2() {
+        $('#modal-2').modal('hide');
+    }
+
+    function closemodal3() {
+        $('#modal-3').modal('hide');
+    }
+
+
+    function generateOrder() {
+
+        var callOrders_new = {
+            CustomerName: $("#NAME").val(),
+            MobileNumber: $("#MOBILE").val(),
+            Address: $("#ADDRESS").val(),
+            BranchID: @ViewBag.BranchId,
+            PaymentMode: $("#paymentMode").val(),
+            DeliveryDescription: $("#DELIVERY_DESCRIPTION").val(),
+            cOrders: orders.items
+        };
+        $.ajax({
+            url: "@Url.Action("ProcessOrder", "Order")",
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({ custOrd: callOrders_new }),
+            success: function (response) {
+                if (response == "True") {
+                    alert("Order created successfully.");
+                    $("#form-orders").submit();
+                }
+                else
+                    alert("Order Creation failed. Retry!");
+            }
+        });
+    }
+    function removeFromList(id) {
+
+        var r = confirm("Are you sure you want to delete this item?? Press OK if Yes otherwise Cancel!");
+        if (r == true) {
+            var updatedOrderItems = {
+                items: []
+            };
+            for (i = 0; i < orders.items.length; i++) {
+                var item = orders.items[i];
+
+                if (item.barcode != id) {
+                    updatedOrderItems.items.push(item);
+                }
+            }
+            orders = updatedOrderItems;
+            var ordRows = '';
+
+
+            var ele = document.getElementById("txtTotalSum");
+            var sum = 0;
+
+            for (i2 = 0; i2 < orders.items.length; i2++) {
+                var oItm = orders.items[i2];
+                // alert(oItm.amountOrdered);
+                sum = sum + oItm.total;
+                ordRows = ordRows + '<tr><td>' +oItm.product_id + '-' + oItm.barcode + '</td><td>' +
+                    oItm.product_name + '</td><td><input type=number value=' + oItm.amountOrdered + ' id = updateOrderedAmount-' +
+                    oItm.barcode + ' onblur=addToListUpdated(this.value,' + oItm.product_id + oItm.barcode + ') min=0 /></td><td>' + oItm.price + '</td><td>' +
+                    oItm.disc + '</td><td>' + oItm.total + '</td><td><button type="button" class="btn btn-small btn-red" onClick=removeFromList(' + oItm.barcode + ') >Remove</button></td></tr>';
+            }
+
+            ele.value = sum - $(".txtManualDiscount").val()- $("#txtCouponDisc").val();
+            $("#tbl-ord").html(ordRows);
+        }
+    }
+
+    function updateOrders(orders)
+    {
+        console.log(orders.items);
+        var callOrders_new = {
+            BranchID:@ViewBag.BranchId ,
+            BranchName:@Html.Raw(Json.Encode(ViewBag.Branch)),
+            CustomerID: $("#CUSTOMER_ID").val(),
+            OrderID: $("#ORDER_ID").val(),
+            CustomerName: $("#NAME").val(),
+            MobileNumber: $("#MOBILE").val(),
+            Address: $("#ADDRESS").val(),
+            PaymentMode: $("#paymentMode").val(),
+            DeliveryDescription: $("#DELIVERY_DESCRIPTION").val(),
+            Package: $("#ddlpackage").val(),
+            extraDisc : $("#MANUAL_DISCOUNT").val(),
+            coupon: $("#txtCouponCode").val(),
+            couponDisc : $("#txtCouponDisc").val(),
+            totalAmount: $("#txtTotalSum").val(),
+            DeliveryTime: $("#txtDeliveryTime").val(),
+            cOrders: orders.items
+        };
+
+        $.ajax({
+            url: "@Url.Action("UpdateOrder", "Order")",
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({ custOrd: callOrders_new }),
+            success: function (response) {
+                if (response == "True") {
+                    alert("Order updated successfully.");
+                    $("#form-orders").submit();
+                }
+                else
+                    alert("Order updating failed. Retry!");
+            }
+        });
+    }
+
+    function removeItem(id) {
+        var element = $("#btn-" + id);
+        element.attr("disabled", "disabled");
+        element.text("Removed");
+        element.attr("class", "btn btn-black btn-xs");
+
+        $("#orderQty-" + id).attr("disabled", "disabled");
+        $("#flag-" + id).val(false);
+    }
+    function resetIt() {
+        $("#table-11-div").show();
+        $("#product-all").hide();
+    }
+    function searchIt() {
+        var input = document.getElementById("myInput").value;
+        if (input.length == 0)
+            return;
+
+        var scID = -1;
+
+        var bID = @ViewBag.BranchId;
+        $.ajax({
+            type: "GET",
+            url: '/api/product/searchit?scID=' + scID + '&bID=' + bID +'&key='+escape(input),
+            contentType: 'application/json',
+            success: function (result) {
+                products = jQuery.parseJSON(result);
+                populateProductsTable();
+            },
+            error: function (res) {
+                alert('failure: ' + res);
+            }
+        });
+
+    }
+
+</script>
+
+<ol class="breadcrumb">
+    <li class="breadcrumb-item">
+        <a href="/Home/Index">Grocery Store</a>
+    </li>
+    <li>s Management</li>
+    <li class="breadcrumb-item active">View</li>
+</ol>
+
+<h2>View Order</h2>
+@{
+
+    //else
+    //{
+    using (Html.BeginForm("List", "Order", FormMethod.Post, new { @Id = "form-orders" }))
+    {
+
+        @Html.AntiForgeryToken()
+        <div class="row">
+            @Html.ValidationSummary(true)
+            <div class="col-md-12">
+
+                <div class="panel panel-primary" data-collapsed="0">
+
+
+                    <div class="panel-heading">
+                        <div class="panel-title">
+                            Edit Order
+                        </div>
+
+                        <div class="panel-options">
+                            <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.ORDER_ID, new { @class = "control-label col-md-2" })
+                                    @Html.TextBoxFor(model => model.ORDER_ID, new { @class = "form-control", placeholder = "Order Number", type = "number", min = "1", Required = "Required", @Readonly = "Readonly" })
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.CUSTOMER_ID, new { @class = "control-label col-md-2" })
+                                    @Html.TextBoxFor(model => model.CUSTOMER_ID, new { @class = "form-control", @readonly = "readonly" })
+                                </div>
+
+                            </div>
+                            <div class="col-md-4">
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-4">Branch</label>
+                                    @Html.TextBox("txtBranch", (string)ViewBag.Branch, new { @class = "form-control", @readonly = "readonly" })
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.ADDRESS, new { @class = "control-label col-md-2" })
+                                    @Html.TextAreaFor(model => model.ADDRESS, new { @class = "form-control", placeholder = "Address", Required = "Required" })
+                                </div>
+                            </div>
+
+
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.MOBILE, new { @class = "control-label col-md-2" })
+                                    @Html.TextBoxFor(model => model.MOBILE, new { @class = "form-control", placeholder = "Mobile Number", Required = "Required" })
+                                </div>
+                            </div>
+
+
+                            <div class="col-md-4">
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.NAME, new { @class = "control-label col-md-2" })
+                                    @Html.TextBoxFor(model => model.NAME, new { @class = "form-control", placeholder = "Customer Name", Required = "Required" })
+                                </div>
+
+                            </div>
+                        </div>
+
+                        @*<input type="button" value="Load" id="addOrderBtn" class="btn btn-info pull-left" />
+                        <br />*@
+
+                        <div class="row" id="divProducts" style="margin-top:20px;">
+                            <div class="col-md-12">
+
+                                <div class="panel panel-primary" data-collapsed="0">
+
+                                    <div class="panel-heading headingbackcolor" style="background: lightseagreen; color: white; font-size: large">
+                                        <div class="panel-title">
+                                            Products
+                                        </div>
+
+                                        <div class="panel-options">
+                                            <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="panel-body">
+                                        <div class="row" style="margin-bottom:10px" id="searchBtn-div" hidden>
+                                            <div class="col-md-8"><input type="text" class="form-control" id="myInput" placeholder="Search for products.."></div>
+                                            @*<div class="col-md-2"><button type="button" onclick="searchIt()" class="btn btn-info" > Search </button></div>*@
+                                            <div class="col-md-2"><button type="button" onclick="resetIt()" class="btn btn-default"> Reset </button></div>
+                                        </div>
+
+
+                                        <table class="table table-bordered table-responsive" id="product-all" hidden>
+
+                                            <thead>
+                                                <tr class="header">
+                                                    <th style="width:5%;">Product ID - BAR CODE</th>
+                                                    <th style="width:40%;">Description</th>
+                                                    @*<th style="width:10%;">Barcode</th>*@
+                                                    @*<th style="width:5%;">Qty In Stock</th>*@
+                                                    <th style="width:5%;">Unit/Packing</th>
+                                                    <th style="width:5%;">Price</th>
+                                                    <th style="width:5%;">Discount</th>
+                                                    <th style="width:5%;">Qty Ordered</th>
+                                                    <th style="width:10%;">Order</th>
+                                                    <th style="width:15%;">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="productsTable1"></tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    <th style="width:5%;">Product ID</th>
+                                                    <th style="width:40%;">Description</th>
+                                                    @*<th style="width:10%;">BarCode</th>*@
+                                                    @*<th style="width:5%;">Qty In Stock</th>*@
+                                                    <th style="width:5%;">Unit/Packing</th>
+                                                    <th style="width:5%;">Price</th>
+                                                    <th style="width:5%;">Discount</th>
+                                                    <th style="width:5%;">Qty Ordered</th>
+                                                    <th style="width:10%;">Order</th>
+                                                    <th style="width:15%;">Action</th>
+                                                </tr>
+                                            </tfoot>
+
+                                        </table>
+
+
+                                        <div id="table-11-div">
+                                            <table class="table table-bordered datatable" id="table-11" hidden>
+                                                <thead>
+                                                    <tr>
+                                                        <th>Product ID - BAR CODE</th>
+                                                        <th>Description</th>
+                                                        @*<th>Bar Code</th>*@
+                                                        @*<th>Qty In Stock</th>*@
+                                                        <th>Unit/Packing</th>
+                                                        <th>Price</th>
+                                                        <th>Discount</th>
+                                                        <th>Qty Ordered</th>
+                                                        <th>Order</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="productsTable"></tbody>
+                                                <tfoot>
+                                                    <tr>
+                                                        <th>Product ID</th>
+                                                        <th>Description</th>
+                                                        @*<th>Bar Code</th>*@
+                                                        @*<th>Qty In Stock</th>*@
+                                                        <th>Unit/Packing</th>
+                                                        <th>Price</th>
+                                                        <th>Discount</th>
+                                                        <th>Qty Ordered</th>
+                                                        <th>Order</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </tfoot>
+                                            </table>
+                                        </div>
+
+                                        <script type="text/javascript">
+                                            var responsiveHelper;
+                                            var breakpointDefinition = {
+                                                tablet: 1024,
+                                                phone: 480
+                                            };
+                                            var tableContainer = null;
+
+                                            function loadDT() {
+                                                tableContainer = $("#table-11");
+
+                                                tableContainer.show();
+
+                                                tableContainer.dataTable({
+                                                    "sPaginationType": "bootstrap",
+                                                    "aLengthMenu": [[20, 100, 1000, -1], [20, 100, 1000, "All"]],
+                                                    "bStateSave": true,
+
+
+                                                    // Responsive Settings
+                                                    bAutoWidth: false,
+                                                    fnPreDrawCallback: function () {
+                                                        // Initialize the responsive datatables helper once.
+                                                        if (!responsiveHelper) {
+                                                            responsiveHelper = new ResponsiveDatatablesHelper(tableContainer, breakpointDefinition);
+                                                        }
+                                                    },
+                                                    fnRowCallback: function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+                                                        responsiveHelper.createExpandIcon(nRow);
+                                                    },
+                                                    fnDrawCallback: function (oSettings) {
+                                                        responsiveHelper.respond();
+                                                    }
+                                                });
+
+                                            }
+                                        </script>
+
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+                        </div>
+
+
+                        <h2>Order Details</h2>
+
+                        <table class="table table-bordered datatable">
+                            <thead>
+                                <tr>
+                                    <th>Product ID - BAR CODE</th>
+                                    <th>Name</th>
+                                    <th>Qty Ordered</th>
+                                    <th>Price</th>
+                                    <th>Discount</th>
+                                    <th>Total</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbl-ord">
+                                @*@{
+                                    var list = ViewBag.oDetails;
+                                    if (list != null)
+                                    {
+                                        foreach (var item in list)
+                                        {
+                                            <tr>
+                                                <td>@item.product_id</td>
+                                                <td>@item.product_name</td>
+                                                <td id="availableQty-@item.product_id">@item.availableQty</td>
+                                                <td><input type=number value="@item.amountOrdered" id="orderQty-@item.product_id" min=0 required /></td>
+                                                <td>@item.price</td>
+                                                <td>@item.disc</td>
+                                                <td>@item.total</td>
+                                                <td><input type="hidden" value="true" id="flag-@item.product_id" /> <button class="btn-default btn-xs btn-red" type="button" id="btn-@item.product_id" onclick="removeItem(@item.product_id)">Remove</button></td>
+                                            </tr>
+                                        }
+                                    }
+                                                            }*@
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th>Product ID - BAR CODE</th>
+                                    <th>Name</th>
+                                    <th>Qty Ordered</th>
+                                    <th>Price</th>
+                                    <th>Discount</th>
+                                    <th>Total</th>
+                                    <th>Action</th>
+                                </tr>
+                            </tfoot>
+                        </table>
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-4">Reject?</label>
+                                        @*<select class="form-control" name="rejectionStatus">
+                                                <option value="0" selected>Yes</option>
+                                                <option value="1">No</option>
+                                            </select>*@
+                                        @{
+        if (Model.IS_ACTIVE == 0)
+        {
+            <select class="form-control" name="rejectionStatus">
+                <option value="0" selected>Yes</option>
+                <option value="1">No</option>
+            </select>
+        }
+        else if (Model.IS_ACTIVE == 1)
+        {
+            <select class="form-control" name="rejectionStatus">
+                <option value="0">Yes</option>
+                <option value="1" selected>No</option>
+            </select>
+        }
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="user_status" class="control-label">Payment Mode</label>
+                                    <select name="PAYMENT_MODE_ID" id="paymentMode" class="form-control"></select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="user_status" class="control-label">Package</label>
+                                    <select name="IS_PACKAGE" id="ddlpackage" class="form-control"></select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="user_status" class="control-label">Extra Discount</label>
+                                    @Html.TextBoxFor(model => model.MANUAL_DISCOUNT, new { @class = "form-control txtManualDiscount", placeholder = "Discount", type = "Number", value = "0" })
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                @{
+                                    <label for="user_status" class="control-label">Coupon</label>
+        var coupon = ViewBag.Coupon;
+        if (coupon.COUPON_ID == -1)
+        {
+
+            <input class="form-control" type="text" id="txtCouponCode" placeholder="Coupon" />
+        }
+        else
+        {
+            <input class="form-control" type="text" id="txtCouponCode" value="@coupon.PROMO" />
+        }
+                                }
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+
+                                    <label for="user_status" class="control-label">Coupon Discount</label>
+
+                                    <input type="text" id="txtCouponDisc" class="form-control" value="0" readonly />
+
+                                    @*<input class="form-control" type="text" id="txtCouponCode" value="@coupon.VALUE" />*@
+
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="user_status" class="control-label">Delivery Message</label>
+                                    @Html.TextAreaFor(model => model.DELIVERY_DESCRIPTION, new { @class = "form-control", placeholder = "Delivery Message", id = "DELIVERY_DESCRIPTION" })
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="user_status" class="control-label">Total Bill</label>
+                                    <input type="text" id="txtTotalSum" class="form-control" value="0" readonly />
+
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="user_status" class="control-label">Delivery Time</label>
+                                    <input type="datetime-local" id="txtDeliveryTime" class="form-control">
+                                    @*@Html.TextAreaFor(model => model.DELIVERY_TIME, new { @class = "form-control ",  placeholder = "" , })*@
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+
+
+                            </div>
+                        </div>
+                        @*<div class="modal-footer">
+                            <input type="button" value="Submit" id="updateOrderBtn" class="btn btn-success pull-right" />
+                        </div>*@
+
+                    </div>
+
+
+
+                </div>
+
+
+            </div>
+        </div>
+    }
+
+
+    //}
+}
+
+
+<div class="modal fade" id="modal-1" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h4 class="modal-title">Rejection Details</h4>
+            </div>
+            <form action="/Order/Update" method="post">
+                <div class="modal-body">
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.ORDER_ID, new { @class = "control-label col-md-2" })
+                                @Html.TextBoxFor(model => model.ORDER_ID, new { @class = "form-control", @Readonly = "Readonly" })
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.REJECTED_REASON, new { @class = "control-label col-md-2" })
+                                @Html.TextAreaFor(model => model.REJECTED_REASON, new { @class = "form-control", placeholder = "Rejection Reason", Required = "Required", @Value = "" })
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" id="mRClose">Close</button>
+                    <button type="submit" class="btn btn-info">Reject Order</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-3" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h4 class="modal-title">Product Detail</h4>
+            </div>
+            <form action="#" method="post">
+                <div class="modal-body">
+
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <img src="" alt="product image" width="200px" height="150px" id="imgProduct" />
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="product_name" class="control-label">Product ID</label>
+                                <input class="form-control"
+                                       id="txtName"
+                                       name="txtName"
+                                       type="text"
+                                       value="" disabled />
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="form-group">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="product_name" class="control-label">Price</label>
+                                <input class="form-control"
+                                       id="txtPrice"
+                                       name="txtPrice"
+                                       type="text"
+                                       value="" disabled />
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="mRClose3" onclick="closemodal3()">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="modal-2" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h4 class="modal-title">Coupon Detail</h4>
+            </div>
+            <form action="#" method="post">
+                <div class="modal-body">
+
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="product_name" class="control-label">Coupon ID</label>
+                                <input class="form-control"
+                                       id="txtCouponId"
+                                       name="txtCouponId"
+                                       type="text"
+                                       value="" disabled />
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="product_name" class="control-label">Unlock Amount</label>
+                                <input class="form-control"
+                                       id="txtUnlock"
+                                       name="txtUnlock"
+                                       type="text"
+                                       value="" disabled />
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="product_name" class="control-label">Discount</label>
+                                <input class="form-control"
+                                       id="txtCouponValue"
+                                       name="txtCouponValue"
+                                       type="text"
+                                       value="" disabled />
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-2">
+                            <div class="form-group">
+
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="form-group">
+
+                                <input class="form-control"
+                                       id="txtCouponMsg"
+                                       name="txtCouponMsg"
+                                       type="text"
+                                       value="" disabled />
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                            </div>
+                        </div>
+
+                    </div>
+
+
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="mRClose2" onclick="closemodal2()">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Imported styles on this page -->
+<link rel="stylesheet" href="~/assets/js/datatables/responsive/css/datatables.responsive.css">
+<link rel="stylesheet" href="~/assets/js/select2/select2-bootstrap.css">
+<link rel="stylesheet" href="~/assets/js/select2/select2.css">
+<!-- Bottom scripts (common) -->
+<script src="~/assets/js/jquery.dataTables.min.js"></script>
+<script src="~/assets/js/datatables/TableTools.min.js"></script>
+
+<!-- Imported scripts on this page -->
+<script src="~/assets/js/dataTables.bootstrap.js"></script>
+<script src="~/assets/js/datatables/jquery.dataTables.columnFilter.js"></script>
+<script src="~/assets/js/datatables/lodash.min.js"></script>
+<script src="~/assets/js/datatables/responsive/js/datatables.responsive.js"></script>
+

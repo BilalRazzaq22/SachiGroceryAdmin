@@ -1,0 +1,573 @@
+﻿@model GROCERY.Models.PACKAGE
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Create</h2>
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+
+<style>
+    .headingbackcolor {
+        background: lightseagreen;
+    }
+
+    #myInput {
+        background-position: 10px 12px; /* Position the search icon */
+        background-repeat: no-repeat; /* Do not repeat the icon image */
+        width: 100%; /* Full-width */
+        font-size: 16px; /* Increase font-size */
+        padding: 6px 2px 2px 2px; /* Add some padding */
+        border: 1px solid #ddd; /* Add a grey border */
+        margin-bottom: 12px; /* Add some space below the input */
+    }
+
+    #myTable {
+        border-collapse: collapse; /* Collapse borders */
+        width: 100%; /* Full-width */
+        border: 1px solid #ddd; /* Add a grey border */
+        font-size: 14px; /* Increase font-size */
+    }
+
+        #myTable th, #myTable td {
+            text-align: left; /* Left-align text */
+            padding: 2px; /* Add padding */
+        }
+
+        #myTable tr {
+            /* Add a bottom border to all table rows */
+            border-bottom: 1px solid #ddd;
+        }
+
+            #myTable tr.header, #myTable tr:hover {
+                /* Add a grey background color to the table header and on hover */
+                background-color: #f1f1f1;
+            }
+</style>
+
+<script>
+    function resetIt() {
+        $("#table-11-div").show();
+        $("#product-all").hide();
+    }
+    function searchIt() {
+
+        var input = document.getElementById("myInput").value;
+        if (input.length == 0)
+            return;
+
+        var scID = -1;
+        var bID = 0;
+
+        $.ajax({
+            type: "GET",
+            url: '/api/product/searchit?scID=' + scID + '&bID=' + bID +'&key='+input,
+            contentType: 'application/json',
+            success: function (result) {
+                products = jQuery.parseJSON(result);
+                populateProductsTable();
+            },
+            error: function (res) {
+                alert('failure: ' + res);
+            }
+        });
+
+    }
+</script>
+
+<script>
+    var tempAmount = 1;
+
+    var products = {};
+
+    var orders = {
+        items: []
+    };
+
+    $(document).ready(function () {
+        $("#myInput").keypress(function (e) {
+            if (e.which == 13) {
+                searchIt();
+            }
+        });
+        
+        initializeProductsList(-1, 0);
+        $("#btnGeneratePackage").click(function (event) {
+            var PackageName = $("#NAME").val();
+            //var MobileNumber = $("#MOBILE").val();
+            //var Address = $("#ADDRESS").val();
+            //var BranchID = $("#userBranch").val();
+            //var PaymentMode = $("#paymentMode").val();
+            var DeliveryDescription = $("#DESCRIPTION").val();
+            //var extraDisc = $("#MANUAL_DISCOUNT").val();
+            if (PackageName == "")
+                alert("Customer Name is required.");
+            //else
+            //    if (MobileNumber == "")
+            //        alert("Customer Mobile Numbar is required.");
+            //    else
+            //        if (Address == "")
+            //            alert("Customer Address is required.");
+            //        else
+            //            if (BranchID == -1)
+            //                alert("Branch is required.");
+            //            else
+            //                if (orders.items.length <= 0)
+            //                    alert("Please Create Order.");
+            //                else
+            //                    if (PaymentMode == -1)
+            //                        alert("Please Select Mode.");
+            else
+                generateOrder();
+
+        });
+
+        initializePaymentModes();
+    });
+
+
+
+    
+
+    function initializeProductsList(scID, bID) {
+        $.ajax({
+            type: "GET",
+            url: '/api/product/ProductsBarCodes?scID=' + scID + '&bID=' + bID,
+            contentType: 'application/json',
+            success: function (result) {
+                products = jQuery.parseJSON(result);
+                populateProductsTable();
+            },
+            error: function (res) {
+                console.log(res);
+                alert('failure: ' + res);
+            }
+        });
+    }
+
+
+    function populateProductsTable() {
+        if ($.fn.DataTable.isDataTable('#table-11')) {
+            $('#table-11').DataTable().destroy();
+        }
+
+        var rows = '';
+        //id="rid_' + item.BAR_CODE + '"
+        for (i = 0; i < products.Table.length; i++) {
+            var item = products.Table[i];
+            rows = rows + '<tr ><td>' + item.PRODUCT_ID + '-' + item.BAR_CODE + '</td><td>' + item.PRODUCT_DESCRIPTION + '</td><td>'
+                + item.PRICE + '</td><td>'
+                + item.DISCOUNT + '</td><td>'
+                + '<input type=number placeholder="Qty Order" name="oAmtInp" value = 1 min= 1 id = "orderAmount-' + item.PRODUCT_ID + item.BAR_CODE + '" onblur=myfunction(this.value) /></td><td>'
+                + '<button type="button" class="btn btn-green" onclick=addToList(' + item.PRODUCT_ID + item.BAR_CODE + ')>Add</button></td></tr>';
+        }
+
+        $("#productsTable").html(rows);
+
+        $("#productsTable1").html(rows);
+
+        $("#searchBtn-div").show();
+
+        loadDT();
+
+    }
+    function myfunction(amt) {
+        tempAmount = amt;
+    }
+    function addToList(id) {
+
+        var amountOrdered = tempAmount;
+        tempAmount = 1;
+        var bID =0;
+        if (amountOrdered == null || amountOrdered == "")
+            alert("Please enter order quantity.");
+        else {
+            for (i = 0; i < products.Table.length; i++) {
+                var item = products.Table[i];
+                if (item.PRODUCT_ID + '' + item.BAR_CODE == id) {
+                    var bool = true;
+                    for (i1 = 0; i1 < orders.items.length; i1++) {
+                        var oItem = orders.items[i1];
+                        if (oItem.barcode == item.BAR_CODE) {
+                            orders.items[i1].amountOrdered = parseInt(orders.items[i1].amountOrdered) + parseInt(amountOrdered);
+                            orders.items[i1].total = orders.items[i1].amountOrdered * (orders.items[i1].price - item.DISCOUNT);
+                            bool = false;
+                        }
+                    }
+
+                    if (bool) {
+                        var newItem = {
+                            "product_id": item.PRODUCT_ID,
+                            "product_name": item.PRODUCT_DESCRIPTION,
+                            "amountOrdered": amountOrdered,
+                            "price": item.PRICE,
+                            "total": (item.PRICE - item.DISCOUNT) * amountOrdered,
+                            "discount": item.DISCOUNT,
+                            "barcode": item.BAR_CODE
+                        };
+
+
+                        orders.items.push(newItem);
+                    }
+                    var ordRows = '';
+
+
+                   
+                    for (i2 = 0; i2 < orders.items.length; i2++) {
+                        var oItm = orders.items[i2];
+                        ordRows = ordRows + '<tr><td>' + oItm.product_id + '-' + oItm.barcode + '</td><td>' +
+                            oItm.product_name + '</td><td><input type=number value=' + oItm.amountOrdered + ' id = updateOrderedAmount-' + ' class = quantity' +
+                            oItm.barcode + ' onblur=addToListUpdated(this.value,' + oItm.product_id + oItm.barcode + ') min=0 /></td><td>' + oItm.price + '</td><td>' +
+                            oItm.discount + '</td><td>' + oItm.total + '</td><td><button type="button" class="btn btn-small btn-red" onClick=removeFromList(' + oItm.barcode + ') >Remove</button></td></tr>';
+                    }
+
+                    $("#ordersCart").html(ordRows);
+                }
+            }
+        }
+
+        $('input[name=oAmtInp]').val(1);
+    }
+
+
+    function addToListUpdated(amt, id) {
+        var amountOrdered = amt;
+
+        if (amountOrdered == null || amountOrdered == "")
+            alert("Please enter order quantity.");
+        else {
+                //var q = item.QUANTITY;
+                for (i1 = 0; i1 < orders.items.length; i1++) {
+                    var oItem = orders.items[i1];
+                    if (oItem.product_id + '' + oItem.barcode == id) {
+
+                        orders.items[i1].amountOrdered = parseInt(amountOrdered);
+                        orders.items[i1].total = orders.items[i1].amountOrdered * (orders.items[i1].price - orders.items[i1].disc);
+
+                    }
+                }
+
+
+                var ordRows = '';
+                for (i2 = 0; i2 < orders.items.length; i2++) {
+                    var oItm = orders.items[i2];
+                    ordRows = ordRows + '<tr><td>' + oItm.product_id + '-' + oItm.barcode + '</td><td>' + oItm.product_name +
+                        '</td><td><input type=number value=' + oItm.amountOrdered + ' id = updateOrderedAmount-' + oItm.barcode +
+                        ' onblur=addToListUpdated(this.value,' + oItm.product_id + '' + oItm.barcode + ') min = 0/></td><td>' + oItm.price + '</td><td>' + oItm.disc +
+                        '</td><td>' + oItm.total + '</td><td><button type="button" class="btn btn-small btn-red" onClick=removeFromList(' + oItm.barcode + ') >Remove</button></td></tr>';
+                }
+                $("#ordersCart").html(ordRows);
+        }
+    }
+
+
+    function removeFromList(id) {
+        var r = confirm("Are you sure you want to delete this item?? Press OK if Yes otherwise Cancel!");
+        if (r == true) {
+            var updatedOrderItems = {
+                items: []
+            };
+            for (i = 0; i < orders.items.length; i++) {
+                var item = orders.items[i];
+
+                if (item.barcode != id) {
+                    updatedOrderItems.items.push(item);
+                }
+            }
+            orders = updatedOrderItems;
+            var ordRows = '';
+
+
+
+            for (i2 = 0; i2 < orders.items.length; i2++) {
+                var oItm = orders.items[i2];
+                // alert(oItm.amountOrdered);
+                ordRows = ordRows + '<tr><td>' + oItm.product_id + '-' + oItm.barcode + '</td><td>' +
+                    oItm.product_name + '</td><td><input type=number value=' + oItm.amountOrdered + ' id = updateOrderedAmount-' +
+                    oItm.barcode + ' onblur=addToListUpdated(this.value,' + oItm.product_id + oItm.barcode + ') min=0 /></td><td>' + oItm.price + '</td><td>' +
+                    oItm.discount + '</td><td>' + oItm.total + '</td><td><button type="button" class="btn btn-small btn-red" onClick=removeFromList(' + oItm.barcode + ') >Remove</button></td></tr>';
+            }
+
+            $("#ordersCart").html(ordRows);
+        }
+    }
+    function generateOrder() {
+        var myPackage = {
+            Name: $("#NAME").val(),
+            Desc: $("#DESCRIPTION").val(),
+            cOrders: orders.items
+        };
+        debugger;
+        $.ajax({
+            url: "@Url.Action("save", "Package")",
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({ pkg: myPackage }),
+        success: function (response) {
+            if (response == "True") {
+                alert("Package created successfully.");
+                $("#form-orders").submit();
+            }
+            else
+                alert("Order Creation failed. Retry!");
+        }
+    });
+    }
+    function initializePaymentModes() {
+        $.ajax({
+            type: "GET",
+            url: '/api/admin/modes',
+            contentType: 'application/json',
+            success: function (result) {
+                modes = jQuery.parseJSON(result);
+                populatePaymentModes();
+            },
+            error: function (res) {
+                alert('failure: ' + res);
+            }
+        });
+    }
+</script>
+
+@using (Html.BeginForm("Index", "Package", FormMethod.Post, new { id = "form-orders" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="row">
+        @Html.ValidationSummary(true)
+        <div class="col-md-12">
+
+            <div class="panel panel-primary" data-collapsed="0">
+
+                <div class="panel-heading headingbackcolor" style="background:lightseagreen;color:white;font-size:large">
+                    <div class="panel-title">
+                        Add Package Information
+                    </div>
+
+                    <div class="panel-options">
+                        <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                    </div>
+                </div>
+
+
+                <div class="panel-body">
+
+                    <div class="row">
+                        <div class="col-md-6">
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.NAME, new { @class = "control-label col-md-2" })
+                                @Html.TextBoxFor(model => model.NAME, new { @class = "form-control", placeholder = " Name", Required = "Required",id="NAME" })
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.DESCRIPTION, new { @class = "control-label col-md-2" })
+                                @Html.TextBoxFor(model => model.DESCRIPTION, new { @class = "form-control", placeholder = "Name", Required = "Required" ,id="DESCRIPTION" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+        </div>
+
+        <div class="col-md-12">
+
+            <div class="panel panel-primary" data-collapsed="0">
+
+                <div class="panel-heading headingbackcolor" style="background: lightseagreen; color: white; font-size: large">
+                    <div class="panel-title">
+                        Products
+                    </div>
+
+                    <div class="panel-options">
+                        <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                    </div>
+                </div>
+
+
+                <div class="panel-body">
+                    <div class="row" id="searchBtn-div" hidden>
+                        <div class="col-md-8"><input type="text" id="myInput" placeholder="Search for products.."></div>
+                        @*<div class="col-md-2"><button type="button" onclick="searchIt()" class="btn btn-info" > Search </button></div>*@
+                        <div class="col-md-2"><button type="button" onclick="resetIt()" class="btn btn-default"> Reset </button></div>
+                    </div>
+
+
+                    <table class="table table-bordered table-responsive" id="product-all" hidden>
+
+                        <thead>
+                            <tr class="header">
+                                <th>Product ID - Bar Code</th>
+                                <th>Description</th>
+                                @*<th>Bar Code</th>*@
+                                @*<th>Qty In Stock</th>*@
+                                @*<th>Unit/Packing</th>*@
+                                <th>Price</th>
+                                <th>Discount</th>
+                                <th>Qty Ordered</th>
+                                <th>Order</th>
+                            </tr>
+                        </thead>
+                        <tbody id="productsTable1"></tbody>
+                        <tfoot>
+                            <tr>
+                                <th>Product ID - Bar Code</th>
+                                <th>Description</th>
+                                @*<th>Bar Code</th>*@
+                                @*<th>Qty In Stock</th>*@
+                                @*<th>Unit/Packing</th>*@
+                                <th>Price</th>
+                                <th>Discount</th>
+                                <th>Qty Ordered</th>
+                                <th>Order</th>
+                            </tr>
+                        </tfoot>
+
+                    </table>
+
+
+                    <div id="table-11-div">
+                        <table class="table table-bordered datatable" id="table-11" hidden>
+                            <thead>
+                                <tr>
+                                    <th>Product ID - Bar Code</th>
+                                    <th>Description</th>
+                                    @*<th>Bar Code</th>*@
+                                    @*<th>Qty In Stock</th>*@
+                                    @*<th>Unit/Packing</th>*@
+                                    <th>Price</th>
+                                    <th>Discount</th>
+                                    <th>Qty Ordered</th>
+                                    <th>Order</th>
+                                </tr>
+                            </thead>
+                            <tbody id="productsTable"></tbody>
+                            <tfoot>
+                                <tr>
+                                    <th>Product ID - BAR CODE</th>
+                                    <th>Description</th>
+                                    @*<th>Bar Code</th>*@
+                                    @*                                    <th>Qty In Stock</th>*@
+                                    @*<th>Unit/Packing</th>*@
+                                    <th>Price</th>
+                                    <th>Discount</th>
+                                    <th>Qty Ordered</th>
+                                    <th>Order</th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+
+                    <script type="text/javascript">
+                        var responsiveHelper;
+                        var breakpointDefinition = {
+                            tablet: 1024,
+                            phone: 480
+                        };
+                        var tableContainer = null;
+
+                        function loadDT() {
+                            tableContainer = $("#table-11");
+
+                            tableContainer.show();
+
+                            tableContainer.dataTable({
+                                "sPaginationType": "bootstrap",
+                                "aLengthMenu": [[30, 100, 300, -1], [30, 100, 300, "All"]],
+                                "bStateSave": true,
+
+
+                                // Responsive Settings
+                                bAutoWidth: false,
+                                fnPreDrawCallback: function () {
+                                    // Initialize the responsive datatables helper once.
+                                    if (!responsiveHelper) {
+                                        responsiveHelper = new ResponsiveDatatablesHelper(tableContainer, breakpointDefinition);
+                                    }
+                                },
+                                fnRowCallback: function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+                                    responsiveHelper.createExpandIcon(nRow);
+                                },
+                                fnDrawCallback: function (oSettings) {
+                                    responsiveHelper.respond();
+                                }
+                            });
+
+                        }
+                    </script>
+
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-md-12">
+            <div class="panel panel-primary" data-collapsed="0">
+                <div class="panel-heading headingbackcolor" style="background: lightseagreen;color:white; font-size: large">
+                    <div class="panel-title">
+                        Package Items
+                    </div>
+
+                    <div class="panel-options">
+                        <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <table class="table table-bordered " id="table-12">
+                        <thead>
+                            <tr>
+                                <th>Product ID - BAR CODE</th>
+                                <th>Name</th>
+                                <th>Qty Ordered</th>
+                                <th>Price</th>
+                                <th>Discount</th>
+                                <th>Total</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ordersCart"></tbody>
+                        <tfoot>
+                            <tr>
+                                <th>Product ID - BAR CODE</th>
+                                <th>Name</th>
+                                <th>Qty Ordered</th>
+                                <th>Price</th>
+                                <th>Discount</th>
+                                <th>Total</th>
+                                <th>Action</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-info" id="btnGeneratePackage">Create</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+
+    </div>
+
+}
+<!-- Imported styles on this page -->
+<link rel="stylesheet" href="~/assets/js/datatables/responsive/css/datatables.responsive.css">
+<link rel="stylesheet" href="~/assets/js/select2/select2-bootstrap.css">
+<link rel="stylesheet" href="~/assets/js/select2/select2.css">
+<!-- Bottom scripts (common) -->
+<script src="~/assets/js/jquery.dataTables.min.js"></script>
+<script src="~/assets/js/datatables/TableTools.min.js"></script>
+
+<!-- Imported scripts on this page -->
+<script src="~/assets/js/dataTables.bootstrap.js"></script>
+<script src="~/assets/js/datatables/jquery.dataTables.columnFilter.js"></script>
+<script src="~/assets/js/datatables/lodash.min.js"></script>
+<script src="~/assets/js/datatables/responsive/js/datatables.responsive.js"></script>
+
+

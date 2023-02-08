@@ -1,0 +1,130 @@
+﻿@model List<GROCERY.Models.PACKAGE>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<h2>List</h2>
+<script>
+    var orders = {};
+
+    var orderStatusesList = {};
+
+    $(document).ready(function () {
+
+        initializePackagesList();
+       
+
+    });
+
+
+
+
+
+    function initializePackagesList() {
+        $.ajax({
+            type: "GET",
+            url: '/api/common/packages',
+            contentType: 'application/json',
+            success: function (result) {
+                orders = jQuery.parseJSON(result);
+                populateOrdersTable();
+            },
+            error: function (res) {
+                //console.log(res);
+                alert('failure: ' + res);
+            }
+        });
+    }
+
+    function populateOrdersTable() {
+
+        if ($.fn.DataTable.isDataTable('#table-11')) {
+            $('#table-11').DataTable().destroy();
+        }
+        var rows = '';
+        for (i = 0; i < orders.Table.length; i++) {
+            var item = orders.Table[i];
+            rows = rows + '<tr><td>' + item.PACKAGE_ID + '</td><td>' + item.NAME + '</td><td>' + item.DESCRIPTION + '</td><td>' + item.STATUS + '</td>'
+                        + '<td><a style="color:green" target="_blank" href = "Edit?pID=' + item.PACKAGE_ID + '">Edit</a> || <a style="color:Red" target="_blank" href = "Delete?pID=' + item.PACKAGE_ID + '">Delete</a></td>'
+                        //+ '<td></td>'
+                         + '</tr>';
+        }
+
+        $("#ordersTable").html(rows);
+        loadDT1();
+
+    }
+    function loadDT1() {
+ 
+        tableContainer = $("#table-11");
+
+        tableContainer.dataTable({
+            "sPaginationType": "bootstrap",
+            "aLengthMenu": [[30, 100, 1000, -1], [30, 100, 1000, "All"]],
+            "bStateSave": true,
+            //"sDom": "<'row'<'col-xs-6 col-left'l><'col-xs-6 col-right'<'export-data'T>f>r>t<'row'<'col-xs-6 col-left'i><'col-xs-6 col-right'p>>",
+            "oTableTools": {
+            },
+
+            // Responsive Settings
+            bAutoWidth: false,
+            fnPreDrawCallback: function () {
+                if (!responsiveHelper) {
+                    responsiveHelper = new ResponsiveDatatablesHelper(tableContainer, breakpointDefinition);
+                }
+            },
+ 
+        });
+    }
+
+</script>
+
+
+@*<p>
+    @Html.ActionLink("Create New", "Create")
+</p>*@
+
+<br />
+<style>
+    .table thead tr th{
+        font-size:larger;
+        color:cadetblue;
+    }
+</style>
+<table class="table table-responsive  " id="table-11">
+    <thead>
+        <tr>
+            <th>
+                Package
+            </th>
+            <th>
+                Name
+            </th>
+            <th>
+                Description
+            </th>
+            <th>
+                Status
+            </th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody id="ordersTable"></tbody>
+
+</table>
+
+<!-- Imported styles on this page -->
+<link rel="stylesheet" href="~/assets/js/datatables/responsive/css/datatables.responsive.css">
+<link rel="stylesheet" href="~/assets/js/select2/select2-bootstrap.css">
+<link rel="stylesheet" href="~/assets/js/select2/select2.css">
+<!-- Bottom scripts (common) -->
+<script src="~/assets/js/jquery.dataTables.min.js"></script>
+<script src="~/assets/js/datatables/TableTools.min.js"></script>
+
+<!-- Imported scripts on this page -->
+<script src="~/assets/js/dataTables.bootstrap.js"></script>
+<script src="~/assets/js/datatables/jquery.dataTables.columnFilter.js"></script>
+<script src="~/assets/js/datatables/lodash.min.js"></script>
+<script src="~/assets/js/datatables/responsive/js/datatables.responsive.js"></script>

@@ -1,0 +1,79 @@
+﻿@model List<GROCERY.Models.BRANCH>
+
+@{
+    ViewBag.Title = "List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<ol class="breadcrumb">
+    <li class="breadcrumb-item">
+        <a href="/Home/Index">Grocery Store</a>
+    </li>
+    <li>Branch Management</li>
+    <li class="breadcrumb-item active">Branches</li>
+</ol>
+
+<h2>Branches</h2>
+
+<br />
+<table class="table table-bordered datatable" id="table-1">
+    <tr>
+        <th>
+            BRANCH_NAME
+        </th>
+        <th>
+            LATITUDE
+        </th>
+        <th>
+            LONGITUDE
+        </th>
+        <th>
+            ADDRESS
+        </th>
+        <th>
+            PHONE
+        </th>
+        <th>
+            IS_ACTIVE
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.BRANCH_NAME)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LATITUDE)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LONGITUDE)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ADDRESS)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PHONE)
+            </td>
+            <td>
+                @if (item.IS_ACTIVE.Value == true)
+                {
+                    @Html.LabelForModel("Yes")
+                }
+                else
+                {
+                    @Html.LabelForModel("No")
+                }
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.BRANCH_ID })
+                @*|
+                    @Html.ActionLink("Details", "Details", new { id = item.BRANCH_ID }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.BRANCH_ID })*@
+            </td>
+        </tr>
+    }
+
+</table>

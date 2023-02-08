@@ -1,0 +1,449 @@
+﻿@model GROCERY.Models.PRODUCT
+
+@{
+    ViewBag.Title = "Products";
+}
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script>
+    var categoriesList = {};
+    var subCategoriesList = {};
+    var groupsList = {};
+    var products = {};
+
+
+    $(document).ready(function () {
+        $("#searchBtn-div").hide();
+        initializeCategoriesList();
+        initializeSubCategoriesList();
+        //initializeProductsList(-1);
+        
+        initializeGroupsList();
+        populateStatus();
+        $("#group_ID").change(function () {
+            $("#cat_ID").empty();
+            populateCategoriesDropDown();
+
+            $("#sub_cat_ID").empty();
+            populateSubCategoriesDropDown();
+        });
+
+        $("#cat_ID").change(function () {
+            $("#sub_cat_ID").empty();
+            initializeSubCategoriesList();
+        });
+        $("#myInput").keypress(function (e) {
+            if (e.which == 13) {
+                if (document.getElementById("myInput").value == "")
+                    return;
+
+                searchIt();
+            }
+        });
+        $("#myID").keypress(function (e) {
+            if (e.which == 13) {
+                if (document.getElementById("myID").value == "")
+                    return;
+
+
+                searchIt();
+            }
+        });
+        $("#ddlActive").change(function (e) {
+             searchIt();
+        });
+
+        $("#btnLoad").click(function () {
+            var selectedCatID = $("#cat_ID").val();
+            var selectedSubCatID = $("#sub_cat_ID").val();
+            //if (selectedCatID == -1 || selectedSubCatID == -1)
+            //    alert("Please select a sub category.");
+            //else
+            //alert("ss");    
+                initializeProductsList(selectedSubCatID);
+        });
+    });
+    function searchIt() {
+
+        var input = document.getElementById("myInput").value;
+        var pID = document.getElementById("myID").value;
+        var status = $('#ddlActive').val();
+        if (pID == "")
+            pID = -1;
+
+        $.ajax({
+            type: "GET",
+            url: '/api/product/searchitems?pID=' + pID + '&status=' + status+ '&key=' + escape(input),
+            contentType: 'application/json',
+            success: function (result) {
+                products = jQuery.parseJSON(result);
+                populateProductsTable();
+            },
+            error: function (res) {
+                alert('failure: ' + res);
+            }
+        });
+
+    }
+    function resetIt() {
+        $("#table-11-div").show();
+        $("#product-all").hide();
+    }
+    function initializeProductsList(scID) {
+
+        $.ajax({
+            type: "GET",
+            url: '/api/product/products?scID=' + scID,
+            contentType: 'application/json',
+            success: function (result) {
+                products = jQuery.parseJSON(result);
+                populateProductsTable();
+            },
+            error: function (res) {
+                console.log(res);
+                alert('failure: ' + res);
+            }
+        });
+    }
+
+    function populateProductsTable() {
+        if ($.fn.DataTable.isDataTable('#table-11')) {
+            $('#table-11').DataTable().destroy();
+        }
+
+        var rows = '';
+        for (i = 0; i < products.Table.length; i++) {
+            var item = products.Table[i];
+            rows = rows + '<tr><td>' + item.PRODUCT_ID + '</td><td>' + item.NAME + '</td><td>' + item.PRODUCT_DESCRIPTION + '</td><td>'
+                        + item.OLD_PRODUCT_ID + '</td><td>' + item.PRICE + '</td><td>' + item.HAS_IMAGE + '</td>'
+            + '<td>'
+            //+ item.PRICE + '</td><td>'
+            //+ item.QUANTITY + '</td><td>'
+            + '<a style="color:blue" target="_blank" href ="Update?pID=' + item.PRODUCT_ID + '">Edit</a>'
+            + '<a style="color:black" target="_blank" href ="Quantity?pID=' + item.PRODUCT_ID + '">/Stock</a>'
+            //+ '<a style="color:red" href = "javascript:deleteActionConfirmation("' + item.PRODUCT_ID + ')">/Delete</a>'
+            + '<a style="color:red" href = "javascript:deleteActionConfirmation(' + item.PRODUCT_ID + ')">/Delete</a>'
+            + '<a style="color:green" target="_blank" href = "View?pID=' + item.PRODUCT_ID + '">/View</a></td></tr>';
+        }
+
+        $("#productsTable").html(rows);
+        $("#productsTable1").html(rows);
+
+        $("#searchBtn-div").show();
+        loadDT();
+
+    }
+    function populateStatus() {
+        var options = "";
+        options = options + '<option value="' + -1 + '"> All </option>';
+        options = options + '<option value="' + 1 + '"> Active </option>';
+        options = options + '<option value="' + 0 + '"> InActive </option>';
+
+
+        $("#ddlActive").html(options);
+    }
+    function initializeCategoriesList() {
+        $.ajax({
+            type: "GET",
+            url: '/api/product/categories',
+            contentType: 'application/json',
+            success: function (result) {
+                categoriesList = jQuery.parseJSON(result);
+                populateCategoriesDropDown();
+            },
+            error: function (res) {
+                alert('failure: ' + res);
+            }
+        });
+    }
+
+    function initializeGroupsList() {
+        $.ajax({
+            type: "GET",
+            url: '/api/product/groups',
+            contentType: 'application/json',
+            success: function (result) {
+                groupsList = jQuery.parseJSON(result);
+                populateGroupsDropDown();
+            },
+            error: function (res) {
+                alert('failure: ' + res);
+            }
+        });
+    }
+
+    function initializeSubCategoriesList() {
+        $.ajax({
+            type: "GET",
+            url: '/api/product/subcategories',
+            contentType: 'application/json',
+            success: function (result) {
+                subCategoriesList = jQuery.parseJSON(result);
+                populateSubCategoriesDropDown();
+            },
+            error: function (res) {
+                alert('failure: ' + res);
+            }
+        });
+    }
+
+
+    function populateGroupsDropDown() {
+        var options = '<option value="-1">All</option>';
+        for (i = 0; i < groupsList.Table.length; i++) {
+            var item = groupsList.Table[i];
+            options = options + '<option value="' + item.GROUP_ID + '">' + item.NAME + '</option>';
+        }
+        $("#group_ID").html(options);
+    }
+
+    function populateCategoriesDropDown() {
+        var options = '<option value="-1">All</option>';
+        var selectedgroupID = $("#group_ID").val();
+        for (i = 0; i < categoriesList.Table.length; i++) {
+            var item = categoriesList.Table[i];
+            if (selectedgroupID == item.GROUP_ID)
+                options = options + '<option value="' + item.CATEGORY_ID + '">' + item.DESCRIPTION + '</option>';
+        }
+        $("#cat_ID").html(options);
+    }
+
+    function populateSubCategoriesDropDown() {
+        var options = '<option value="-1">All</option>';
+        var selectedCatID = $("#cat_ID").val();
+        for (i = 0; i < subCategoriesList.Table.length; i++) {
+            var item = subCategoriesList.Table[i];
+            if (selectedCatID == item.CATEGORY_ID)
+                options = options + '<option value="' + item.SUB_CATEGORY_ID + '">' + item.DESCRIPTION + '</option>';
+        }
+        $("#sub_cat_ID").html(options);
+    }
+
+    function deleteActionConfirmation(id) {
+        //alert(id);
+        var txt;
+        var r = confirm("Are you sure you want to delete this item?? Press OK if Yes otherwise Cancel!");
+        if (r == true) {
+            $.ajax({
+                type: "GET",
+                url: '/api/Product/deleteproduct?pID=' + id,
+                contentType: 'application/json',
+                success: function (result) {
+                    var res = jQuery.parseJSON(result);
+                    if (res == 1) {
+                        alert("Selected record is deleted successfully.");
+                        initializeProductsList($("#sub_cat_ID").val());
+                    }
+                    else {
+                        alert("Failed to delete selected record.");
+                    }
+
+                },
+                error: function (res) {
+                    alert('failure: ' + res);
+                }
+            });
+        }
+    }
+</script>
+
+<style>
+    .searchsec {
+        border: 1px lightgray solid;
+        display: block;
+        margin: 5px 0px;
+        padding: 2px 0px;
+    }
+</style>
+<ol class="breadcrumb">
+    <li class="breadcrumb-item">
+        <a href="/Home/Index">Grocery Store</a>
+    </li>
+    <li>Product Management</li>
+    <li class="breadcrumb-item active">Products</li>
+</ol>
+
+<h2>Products</h2>
+
+<br />
+
+<div class="row">
+    <div class="col-md-4">
+
+        <div class="form-group">
+            <label for="product_grp" class="control-label">Group</label>
+
+            <select class="form-control" name="model.GROUP_ID" id="group_ID">
+                <option value="-1">Select An Option</option>
+            </select>
+        </div>
+
+    </div>
+
+    <div class="col-md-4">
+
+        <div class="form-group">
+            <label for="product_cat" class="control-label">Category</label>
+
+            <select class="form-control" name="model.Category_ID" id="cat_ID">
+                <option value="-1">Select An Option</option>
+            </select>
+        </div>
+
+    </div>
+
+    <div class="col-md-4">
+
+        <div class="form-group">
+            <label for="product_sub_cat" class="control-label">Sub Category</label>
+            @Html.DropDownListFor(model => model.SUB_CATEGORY_ID, new List<SelectListItem>(), "Select An Option", new { @class = "form-control", @id = "sub_cat_ID" })
+        </div>
+
+    </div>
+
+
+</div>
+
+
+<div class="row">
+    <div class="col-md-6">
+        <button type="button" onclick="resetIt()" class="btn btn-default"> Reset </button>
+    </div>
+
+    <div class="col-md-6">
+        <button class="btn btn-info pull-right btn-lg" id="btnLoad">Load</button>
+    </div>
+</div>
+
+<br />
+<div class="panel-body">
+    <div class="row searchsec" id="searchBtn-div" hidden>
+        <div class="col-md-4">
+            <label class="control-label">By Name</label>
+            <input type="text" id="myInput" class="form-control" placeholder="Enter Names..">
+        </div>
+        <div class="col-md-4">
+            <label class="control-label">By SC-ID</label>
+            <input type="text" id="myID" class="form-control" placeholder="Enter Id">
+        </div>
+        <div class="col-md-4">
+            <label class="control-label">By Status</label>
+            <select id="ddlActive" class="form-control"></select>
+        </div>
+    </div>
+
+    <table class="table table-bordered datatable" id="table-11" hidden>
+        <thead>
+            <tr>
+                <th>Product ID</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Old Id</th>
+                <th>Price</th>
+                <th>Has Image</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="productsTable"></tbody>
+        <tfoot>
+            <tr>
+                <th>Product ID</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Old Id</th>
+                <th>Price</th>
+                <th>Has Image</th>
+                <th>Action</th>
+            </tr>
+        </tfoot>
+    </table>
+
+    <div id="table-11-div">
+        <table class="table table-bordered datatable" id="product-all" hidden>
+            <thead>
+                <tr>
+                    <th>Product ID - Bar Code</th>
+                    <th>Description</th>
+                    @*<th>Bar Code</th>*@
+                    @*<th>Qty In Stock</th>*@
+                    @*<th>Unit/Packing</th>*@
+                    <th>Price</th>
+                    <th>Discount</th>
+                    <th>Qty Ordered</th>
+                    <th>Order</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="productsTable1"></tbody>
+            <tfoot>
+                <tr>
+                    <th>Product ID - BAR CODE</th>
+                    <th>Description</th>
+                    @*<th>Bar Code</th>*@
+                    @*                                    <th>Qty In Stock</th>*@
+                    @*<th>Unit/Packing</th>*@
+                    <th>Price</th>
+                    <th>Discount</th>
+                    <th>Qty Ordered</th>
+                    <th>Order</th>
+                    <th>Action</th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+
+    <script type="text/javascript">
+    var responsiveHelper;
+    var breakpointDefinition = {
+        tablet: 1024,
+        phone: 480
+    };
+    var tableContainer = null;
+
+    function loadDT() {
+        tableContainer = $("#table-11");
+
+        tableContainer.show();
+
+        tableContainer.dataTable({
+            "sPaginationType": "bootstrap",
+            "aLengthMenu": [[30, 100, 1000, -1], [30, 100, 1000, "All"]],
+            "bStateSave": true,
+
+
+            // Responsive Settings
+            bAutoWidth: false,
+            fnPreDrawCallback: function () {
+                // Initialize the responsive datatables helper once.
+                if (!responsiveHelper) {
+                    responsiveHelper = new ResponsiveDatatablesHelper(tableContainer, breakpointDefinition);
+                }
+            },
+            fnRowCallback: function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+                responsiveHelper.createExpandIcon(nRow);
+            },
+            fnDrawCallback: function (oSettings) {
+                responsiveHelper.respond();
+            }
+        });
+
+    }
+    </script>
+
+    <br />
+
+
+    <!-- Imported styles on this page -->
+    <link rel="stylesheet" href="~/assets/js/datatables/responsive/css/datatables.responsive.css">
+    <link rel="stylesheet" href="~/assets/js/select2/select2-bootstrap.css">
+    <link rel="stylesheet" href="~/assets/js/select2/select2.css">
+    <!-- Bottom scripts (common) -->
+    <script src="~/assets/js/jquery.dataTables.min.js"></script>
+    <script src="~/assets/js/datatables/TableTools.min.js"></script>
+
+    <!-- Imported scripts on this page -->
+    <script src="~/assets/js/dataTables.bootstrap.js"></script>
+    <script src="~/assets/js/datatables/jquery.dataTables.columnFilter.js"></script>
+    <script src="~/assets/js/datatables/lodash.min.js"></script>
+    <script src="~/assets/js/datatables/responsive/js/datatables.responsive.js"></script>

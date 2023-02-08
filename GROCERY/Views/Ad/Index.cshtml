@@ -1,0 +1,59 @@
+﻿@model List<GROCERY.Models.AD>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<table class="table table-responsive table-striped">
+    <thead>
+        <tr style="font-size:20px ;font-weight:bolder">
+            <th>
+                ID
+            </th>
+            <th>
+                TEXT
+            </th>
+            <th>
+                STATUS
+            </th>
+
+
+            <th style="color:red">Inactive</th>
+            <th style="color:green">Active</th>
+        </tr>
+    </thead>
+    @if (Model != null)
+    {
+        foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.AD_ID
+                </td>
+                <td>
+                    @item.TEXT
+                </td>
+                <td>
+                    @item.IS_ACTIVE
+                </td>
+                <td>
+                    @Html.ActionLink("Disable?", "Edit",new { id = item.AD_ID })
+                </td>
+                <td>
+                    @Html.ActionLink("Enable", "Edit2", new { id = item.AD_ID })
+                </td>
+            </tr>
+        }
+
+
+    }
+
+</table>
+
+
+<!-- Imported styles on this page -->
+<link rel="stylesheet" href="~/assets/js/datatables/responsive/css/datatables.responsive.css">
+<link rel="stylesheet" href="~/assets/js/select2/select2-bootstrap.css">
+<link rel="stylesheet" href="~/assets/js/select2/select2.css">

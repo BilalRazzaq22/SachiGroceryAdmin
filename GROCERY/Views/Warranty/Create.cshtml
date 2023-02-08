@@ -1,0 +1,95 @@
+﻿@model GROCERY.Models.COUPONSBO
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Create</h2>
+
+<div class="row">
+    <div class="col-md-12">
+
+        <div class="panel panel-primary" data-collapsed="0">
+
+            <div class="panel-heading">
+                <div class="panel-title">
+                    Add Detals
+                </div>
+
+                <div class="panel-options">
+                    <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                </div>
+            </div>
+
+
+            <div class="panel-body">
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="product_name" class="control-label">Equipment Type</label>
+                            <select class="form-control">
+                                <option>Please Select</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="product_name" class="control-label">Select Equipment</label>
+                            <select class="form-control">
+                                <option>Please Select</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="product_name" class="control-label">Select Hospital</label>
+                            <select class="form-control">
+                                <option>Please Select</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="product_name" class="control-label">Serial #</label>
+                            @Html.TextBoxFor(model => model.VALUE, new { @class = "form-control", placeholder = "Promo Value", Required = "Required", type = "Number" })
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="product_name" class="control-label">Status</label>
+                            @Html.TextBoxFor(model => model.START_DATE, new { @class = "form-control", placeholder = "Promo Start Date", Required = "Required", type = "TEXT" })
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="product_name" class="control-label">Mode of Procurement</label>
+                            <select class="form-control">
+                                <option>Please Select</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="product_name" class="control-label">No Of Claims</label>
+                            <input type="text" class="form-control" />
+                        </div>
+                    </div>
+
+
+
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="reset" class="btn btn-default" data-dismiss="modal">Reset</button>
+                <button type="submit" class="btn btn-info">Add Promo</button>
+            </div>
+        </div>
+    </div>
+</div>
