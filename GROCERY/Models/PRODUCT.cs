@@ -46,5 +46,8 @@ namespace GROCERY.Models
         public Nullable<bool> IS_FEATURED { get; set; }
         public Nullable<int> THRESHOLD { get; set; }
         public Nullable<bool> IS_EXEMPTED { get; set; }
+        public string PRODUCT_NAME_URL { get; set; }
+        public string DEVICE_TYPE { get; set; }
+        public Nullable<bool> IS_FAVOURITE { get; set; }
     }
 }

@@ -12,3 +12,19 @@ body {
 	pointer-events: none;
 	opacity: 0.4;
 }
+
+.load-maindiv {
+	pointer-events: none;
+	opacity: 0.1;
+}
+
+.hide-menu{
+	display:none;
+}
+
+.panel-heading {
+	font-size: 20px;
+	text-align: center;
+	color: #303641;
+	padding: 10px;
+}

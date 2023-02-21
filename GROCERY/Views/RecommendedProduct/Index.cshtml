@@ -1,0 +1,213 @@
+﻿@model IEnumerable<GROCERY.Models.RECOMMENDED_PRODUCTS>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<ol class="breadcrumb">
+    <li class="breadcrumb-item">
+        <a href="/Home/Index">Grocery Store</a>
+    </li>
+    <li>Recommended Product</li>
+    <li class="breadcrumb-item active">Recommended Products</li>
+</ol>
+
+<h2>Recommended Products</h2>
+
+<br />
+
+<div class="row">
+    <div class="col-md-12">
+
+        <div class="panel panel-primary" data-collapsed="0">
+
+            <div class="panel-heading">
+                <div class="panel-title">
+                    Add New Recommended Product
+                </div>
+
+                <div class="panel-options">
+                    <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                </div>
+            </div>
+
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="product" class="control-label">Product</label>
+                            <select class="form-control" name="PRODUCT_ID" id="PRODUCT_ID">
+                                <option value="-1">Select An Option</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="form-group">
+                            <button id="btnrecommended" class="btn btn-success form-control" title="Add" style="margin-top: 20px;">Add</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<br />
+
+<table class="table table-bordered datatable" id="table-1">
+    <thead>
+        <tr>
+            <th>
+                PRODUCT NAME
+            </th>
+            <th>
+                PRICE
+            </th>
+            <th>
+                PACKING
+            </th>
+            <th>
+                TYPE
+            </th>
+            <th>
+                Action
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PRODUCT_NAME)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PRICE)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PACKING)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TYPE)
+                </td>
+                <td>
+                    @if (item.TYPE == "Manual")
+                    {
+                        @Html.ActionLink("Delete", "Delete", new { id = item.RECOMMENDED_PRODUCT_ID }, new { onclick = "return confirm('Are sure wants to delete?');" })
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+
+</table>
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script>
+    $(document).ready(function () {
+        var products = {};
+        initializeProductsList();
+
+        var responsiveHelper;
+        var breakpointDefinition = {
+            tablet: 1024,
+            phone: 480
+        };
+            $("#table-1").dataTable({
+                "sPaginationType": "bootstrap",
+                "aLengthMenu": [[30, 100, 1000, -1], [30, 100, 1000, "All"]],
+                "bStateSave": true,
+                "ordering": false,
+
+                // Responsive Settings
+                bAutoWidth: false,
+                //fnPreDrawCallback: function () {
+                //    // Initialize the responsive datatables helper once.
+                //    if (!responsiveHelper) {
+                //        responsiveHelper = new ResponsiveDatatablesHelper($("#table-1"), breakpointDefinition);
+                //    }
+                //},
+                //fnRowCallback: function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+                //    responsiveHelper.createExpandIcon(nRow);
+                //},
+                //fnDrawCallback: function (oSettings) {
+                //    responsiveHelper.respond();
+                //}
+            });
+        });
+
+    @*$("#PRODUCT_ID").change(function () {
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("GetProduct")', // we are calling json method
+            data: { id: $("#PRODUCT_ID").val() },
+            success: function (res) {
+            },
+            error: function (ex) {
+                alert('Failed to retrieve states.' + ex);
+            }
+        });
+        return false;
+    });*@
+
+    $("#btnrecommended").click(function () {
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("Create")', // we are calling json method
+            contentType: 'application/json',
+            data: JSON.stringify({ productId: $("#PRODUCT_ID").val() }),
+            success: function (res) {
+                location.reload(true);
+            },
+            error: function (ex) {
+                alert('Failed to retrieve states.' + ex);
+            }
+        });
+        return false;
+    });
+
+    function initializeProductsList() {
+        $.ajax({
+            type: "GET",
+            url: '/api/product/getproducts',
+            contentType: 'application/json',
+            success: function (result) {
+                products = jQuery.parseJSON(result);
+                console.log(products);
+                populateProductsDropDown();
+            },
+            error: function (res) {
+                alert('failure: ' + res);
+            }
+        });
+    }
+
+    function populateProductsDropDown() {
+        var options = '<option value="-1">---Select an option---</option>';
+        //var selectedCatID = $("#SUB_CATEGORY_ID").val();
+        for (i = 0; i < products.Table.length; i++) {
+            var item = products.Table[i];
+            //if (selectedCatID == item.SUB_CATEGORY_ID)
+            options = options + '<option value="' + item.PRODUCT_ID + '">' + item.DESCRIPTION + '</option>';
+        }
+        $("#PRODUCT_ID").html(options);
+    }
+
+</script>
+
+<!-- Imported styles on this page -->
+<link rel="stylesheet" href="~/assets/js/datatables/responsive/css/datatables.responsive.css">
+<link rel="stylesheet" href="~/assets/js/select2/select2-bootstrap.css">
+<link rel="stylesheet" href="~/assets/js/select2/select2.css">
+<!-- Bottom scripts (common) -->
+<script src="~/assets/js/jquery.dataTables.min.js"></script>
+<script src="~/assets/js/datatables/TableTools.min.js"></script>
+
+<!-- Imported scripts on this page -->
+<script src="~/assets/js/dataTables.bootstrap.js"></script>
+<script src="~/assets/js/datatables/jquery.dataTables.columnFilter.js"></script>
+<script src="~/assets/js/datatables/lodash.min.js"></script>
+<script src="~/assets/js/datatables/responsive/js/datatables.responsive.js"></script>

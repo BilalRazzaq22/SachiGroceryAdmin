@@ -61,10 +61,38 @@ namespace GROCERY.DAL.Managers
         {
             return ExecuteDataSet("select * from SUB_CATEGORIES");
         }
+        public DataSet GetProductsBySubCat(int scID)
+        {
+            string q = @"SELECT top 1000  P.PRODUCT_ID, P.NAME, P.DESCRIPTION PRODUCT_DESCRIPTION, ISNULL(P.PRICE,0) PRICE, P.OLD_PRODUCT_ID,
+                        case 
+                        when P.HAS_IMAGE = 1 then 'Yes' 
+                        else 'No'
+                        end
+                        AS HAS_IMAGE
+                        , P.VENDOR_ID, P.SUB_CATEGORY_ID, P.IS_ACTIVE
+                        FROM      PRODUCTS P 
+                        {0}
+                        GROUP	 BY  P.PRODUCT_ID, P.NAME, P.DESCRIPTION,  P.VENDOR_ID,P.PRICE,P.OLD_PRODUCT_ID, P.SUB_CATEGORY_ID,P.IS_ACTIVE,P.HAS_IMAGE";
 
+
+
+
+            string where = " WHERE 1=1 ";
+            if (scID != -1)
+            {
+
+                where += string.Format(" and   P.SUB_CATEGORY_ID = {0} and P.IS_ACTIVE = 1", scID);
+            }
+            return ExecuteDataSet(string.Format(q, where));
+        }
         public DataSet getAllVendors()
         {
             return ExecuteDataSet("select * from VENDORS");
+        }
+        
+        public DataSet GetProducts()
+        {
+            return ExecuteDataSet("select P.PRODUCT_ID, P.NAME, P.DESCRIPTION from PRODUCTS P WHERE P.IS_ACTIVE = 1");
         }
 
         public int deleteProduct(int pID)

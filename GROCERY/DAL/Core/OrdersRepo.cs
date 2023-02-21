@@ -13,7 +13,7 @@ namespace GROCERY.DAL.Core
         GROCERYEntities gEnt = new GROCERYEntities();
         CouponsRepo cRepo = new CouponsRepo();
         public DateTime currentdate;
-       public OrdersRepo()
+        public OrdersRepo()
         {
             DateTime date1 = DateTime.UtcNow;
             TimeZoneInfo tz = TimeZoneInfo.FindSystemTimeZoneById("Pakistan Standard Time");
@@ -27,12 +27,12 @@ namespace GROCERY.DAL.Core
                                             inner join BARCODES bc ON op.BAR_CODE = bc.BAR_CODE and o.BRANCH_ID = bc.LOCNO
                                             inner join PRODUCTS p on bc.ITEM_CODE = p.OLD_PRODUCT_ID
                                             where o.BRANCH_ID = {0} and op.ORDER_ID = {1} and bc.bDEFAULT = 1 and bc.IsActive=1";
-                                            //        select op.ORDER_ID,op.PRODUCT_ID,op.QUANTITY,p.NAME,s.QTY,bc.UNIT_PRICE,bc.DISC,(bc.UNIT_PRICE-bc.DISC)* op.QUANTITY as Total,bc.BAR_CODE
-                                            //from ORDER_PRODUCTS op 
-                                            //inner join ORDERS o on op.ORDER_ID = o.ORDER_ID
-                                            //inner join BARCODES bc ON op.BAR_CODE = bc.BAR_CODE and o.BRANCH_ID = bc.LOCNO
-                                            //inner join PRODUCTS p on bc.ITEM_CODE = p.PRODUCT_ID
-                                            //inner join STOCK S on o.BRANCH_ID =  s.BRANCH_ID and p.PRODUCT_ID = s.PRODUCT_ID
+        //        select op.ORDER_ID,op.PRODUCT_ID,op.QUANTITY,p.NAME,s.QTY,bc.UNIT_PRICE,bc.DISC,(bc.UNIT_PRICE-bc.DISC)* op.QUANTITY as Total,bc.BAR_CODE
+        //from ORDER_PRODUCTS op 
+        //inner join ORDERS o on op.ORDER_ID = o.ORDER_ID
+        //inner join BARCODES bc ON op.BAR_CODE = bc.BAR_CODE and o.BRANCH_ID = bc.LOCNO
+        //inner join PRODUCTS p on bc.ITEM_CODE = p.PRODUCT_ID
+        //inner join STOCK S on o.BRANCH_ID =  s.BRANCH_ID and p.PRODUCT_ID = s.PRODUCT_ID
 
 
         public int addOrder(ORDER order)
@@ -59,7 +59,7 @@ namespace GROCERY.DAL.Core
             try
             {
                 var res = getOrder(order.ORDER_ID);
-                if(res != null && res.item != null)
+                if (res != null && res.item != null)
                 {
                     var orderObj = res.item;
                     if (orderObj.COUPON_ID == -1)
@@ -299,9 +299,9 @@ namespace GROCERY.DAL.Core
         {
             try
             {
-                DataTable dtTable = ExecuteDataSet(string.Format(QRY_GET_ORDER_DETAIL,  bID,oID)).Tables[0];
+                DataTable dtTable = ExecuteDataSet(string.Format(QRY_GET_ORDER_DETAIL, bID, oID)).Tables[0];
                 List<CallOrders> list = new List<CallOrders>();
-                foreach(DataRow row in dtTable.Rows)
+                foreach (DataRow row in dtTable.Rows)
                 {
                     CallOrders co = new CallOrders();
 
@@ -310,9 +310,9 @@ namespace GROCERY.DAL.Core
                     co.product_name = row[3].ToString();
                     //co.availableQty = decimal.Parse(row[4].ToString());
                     co.price = decimal.Parse(row[4].ToString());
-                    co.disc = decimal.Parse(row[5].ToString()); 
+                    co.disc = decimal.Parse(row[5].ToString());
                     co.total = decimal.Parse(row[6].ToString());
-                    co.barcode = row[7].ToString(); 
+                    co.barcode = row[7].ToString();
                     list.Add(co);
                 }
                 if (list.Count == 0)
@@ -402,6 +402,18 @@ namespace GROCERY.DAL.Core
                 throw;
             }
 
+        }
+
+        public void SaveTransactionNumber(string paymentModeId, string transactionNumber)
+        {
+            ONLINE_TRANSACTION onlineTrans = new ONLINE_TRANSACTION()
+            {
+                PAYMENT_MODE_ID = Convert.ToInt32(paymentModeId),
+                TRANSACTION_NUMBER = transactionNumber
+            };
+
+            gEnt.ONLINE_TRANSACTION.Add(onlineTrans);
+            gEnt.SaveChanges();
         }
     }
 }

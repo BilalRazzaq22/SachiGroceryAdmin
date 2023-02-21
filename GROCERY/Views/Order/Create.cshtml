@@ -154,13 +154,27 @@
     };
 
     $(document).ready(function () {
-        
+        $("#transaction").hide();
         $(".txtManualDiscount").val(0);
+
+        if ('@ViewBag.RoleName' == "Admin") {
+            $("#testOrder").show();
+        } else {
+            $("#testOrder").hide();
+        }
         
         $("#txtCouponDisc").val(0);
         $("#myInput").keypress(function (e) {
             if (e.which == 13) {
                 searchIt();
+            }
+        });
+
+        $("#paymentMode").on('change', function () {
+            if ($("#paymentMode option:selected").text() == "Online") {
+                $("#transaction").show();
+            } else {
+                $("#transaction").hide();
             }
         });
 
@@ -204,7 +218,7 @@
                         }
 
                         ele.value = sum - $(".txtManualDiscount").val() - $("#txtCouponDisc").val();
-                        
+
                     }
                     else
                     {
@@ -230,10 +244,10 @@
                     alert('failure: ' + res);
                 }
             });
-            
+
 
         });
-        
+
         var sum = 0;
         $("#cat_ID").change(function () {
             $("#sub_cat_ID").empty();
@@ -292,16 +306,16 @@
 
         $("#btnGenerateOrder").click(function (event) {
 
-            var mobNum = $("#MOBILE").val();
-            if (mobNum.length != 12) {
-                alert('Mobile number must have 12 characters');
-                return;
-            }
-            var str = mobNum.substring(0, 2);
-            if (str != "92") {
-                alert('Mobile number must start with 92');
-                return;
-            }
+            //var mobNum = $("#MOBILE").val();
+            //if (mobNum.length != 12) {
+            //    alert('Mobile number must have 12 characters');
+            //    return;
+            //}
+            //var str = mobNum.substring(0, 2);
+            //if (str != "92") {
+            //    alert('Mobile number must start with 92');
+            //    return;
+            //}
 
             var CustomerName = $("#NAME").val();
             var MobileNumber = $("#MOBILE").val();
@@ -342,7 +356,7 @@
         initializeBranchesList();
         initializePaymentModes();
         populatePackage();
-        
+
     });
 
 
@@ -761,18 +775,31 @@
             coupon: $("#txtCouponCode").val(),
             couponDisc: $("#txtCouponDisc").val(),
             totalAmount: $("#txtTotalSum").val(),
+            isTestOrder: ($("#IsTestOrder_Value option:selected").text() == "Yes") ? true : false,
             cOrders: orders.items
         };
-        debugger;
         $.ajax({
             url: "@Url.Action("ProcessOrder", "Order")",
             type: "POST",
             contentType: "application/json",
             data: JSON.stringify({ custOrd: callOrders_new }),
             success: function (response) {
-                if (response == "True") {
+                debugger;
+                if (response == "False" && $("#IsTestOrder_Value option:selected").text() == "Yes") {
+                    alert("Test order not saved in the system");
+                }
+                else if (response == "True") {
                     alert("Order created successfully.");
                     $("#form-orders").submit();
+
+                    $.ajax({
+                        url: "@Url.Action("SaveTransactionNumber", "Order")",
+                        type: "POST",
+                        data: { paymentModeId: $("#paymentMode").val(), transactionNumber: $("#txttransaction").val() },
+                        success: function (response) {
+
+                        }
+                    });
                 }
                 else
                     alert("Order Creation failed. Retry!");
@@ -804,11 +831,11 @@
         //options = options + '<option value="' + -1 + '"> Please Select </option>';
         options = options + '<option value="' + 0 + '"> No </option>';
         options = options + '<option value="' + 1 + '"> Yes </option>';
-        
+
 
         $("#ddlpackage").html(options);
     }
-    
+
     function populatePrevAddress() {
         var options = "";
         options = options + '<option value="' + -1 + '"> Please Select </option>';
@@ -1217,10 +1244,10 @@
                                 <select name="PAYMENT_MODE_ID" id="paymentMode" class="form-control"></select>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-4" id="transaction">
                             <div class="form-group">
-                                <label for="user_status" class="control-label">Delivery Message</label>
-                                @Html.TextAreaFor(model => model.DELIVERY_DESCRIPTION, new { @class = "form-control", placeholder = "Delivery Message" })
+                                <label for="user_status" class="control-label">Transaction No.</label>
+                                <input id="txttransaction" type="text" placeholder="Transaction Number" class="form-control" />
                             </div>
                         </div>
                         <div class="col-md-4">
@@ -1231,8 +1258,7 @@
                             </div>
                         </div>
 
-                    </div>
-                    <div class="row">
+
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="user_status" class="control-label">Package</label>
@@ -1242,7 +1268,7 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="user_status" class="control-label">Coupon</label>
-                                @Html.TextBoxFor(model => model.COUPON_ID, new { @class = "form-control", placeholder = "Coupon", type = "text" ,id="txtCouponCode"})
+                                @Html.TextBoxFor(model => model.COUPON_ID, new { @class = "form-control", placeholder = "Coupon", type = "text", id = "txtCouponCode" })
                             </div>
                         </div>
 
@@ -1254,9 +1280,7 @@
                         </div>
 
 
-                    </div>
 
-                    <div class="row">
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="user_status" class="control-label">Extra Discount</label>
@@ -1268,6 +1292,40 @@
                                 <label for="user_status" class="control-label">Total Bill</label>
                                 <input type="text" id="txtTotalSum" class="form-control" value="0" readonly />
 
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="user_status" class="control-label">Delivery Message</label>
+                                @Html.TextAreaFor(model => model.DELIVERY_DESCRIPTION, new { @class = "form-control", placeholder = "Delivery Message" })
+                            </div>
+                        </div>
+
+                        <div id="testOrder" class="col-md-4">
+                            <div class="form-group">
+
+                                <label for="user_status" class="control-label">Test Order</label>
+                                @{
+                                    List<SelectListItem> listActive = new List<SelectListItem>();
+                                    //listActive.Add(new SelectListItem
+                                    //{
+                                    //    Text = "Select Option",
+                                    //    Value = "Select Option",
+                                    //    Selected = true
+                                    //});
+                                    listActive.Add(new SelectListItem
+                                    {
+                                        Text = "Yes",
+                                        Value = "true"
+                                    });
+                                    listActive.Add(new SelectListItem
+                                    {
+                                        Text = "No",
+                                        Value = "false",
+                                        Selected = true
+                                    });
+                                }
+                                @Html.DropDownListFor(model => model.IsTestOrder.Value, listActive, null, new { @class = "form-control" })
                             </div>
                         </div>
 

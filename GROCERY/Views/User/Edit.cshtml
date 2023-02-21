@@ -67,7 +67,8 @@
         var options = "";
         for (i = 0; i < userTypesList.Table.length; i++) {
             var item = userTypesList.Table[i];
-            options = options + '<option value="' + item.USER_TYPE_ID + '">' + item.DESCRIPTION + '</option>';
+            if (item.USER_TYPE_ID != 5)
+                options = options + '<option value="' + item.USER_TYPE_ID + '">' + item.DESCRIPTION + '</option>';
         }
         $("#userType_ID").html(options);
     }

@@ -23,5 +23,6 @@ namespace GROCERY.Models
         public Nullable<System.DateTime> MODIFIED_DATE { get; set; }
         public bool IsActive { get; set; }
         public string APP_IMAGE_PATH { get; set; }
+        public string DESCRIPTION_URL { get; set; }
     }
 }

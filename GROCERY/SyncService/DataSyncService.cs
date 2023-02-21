@@ -20,7 +20,7 @@ namespace GROCERY.SyncService
             charsuConnection = new SqlConnection(charsuDb);
             sachiChakkiConnection = new SqlConnection(sachiChakkiDb);
             charsuConnection.Open();
-            sachiChakkiConnection.Open();
+            //sachiChakkiConnection.Open();
 
         }
 
@@ -36,29 +36,15 @@ namespace GROCERY.SyncService
             }
         }
 
-        public void StartFullSyncing()
+        public string StartFullSyncing()
         {
             try
             {
-                BarcodeSync();
+                return GetAllBarcodes();
             }
             catch (Exception ex)
             {
                 throw;
-            }
-        }
-
-        public void BarcodeSync()
-        {
-            try
-            {
-                GetAllBarcodes();
-            }
-            catch (Exception ex)
-            {
-            }
-            finally
-            {
             }
         }
 
@@ -73,18 +59,16 @@ namespace GROCERY.SyncService
             }
         }
 
-        public void StockSync()
+        public string StockSync()
         {
             try
             {
 
-                GetAllStocks();
+                return GetAllStocks();
             }
             catch (Exception ex)
             {
-            }
-            finally
-            {
+                throw;
             }
         }
 
@@ -99,18 +83,16 @@ namespace GROCERY.SyncService
             }
         }
 
-        public void ProductSync()
+        public string ProductSync()
         {
             try
             {
 
-                GetAllProducts();
+                return GetAllProducts();
             }
             catch (Exception ex)
             {
-            }
-            finally
-            {
+                throw;
             }
         }
 
@@ -125,7 +107,7 @@ namespace GROCERY.SyncService
             }
         }
 
-        public void GetAllBarcodes()
+        public string GetAllBarcodes()
         {
 
             DataTable BarcodeTable = new DataTable();
@@ -155,86 +137,19 @@ namespace GROCERY.SyncService
             BarcodeTable.Columns.Add("LOYALTY_DISC", typeof(decimal));
             BarcodeTable.Columns.Add("STAFF_DISC", typeof(decimal));
             BarcodeTable.Columns.Add("IsActive", typeof(bool));
-            //BarcodeTable.Columns.Add("NeedsReplication", typeof(bool));
-            //BarcodeTable.Columns.Add("NeedsUpdation", typeof(bool));
-            //BarcodeTable.Columns.Add("L1P1NeedsUpdation", typeof(bool));
-            //BarcodeTable.Columns.Add("L1P2NeedsUpdation", typeof(bool));
-            //BarcodeTable.Columns.Add("L1P3NeedsUpdation", typeof(bool));
-            //BarcodeTable.Columns.Add("L1P4NeedsUpdation", typeof(bool));
-            //BarcodeTable.Columns.Add("L1P5NeedsUpdation", typeof(bool));
-            //BarcodeTable.Columns.Add("L1P6NeedsUpdation", typeof(bool));
-            //BarcodeTable.Columns.Add("L1P7NeedsUpdation", typeof(bool));
-            //BarcodeTable.Columns.Add("L1P8NeedsUpdation", typeof(bool));
-            //BarcodeTable.Columns.Add("L1P9NeedsUpdation", typeof(bool));
-            //BarcodeTable.Columns.Add("L1P10NeedsUpdation", typeof(bool));
-            //BarcodeTable.Columns.Add("L2P1NeedsUpdation", typeof(bool));
-            //BarcodeTable.Columns.Add("L2P2NeedsUpdation", typeof(bool));
-            //BarcodeTable.Columns.Add("L2P3NeedsUpdation", typeof(bool));
-            //BarcodeTable.Columns.Add("L2P4NeedsUpdation", typeof(bool));
-            //BarcodeTable.Columns.Add("L2P5NeedsUpdation", typeof(bool));
-            //BarcodeTable.Columns.Add("L2P6NeedsUpdation", typeof(bool));
-            //BarcodeTable.Columns.Add("L2P7NeedsUpdation", typeof(bool));
-            //BarcodeTable.Columns.Add("L2P8NeedsUpdation", typeof(bool));
-            //BarcodeTable.Columns.Add("L2P9NeedsUpdation", typeof(bool));
-            //BarcodeTable.Columns.Add("L2P10NeedsUpdation", typeof(bool));
-            //BarcodeTable.Columns.Add("L0NeedsUpdation", typeof(bool));
-            //BarcodeTable.Columns.Add("L1NeedsUpdation", typeof(bool));
-            //BarcodeTable.Columns.Add("L2NeedsUpdation", typeof(bool));
-            //BarcodeTable.Columns.Add("L3NeedsUpdation", typeof(bool));
-            //BarcodeTable.Columns.Add("L3P1NeedsUpdation", typeof(bool));
-            //BarcodeTable.Columns.Add("L4NeedsUpdation", typeof(bool));
-            //BarcodeTable.Columns.Add("L5NeedsUpdation", typeof(bool));
-            //BarcodeTable.Columns.Add("L6NeedsUpdation", typeof(bool));
-            //BarcodeTable.Columns.Add("L3P2NeedsUpdation", typeof(bool));
-            //BarcodeTable.Columns.Add("L3P3NeedsUpdation", typeof(bool));
-            //BarcodeTable.Columns.Add("L3P4NeedsUpdation", typeof(bool));
-            //BarcodeTable.Columns.Add("L3P5NeedsUpdation", typeof(bool));
-            //BarcodeTable.Columns.Add("L3P6NeedsUpdation", typeof(bool));
-            //BarcodeTable.Columns.Add("L4P1NeedsUpdation", typeof(bool));
-            //BarcodeTable.Columns.Add("L4P2NeedsUpdation", typeof(bool));
-            //BarcodeTable.Columns.Add("L4P3NeedsUpdation", typeof(bool));
-            //BarcodeTable.Columns.Add("L4P4NeedsUpdation", typeof(bool));
-            //BarcodeTable.Columns.Add("L4P5NeedsUpdation", typeof(bool));
-            //BarcodeTable.Columns.Add("L4P6NeedsUpdation", typeof(bool));
-            //BarcodeTable.Columns.Add("L5P6NeedsUpdation", typeof(bool));
-            //BarcodeTable.Columns.Add("L5P1NeedsUpdation", typeof(bool));
-            //BarcodeTable.Columns.Add("L5P2NeedsUpdation", typeof(bool));
-            //BarcodeTable.Columns.Add("L5P3NeedsUpdation", typeof(bool));
-            //BarcodeTable.Columns.Add("L5P4NeedsUpdation", typeof(bool));
-            //BarcodeTable.Columns.Add("L5P5NeedsUpdation", typeof(bool));
-            //BarcodeTable.Columns.Add("L6P1NeedsUpdation", typeof(bool));
-            //BarcodeTable.Columns.Add("L6P2NeedsUpdation", typeof(bool));
-            //BarcodeTable.Columns.Add("L6P3NeedsUpdation", typeof(bool));
-            //BarcodeTable.Columns.Add("L6P4NeedsUpdation", typeof(bool));
-            //BarcodeTable.Columns.Add("L6P5NeedsUpdation", typeof(bool));
-            //BarcodeTable.Columns.Add("L6P6NeedsUpdation", typeof(bool));
-            //BarcodeTable.Columns.Add("L7NeedsUpdation", typeof(bool));
-            //BarcodeTable.Columns.Add("L7P1NeedsUpdation", typeof(bool));
-            //BarcodeTable.Columns.Add("L7P2NeedsUpdation", typeof(bool));
-            //BarcodeTable.Columns.Add("L7P3NeedsUpdation", typeof(bool));
-            //BarcodeTable.Columns.Add("L7P4NeedsUpdation", typeof(bool));
-            //BarcodeTable.Columns.Add("L7P5NeedsUpdation", typeof(bool));
-            //BarcodeTable.Columns.Add("L7P6NeedsUpdation", typeof(bool));
-            //BarcodeTable.Columns.Add("L8NeedsUpdation", typeof(bool));
-            //BarcodeTable.Columns.Add("L9NeedsUpdation", typeof(bool));
-            //BarcodeTable.Columns.Add("L10NeedsUpdation", typeof(bool));
-            //BarcodeTable.Columns.Add("L11NeedsUpdation", typeof(bool));
-            //BarcodeTable.Columns.Add("L12NeedsUpdation", typeof(bool));
-            //BarcodeTable.Columns.Add("L8P1NeedsUpdation", typeof(bool));
-            //BarcodeTable.Columns.Add("L9P1NeedsUpdation", typeof(bool));
-            //BarcodeTable.Columns.Add("L10P1NeedsUpdation", typeof(bool));
-            //BarcodeTable.Columns.Add("L11P1NeedsUpdation", typeof(bool));
-            //BarcodeTable.Columns.Add("L12P1NeedsUpdation", typeof(bool));
 
             try
             {
-                //using (SqlConnection con = new SqlConnection(sachiChakkiDb))
-                //{
-                //    con.Open();
-
-                if(sachiChakkiConnection.State == ConnectionState.Closed)
+                try
                 {
-                    sachiChakkiConnection.Open();
+                    if (sachiChakkiConnection.State == ConnectionState.Closed)
+                    {
+                        sachiChakkiConnection.Open();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return "Unable to connect with Sachi Chakki DB, Please try again.";
                 }
 
                 SqlCommand cmd = new SqlCommand(@"select LOCNO,ITEM_CODE,PACK_CODE,PACK_DESC,UNIT,bDEFAULT,BAR_CODE,BARTYPE,UNIT_PRICE,
@@ -299,152 +214,12 @@ namespace GROCERY.SyncService
                                 barcodeRow["STAFF_DISC"] = dr["STAFF_DISC"];
                             if (dr["IsActive"] != null)
                                 barcodeRow["IsActive"] = dr["IsActive"];
-                            //if (dr["NeedsReplication"] != null)
-                            //    barcodeRow["NeedsReplication"] = dr["NeedsReplication"];
-                            //if (dr["NeedsUpdation"] != null)
-                            //    barcodeRow["NeedsUpdation"] = dr["NeedsUpdation"];
-                            //if (dr["L1P1NeedsUpdation"] != null)
-                            //    barcodeRow["L1P1NeedsUpdation"] = dr["L1P1NeedsUpdation"];
-                            //if (dr["L1P2NeedsUpdation"] != null)
-                            //    barcodeRow["L1P2NeedsUpdation"] = dr["L1P2NeedsUpdation"];
-                            //if (dr["L1P3NeedsUpdation"] != null)
-                            //    barcodeRow["L1P3NeedsUpdation"] = dr["L1P3NeedsUpdation"];
-                            //if (dr["L1P4NeedsUpdation"] != null)
-                            //    barcodeRow["L1P4NeedsUpdation"] = dr["L1P4NeedsUpdation"];
-                            //if (dr["L1P5NeedsUpdation"] != null)
-                            //    barcodeRow["L1P5NeedsUpdation"] = dr["L1P5NeedsUpdation"];
-                            //if (dr["L1P6NeedsUpdation"] != null)
-                            //    barcodeRow["L1P6NeedsUpdation"] = dr["L1P6NeedsUpdation"];
-                            //if (dr["L1P7NeedsUpdation"] != null)
-                            //    barcodeRow["L1P7NeedsUpdation"] = dr["L1P7NeedsUpdation"];
-                            //if (dr["L1P8NeedsUpdation"] != null)
-                            //    barcodeRow["L1P8NeedsUpdation"] = dr["L1P8NeedsUpdation"];
-                            //if (dr["L1P9NeedsUpdation"] != null)
-                            //    barcodeRow["L1P9NeedsUpdation"] = dr["L1P9NeedsUpdation"];
-                            //if (dr["L1P10NeedsUpdation"] != null)
-                            //    barcodeRow["L1P10NeedsUpdation"] = dr["L1P10NeedsUpdation"];
-                            //if (dr["L2P1NeedsUpdation"] != null)
-                            //    barcodeRow["L2P1NeedsUpdation"] = dr["L2P1NeedsUpdation"];
-                            //if (dr["L2P2NeedsUpdation"] != null)
-                            //    barcodeRow["L2P2NeedsUpdation"] = dr["L2P2NeedsUpdation"];
-                            //if (dr["L2P3NeedsUpdation"] != null)
-                            //    barcodeRow["L2P3NeedsUpdation"] = dr["L2P3NeedsUpdation"];
-                            //if (dr["L2P4NeedsUpdation"] != null)
-                            //    barcodeRow["L2P4NeedsUpdation"] = dr["L2P4NeedsUpdation"];
-                            //if (dr["L2P5NeedsUpdation"] != null)
-                            //    barcodeRow["L2P5NeedsUpdation"] = dr["L2P5NeedsUpdation"];
-                            //if (dr["L2P6NeedsUpdation"] != null)
-                            //    barcodeRow["L2P6NeedsUpdation"] = dr["L2P6NeedsUpdation"];
-                            //if (dr["L2P7NeedsUpdation"] != null)
-                            //    barcodeRow["L2P7NeedsUpdation"] = dr["L2P7NeedsUpdation"];
-                            //if (dr["L2P8NeedsUpdation"] != null)
-                            //    barcodeRow["L2P8NeedsUpdation"] = dr["L2P8NeedsUpdation"];
-                            //if (dr["L2P9NeedsUpdation"] != null)
-                            //    barcodeRow["L2P9NeedsUpdation"] = dr["L2P9NeedsUpdation"];
-                            //if (dr["L2P10NeedsUpdation"] != null)
-                            //    barcodeRow["L2P10NeedsUpdation"] = dr["L2P10NeedsUpdation"];
-                            //if (dr["L0NeedsUpdation"] != null)
-                            //    barcodeRow["L0NeedsUpdation"] = dr["L0NeedsUpdation"];
-                            //if (dr["L1NeedsUpdation"] != null)
-                            //    barcodeRow["L1NeedsUpdation"] = dr["L1NeedsUpdation"];
-                            //if (dr["L2NeedsUpdation"] != null)
-                            //    barcodeRow["L2NeedsUpdation"] = dr["L2NeedsUpdation"];
-                            //if (dr["L3NeedsUpdation"] != null)
-                            //    barcodeRow["L3NeedsUpdation"] = dr["L3NeedsUpdation"];
-                            //if (dr["L3P1NeedsUpdation"] != null)
-                            //    barcodeRow["L3P1NeedsUpdation"] = dr["L3P1NeedsUpdation"];
-                            //if (dr["L4NeedsUpdation"] != null)
-                            //    barcodeRow["L4NeedsUpdation"] = dr["L4NeedsUpdation"];
-                            //if (dr["L5NeedsUpdation"] != null)
-                            //    barcodeRow["L5NeedsUpdation"] = dr["L5NeedsUpdation"];
-                            //if (dr["L6NeedsUpdation"] != null)
-                            //    barcodeRow["L6NeedsUpdation"] = dr["L6NeedsUpdation"];
-                            //if (dr["L3P2NeedsUpdation"] != null)
-                            //    barcodeRow["L3P2NeedsUpdation"] = dr["L3P2NeedsUpdation"];
-                            //if (dr["L3P3NeedsUpdation"] != null)
-                            //    barcodeRow["L3P3NeedsUpdation"] = dr["L3P3NeedsUpdation"];
-                            //if (dr["L3P4NeedsUpdation"] != null)
-                            //    barcodeRow["L3P4NeedsUpdation"] = dr["L3P4NeedsUpdation"];
-                            //if (dr["L3P5NeedsUpdation"] != null)
-                            //    barcodeRow["L3P5NeedsUpdation"] = dr["L3P5NeedsUpdation"];
-                            //if (dr["L3P6NeedsUpdation"] != null)
-                            //    barcodeRow["L3P6NeedsUpdation"] = dr["L3P6NeedsUpdation"];
-                            //if (dr["L4P1NeedsUpdation"] != null)
-                            //    barcodeRow["L4P1NeedsUpdation"] = dr["L4P1NeedsUpdation"];
-                            //if (dr["L4P2NeedsUpdation"] != null)
-                            //    barcodeRow["L4P2NeedsUpdation"] = dr["L4P2NeedsUpdation"];
-                            //if (dr["L4P3NeedsUpdation"] != null)
-                            //    barcodeRow["L4P3NeedsUpdation"] = dr["L4P3NeedsUpdation"];
-                            //if (dr["L4P4NeedsUpdation"] != null)
-                            //    barcodeRow["L4P4NeedsUpdation"] = dr["L4P4NeedsUpdation"];
-                            //if (dr["L4P5NeedsUpdation"] != null)
-                            //    barcodeRow["L4P5NeedsUpdation"] = dr["L4P5NeedsUpdation"];
-                            //if (dr["L4P6NeedsUpdation"] != null)
-                            //    barcodeRow["L4P6NeedsUpdation"] = dr["L4P6NeedsUpdation"];
-                            //if (dr["L5P6NeedsUpdation"] != null)
-                            //    barcodeRow["L5P6NeedsUpdation"] = dr["L5P6NeedsUpdation"];
-                            //if (dr["L5P1NeedsUpdation"] != null)
-                            //    barcodeRow["L5P1NeedsUpdation"] = dr["L5P1NeedsUpdation"];
-                            //if (dr["L5P2NeedsUpdation"] != null)
-                            //    barcodeRow["L5P2NeedsUpdation"] = dr["L5P2NeedsUpdation"];
-                            //if (dr["L5P3NeedsUpdation"] != null)
-                            //    barcodeRow["L5P3NeedsUpdation"] = dr["L5P3NeedsUpdation"];
-                            //if (dr["L5P4NeedsUpdation"] != null)
-                            //    barcodeRow["L5P4NeedsUpdation"] = dr["L5P4NeedsUpdation"];
-                            //if (dr["L5P5NeedsUpdation"] != null)
-                            //    barcodeRow["L5P5NeedsUpdation"] = dr["L5P5NeedsUpdation"];
-                            //if (dr["L6P1NeedsUpdation"] != null)
-                            //    barcodeRow["L6P1NeedsUpdation"] = dr["L6P1NeedsUpdation"];
-                            //if (dr["L6P2NeedsUpdation"] != null)
-                            //    barcodeRow["L6P2NeedsUpdation"] = dr["L6P2NeedsUpdation"];
-                            //if (dr["L6P3NeedsUpdation"] != null)
-                            //    barcodeRow["L6P3NeedsUpdation"] = dr["L6P3NeedsUpdation"];
-                            //if (dr["L6P4NeedsUpdation"] != null)
-                            //    barcodeRow["L6P4NeedsUpdation"] = dr["L6P4NeedsUpdation"];
-                            //if (dr["L6P5NeedsUpdation"] != null)
-                            //    barcodeRow["L6P5NeedsUpdation"] = dr["L6P5NeedsUpdation"];
-                            //if (dr["L6P6NeedsUpdation"] != null)
-                            //    barcodeRow["L6P6NeedsUpdation"] = dr["L6P6NeedsUpdation"];
-                            //if (dr["L7NeedsUpdation"] != null)
-                            //    barcodeRow["L7NeedsUpdation"] = dr["L7NeedsUpdation"];
-                            //if (dr["L7P1NeedsUpdation"] != null)
-                            //    barcodeRow["L7P1NeedsUpdation"] = dr["L7P1NeedsUpdation"];
-                            //if (dr["L7P2NeedsUpdation"] != null)
-                            //    barcodeRow["L7P2NeedsUpdation"] = dr["L7P2NeedsUpdation"];
-                            //if (dr["L7P3NeedsUpdation"] != null)
-                            //    barcodeRow["L7P3NeedsUpdation"] = dr["L7P3NeedsUpdation"];
-                            //if (dr["L7P4NeedsUpdation"] != null)
-                            //    barcodeRow["L7P4NeedsUpdation"] = dr["L7P4NeedsUpdation"];
-                            //if (dr["L7P5NeedsUpdation"] != null)
-                            //    barcodeRow["L7P5NeedsUpdation"] = dr["L7P5NeedsUpdation"];
-                            //if (dr["L7P6NeedsUpdation"] != null)
-                            //    barcodeRow["L7P6NeedsUpdation"] = dr["L7P6NeedsUpdation"];
-                            //if (dr["L8NeedsUpdation"] != null)
-                            //    barcodeRow["L8NeedsUpdation"] = dr["L8NeedsUpdation"];
-                            //if (dr["L9NeedsUpdation"] != null)
-                            //    barcodeRow["L9NeedsUpdation"] = dr["L9NeedsUpdation"];
-                            //if (dr["L10NeedsUpdation"] != null)
-                            //    barcodeRow["L10NeedsUpdation"] = dr["L10NeedsUpdation"];
-                            //if (dr["L11NeedsUpdation"] != null)
-                            //    barcodeRow["L11NeedsUpdation"] = dr["L11NeedsUpdation"];
-                            //if (dr["L12NeedsUpdation"] != null)
-                            //    barcodeRow["L12NeedsUpdation"] = dr["L12NeedsUpdation"];
-                            //if (dr["L8P1NeedsUpdation"] != null)
-                            //    barcodeRow["L8P1NeedsUpdation"] = dr["L8P1NeedsUpdation"];
-                            //if (dr["L9P1NeedsUpdation"] != null)
-                            //    barcodeRow["L9P1NeedsUpdation"] = dr["L9P1NeedsUpdation"];
-                            //if (dr["L10P1NeedsUpdation"] != null)
-                            //    barcodeRow["L10P1NeedsUpdation"] = dr["L10P1NeedsUpdation"];
-                            //if (dr["L11P1NeedsUpdation"] != null)
-                            //    barcodeRow["L11P1NeedsUpdation"] = dr["L11P1NeedsUpdation"];
-                            //if (dr["L12P1NeedsUpdation"] != null)
-                            //    barcodeRow["L12P1NeedsUpdation"] = dr["L12P1NeedsUpdation"];
 
                             BarcodeTable.Rows.Add(barcodeRow);
                         }
                         catch (Exception ex)
                         {
-                            throw ex;
+                            return "During syncing barcodes Sachi Chakki DB connection closed, Please try again.";
                         }
                     }
                 }
@@ -453,38 +228,37 @@ namespace GROCERY.SyncService
 
                     DeleteBarcode();
 
-                    //using (SqlConnection con1 = new SqlConnection(charsuDb))
-                    //{
-                    //con.Open();
-                    SqlCommand cmd1 = new SqlCommand("SP_InsertBarcode", charsuConnection);
-                    cmd1.CommandText = "SP_InsertBarcode";
-                    cmd1.CommandType = CommandType.StoredProcedure;
-                    SqlParameter sqlParameter = cmd1.Parameters.AddWithValue("@BarcodeType", BarcodeTable);
-                    sqlParameter.SqlDbType = SqlDbType.Structured;
-                    cmd1.ExecuteNonQuery();
+                    try
+                    {
+                        SqlCommand cmd1 = new SqlCommand("SP_InsertBarcode", charsuConnection);
+                        cmd1.CommandText = "SP_InsertBarcode";
+                        cmd1.CommandType = CommandType.StoredProcedure;
+                        SqlParameter sqlParameter = cmd1.Parameters.AddWithValue("@BarcodeType", BarcodeTable);
+                        sqlParameter.SqlDbType = SqlDbType.Structured;
+                        cmd1.ExecuteNonQuery();
+                    }
+                    catch (Exception ex)
+                    {
+                        return "Unable to save barcodes in Chaarsu DB, Please try again.";
+                    }
                     //}
 
                     //StockSync();
                 }
                 catch (Exception ex)
                 {
-                    throw ex;
+                    return "Unable to connect with Sachi Chakki DB, Please try again.";
                 }
-                finally
-                {
-                }
-                //}
             }
             catch (Exception ex)
             {
-                throw ex;
+                return "Unable to connect with Sachi Chakki DB, Please try again.";
             }
-            finally
-            {
-            }
+
+            return "Success";
         }
 
-        public void GetAllStocks()
+        public string GetAllStocks()
         {
             DataTable StockTable = new DataTable();
             StockTable.Columns.Add("LOCNO", typeof(Int16));
@@ -511,13 +285,16 @@ namespace GROCERY.SyncService
 
             try
             {
-                //using (SqlConnection con = new SqlConnection(sachiChakkiDb))
-                //{
-                //    con.Open();
-
-                if (sachiChakkiConnection.State == ConnectionState.Closed)
+                try
                 {
-                    sachiChakkiConnection.Open();
+                    if (sachiChakkiConnection.State == ConnectionState.Closed)
+                    {
+                        sachiChakkiConnection.Open();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return "Unable to connect with Sachi Chakki DB, Please try again.";
                 }
 
                 SqlCommand cmd = new SqlCommand(@"select LOCNO,ITEM_CODE,QTY,WH_QTY,T_QTY,FLOOR_NO,COUNTER,SHELF,SHELF_QTY,SHELF_FACING,LSDATE,LPDATE,ALLOW_NEGATIVE,
@@ -576,7 +353,7 @@ namespace GROCERY.SyncService
                         }
                         catch (Exception ex)
                         {
-                            throw ex;
+                            return "During syncing stocks Sachi Chakki DB connection closed, Please try again.";
                         }
                     }
                 }
@@ -584,42 +361,39 @@ namespace GROCERY.SyncService
                 {
                     DeleteStock();
 
-                    //using (SqlConnection con1 = new SqlConnection(charsuDb))
-                    //{
-                    //    con1.Open();
-                    SqlCommand cmd1 = new SqlCommand("SP_InsertStock", charsuConnection);
-                    cmd1.CommandText = "SP_InsertStock";
-                    cmd1.CommandType = CommandType.StoredProcedure;
-                    SqlParameter sqlParameter = cmd1.Parameters.AddWithValue("@StockType", StockTable);
-                    sqlParameter.SqlDbType = SqlDbType.Structured;
-                    cmd1.ExecuteNonQuery();
+                    try
+                    {
+                        SqlCommand cmd1 = new SqlCommand("SP_InsertStock", charsuConnection);
+                        cmd1.CommandText = "SP_InsertStock";
+                        cmd1.CommandType = CommandType.StoredProcedure;
+                        SqlParameter sqlParameter = cmd1.Parameters.AddWithValue("@StockType", StockTable);
+                        sqlParameter.SqlDbType = SqlDbType.Structured;
+                        cmd1.ExecuteNonQuery();
 
-                    SqlCommand cmd2 = new SqlCommand("SP_UpdateStock", charsuConnection);
-                    cmd2.CommandText = "SP_UpdateStock";
-                    cmd2.CommandType = CommandType.StoredProcedure;
-                    cmd2.ExecuteNonQuery();
-
-                    //}
+                        SqlCommand cmd2 = new SqlCommand("SP_UpdateStock", charsuConnection);
+                        cmd2.CommandText = "SP_UpdateStock";
+                        cmd2.CommandType = CommandType.StoredProcedure;
+                        cmd2.ExecuteNonQuery();
+                    }
+                    catch (Exception ex)
+                    {
+                        return "Unable to save stocks in Chaarsu DB, Please try again.";
+                    }
                 }
                 catch (Exception ex)
                 {
-                    throw ex;
+                    return "Unable to connect with Sachi Chakki DB, Please try again.";
                 }
-                finally
-                {
-                }
-                //}
             }
             catch (Exception ex)
             {
-                throw ex;
+                return "Unable to connect with Sachi Chakki DB, Please try again.";
             }
-            finally
-            {
-            }
+
+            return "Success";
         }
 
-        public void GetAllProducts()
+        public string GetAllProducts()
         {
             DataTable ItemInfoTable = new DataTable();
             ItemInfoTable.Columns.Add("ITEM_CODE", typeof(int));
@@ -707,22 +481,21 @@ namespace GROCERY.SyncService
 
             try
             {
-                //using (SqlConnection con = new SqlConnection(sachiChakkiDb))
-                //{
-                //    con.Open();
-
-                if (sachiChakkiConnection.State == ConnectionState.Closed)
+                try
                 {
-                    sachiChakkiConnection.Open();
+                    if (sachiChakkiConnection.State == ConnectionState.Closed)
+                    {
+                        sachiChakkiConnection.Open();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return "Unable to connect with Sachi Chakki DB, Please try again.";
                 }
 
-                SqlCommand cmd = new SqlCommand(@"select ITEM_CODE,HV_CODE,ITEM_TYPE,ITEM_ATTRIB,IsRECIPE,SERIALIZED,EXPIRY_ITEM,FEATURED,UOM,BATCH_QTY,DEPT_CODE,GRCODE,SUBGRCODE,
-                                     CATCODE,BRAND_CODE,DESIGN_CD,CLR_CODE,SUPP_CODE,MAKE_CODE,SIZE_CODE,AUTH_CODE,PUB_CODE,EDITION,CLASS,ISBN,ITEM_DESC,ITEM_DESC_LONG,COST_MARGIN,SEX,SEASON,AGE,FABRIC,SPEED,
-                                     PLY,PCD,HOLES,SPH,CYL,AXIS,ADDS,COMMENT,EXEMPT,VAT,GST,OPEN_PRICE,FRACTIONAL,ALLOWQTY,MATERIAL_COST,INGR_COST,PKG_COST,LAB_COST,OH_COST,OTH_COST,WASTAGE,COST_PRICE1,COST_PRICE2,
-                                     COST_PRICE3,NET_COST,AVG_COST,AVG_COST1,AVG_COST2,AVG_COST3,F_PUR_PRICE,LAST_PUR_PRICE1,LAST_PUR_PRICE2,LAST_PUR_PRICE3,LAST_SUPP,LAST_SUPP1,LAST_SUPP2,FREE_QTY,FREE_QTY_AVG_COST,
-                                     ITEM_DISC,bDISCOUNTED,DISC_QTY,SALE_DISC,CDATE,CUSER,MDATE,MUSER,EMPTY,bNEW,NeedsReplication from ITEMINFO", sachiChakkiConnection);
-                //SqlCommand cmd3 = new SqlCommand("select Count(*) from ITEMINFO", con);
-                //Int32 count = (Int32)cmd3.ExecuteScalar();
+                SqlCommand cmd = new SqlCommand(@"select ITEM_CODE,HV_CODE,ITEM_ATTRIB,IsRECIPE,SERIALIZED,EXPIRY_ITEM,FEATURED,UOM,BATCH_QTY,DEPT_CODE,GRCODE,SUBGRCODE,CATCODE,BRAND_CODE,DESIGN_CD,CLR_CODE,
+                                                  SUPP_CODE,MAKE_CODE,SIZE_CODE,AUTH_CODE,PUB_CODE,EDITION,CLASS,ISBN,ITEM_DESC,ITEM_DESC_LONG,SEX,SEASON,AGE,FABRIC,COMMENT,EXEMPT,VAT,GST,OPEN_PRICE,FRACTIONAL,
+                                                  ALLOWQTY,ITEM_DISC,bDISCOUNTED,DISC_QTY,SALE_DISC,CDATE,CUSER,MDATE,MUSER,bNEW,NeedsReplication from ITEMINFO", sachiChakkiConnection);
                 using (SqlDataReader dr = cmd.ExecuteReader())
                 {
                     while (dr.Read())
@@ -734,8 +507,6 @@ namespace GROCERY.SyncService
                                 ItemInfoRow["ITEM_CODE"] = dr["ITEM_CODE"];
                             if (dr["HV_CODE"] != null)
                                 ItemInfoRow["HV_CODE"] = dr["HV_CODE"];
-                            if (dr["ITEM_TYPE"] != null)
-                                ItemInfoRow["ITEM_TYPE"] = dr["ITEM_TYPE"];
                             if (dr["ITEM_ATTRIB"] != null)
                                 ItemInfoRow["ITEM_ATTRIB"] = dr["ITEM_ATTRIB"];
                             if (dr["IsRECIPE"] != null)
@@ -784,8 +555,6 @@ namespace GROCERY.SyncService
                                 ItemInfoRow["ITEM_DESC"] = dr["ITEM_DESC"];
                             if (dr["ITEM_DESC_LONG"] != null)
                                 ItemInfoRow["ITEM_DESC_LONG"] = dr["ITEM_DESC_LONG"];
-                            if (dr["COST_MARGIN"] != null)
-                                ItemInfoRow["COST_MARGIN"] = dr["COST_MARGIN"];
                             if (dr["SEX"] != null)
                                 ItemInfoRow["SEX"] = dr["SEX"];
                             if (dr["SEASON"] != null)
@@ -794,22 +563,6 @@ namespace GROCERY.SyncService
                                 ItemInfoRow["AGE"] = dr["AGE"];
                             if (dr["FABRIC"] != null)
                                 ItemInfoRow["FABRIC"] = dr["FABRIC"];
-                            if (dr["SPEED"] != null)
-                                ItemInfoRow["SPEED"] = dr["SPEED"];
-                            if (dr["PLY"] != null)
-                                ItemInfoRow["PLY"] = dr["PLY"];
-                            if (dr["PCD"] != null)
-                                ItemInfoRow["PCD"] = dr["PCD"];
-                            if (dr["HOLES"] != null)
-                                ItemInfoRow["HOLES"] = dr["HOLES"];
-                            if (dr["SPH"] != null)
-                                ItemInfoRow["SPH"] = dr["SPH"];
-                            if (dr["CYL"] != null)
-                                ItemInfoRow["CYL"] = dr["CYL"];
-                            if (dr["AXIS"] != null)
-                                ItemInfoRow["AXIS"] = dr["AXIS"];
-                            if (dr["ADDS"] != null)
-                                ItemInfoRow["ADDS"] = dr["ADDS"];
                             if (dr["COMMENT"] != null)
                                 ItemInfoRow["COMMENT"] = dr["COMMENT"];
                             if (dr["EXEMPT"] != null)
@@ -824,54 +577,6 @@ namespace GROCERY.SyncService
                                 ItemInfoRow["FRACTIONAL"] = dr["FRACTIONAL"];
                             if (dr["ALLOWQTY"] != null)
                                 ItemInfoRow["ALLOWQTY"] = dr["ALLOWQTY"];
-                            if (dr["MATERIAL_COST"] != null)
-                                ItemInfoRow["MATERIAL_COST"] = dr["MATERIAL_COST"];
-                            if (dr["INGR_COST"] != null)
-                                ItemInfoRow["INGR_COST"] = dr["INGR_COST"];
-                            if (dr["PKG_COST"] != null)
-                                ItemInfoRow["PKG_COST"] = dr["PKG_COST"];
-                            if (dr["LAB_COST"] != null)
-                                ItemInfoRow["LAB_COST"] = dr["LAB_COST"];
-                            if (dr["OH_COST"] != null)
-                                ItemInfoRow["OH_COST"] = dr["OH_COST"];
-                            if (dr["OTH_COST"] != null)
-                                ItemInfoRow["OTH_COST"] = dr["OTH_COST"];
-                            if (dr["WASTAGE"] != null)
-                                ItemInfoRow["WASTAGE"] = dr["WASTAGE"];
-                            if (dr["COST_PRICE1"] != null)
-                                ItemInfoRow["COST_PRICE1"] = dr["COST_PRICE1"];
-                            if (dr["COST_PRICE2"] != null)
-                                ItemInfoRow["COST_PRICE2"] = dr["COST_PRICE2"];
-                            if (dr["COST_PRICE3"] != null)
-                                ItemInfoRow["COST_PRICE3"] = dr["COST_PRICE3"];
-                            if (dr["NET_COST"] != null)
-                                ItemInfoRow["NET_COST"] = dr["NET_COST"];
-                            if (dr["AVG_COST"] != null)
-                                ItemInfoRow["AVG_COST"] = dr["AVG_COST"];
-                            if (dr["AVG_COST1"] != null)
-                                ItemInfoRow["AVG_COST1"] = dr["AVG_COST1"];
-                            if (dr["AVG_COST2"] != null)
-                                ItemInfoRow["AVG_COST2"] = dr["AVG_COST2"];
-                            if (dr["AVG_COST3"] != null)
-                                ItemInfoRow["AVG_COST3"] = dr["AVG_COST3"];
-                            if (dr["F_PUR_PRICE"] != null)
-                                ItemInfoRow["F_PUR_PRICE"] = dr["F_PUR_PRICE"];
-                            if (dr["LAST_PUR_PRICE1"] != null)
-                                ItemInfoRow["LAST_PUR_PRICE1"] = dr["LAST_PUR_PRICE1"];
-                            if (dr["LAST_PUR_PRICE2"] != null)
-                                ItemInfoRow["LAST_PUR_PRICE2"] = dr["LAST_PUR_PRICE2"];
-                            if (dr["LAST_PUR_PRICE3"] != null)
-                                ItemInfoRow["LAST_PUR_PRICE3"] = dr["LAST_PUR_PRICE3"];
-                            if (dr["LAST_SUPP"] != null)
-                                ItemInfoRow["LAST_SUPP"] = dr["LAST_SUPP"];
-                            if (dr["LAST_SUPP1"] != null)
-                                ItemInfoRow["LAST_SUPP1"] = dr["LAST_SUPP1"];
-                            if (dr["LAST_SUPP2"] != null)
-                                ItemInfoRow["LAST_SUPP2"] = dr["LAST_SUPP2"];
-                            if (dr["FREE_QTY"] != null)
-                                ItemInfoRow["FREE_QTY"] = dr["FREE_QTY"];
-                            if (dr["FREE_QTY_AVG_COST"] != null)
-                                ItemInfoRow["FREE_QTY_AVG_COST"] = dr["FREE_QTY_AVG_COST"];
                             if (dr["ITEM_DISC"] != null)
                                 ItemInfoRow["ITEM_DISC"] = dr["ITEM_DISC"];
                             if (dr["bDISCOUNTED"] != null)
@@ -888,8 +593,6 @@ namespace GROCERY.SyncService
                                 ItemInfoRow["MDATE"] = dr["MDATE"];
                             if (dr["MUSER"] != null)
                                 ItemInfoRow["MUSER"] = dr["MUSER"];
-                            if (dr["EMPTY"] != null)
-                                ItemInfoRow["EMPTY"] = dr["EMPTY"];
                             if (dr["bNEW"] != null)
                                 ItemInfoRow["bNEW"] = dr["bNEW"];
                             if (dr["NeedsReplication"] != null)
@@ -899,7 +602,7 @@ namespace GROCERY.SyncService
                         }
                         catch (Exception ex)
                         {
-                            throw ex;
+                            return "During syncing products Sachi Chakki DB connection closed, Please try again.";
                         }
                     }
                 }
@@ -907,40 +610,36 @@ namespace GROCERY.SyncService
                 {
 
                     DeleteProduct();
-                    //using (SqlConnection con1 = new SqlConnection(charsuDb))
-                    //{
-                    //    con1.Open();
-                    SqlCommand cmd1 = new SqlCommand("SP_InsertItemInfo", charsuConnection);
-                    cmd1.CommandText = "SP_InsertItemInfo";
-                    cmd1.CommandType = CommandType.StoredProcedure;
-                    SqlParameter sqlParameter = cmd1.Parameters.AddWithValue("@ItemInfoType", ItemInfoTable);
-                    sqlParameter.SqlDbType = SqlDbType.Structured;
-                    cmd1.ExecuteNonQuery();
+                    try
+                    {
+                        SqlCommand cmd1 = new SqlCommand("SP_InsertItemInfo", charsuConnection);
+                        cmd1.CommandText = "SP_InsertItemInfo";
+                        cmd1.CommandType = CommandType.StoredProcedure;
+                        SqlParameter sqlParameter = cmd1.Parameters.AddWithValue("@ItemInfoType", ItemInfoTable);
+                        sqlParameter.SqlDbType = SqlDbType.Structured;
+                        cmd1.ExecuteNonQuery();
 
-                    SqlCommand cmd2 = new SqlCommand("SP_InsertProductFromItemInfo", charsuConnection);
-                    cmd2.CommandText = "SP_InsertProductFromItemInfo";
-                    cmd2.CommandType = CommandType.StoredProcedure;
-                    cmd2.ExecuteNonQuery();
-
-                    //}
+                        SqlCommand cmd2 = new SqlCommand("SP_InsertProductFromItemInfo", charsuConnection);
+                        cmd2.CommandText = "SP_InsertProductFromItemInfo";
+                        cmd2.CommandType = CommandType.StoredProcedure;
+                        cmd2.ExecuteNonQuery();
+                    }
+                    catch (Exception ex)
+                    {
+                        return "Unable to save products in Chaarsu DB, Please try again.";
+                    }
                 }
                 catch (Exception ex)
                 {
-                    throw ex;
+                    return "Unable to connect with Sachi Chakki DB, Please try again.";
                 }
-                finally
-                {
-                }
-
-                //}
             }
             catch (Exception ex)
             {
-                throw ex;
+                return "Unable to connect with Sachi Chakki DB, Please try again.";
             }
-            finally
-            {
-            }
+
+            return "Success";
         }
     }
 }

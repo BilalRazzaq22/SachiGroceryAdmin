@@ -22,5 +22,6 @@ namespace GROCERY.Models
         public Nullable<int> MODIFIED_BY { get; set; }
         public Nullable<System.DateTime> MODIFIED_DATE { get; set; }
         public bool IsActive { get; set; }
+        public string DESCRIPTION_URL { get; set; }
     }
 }

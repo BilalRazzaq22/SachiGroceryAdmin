@@ -1,0 +1,62 @@
+﻿@model List<GROCERY.Models.MainMenuModel>
+
+<link href="~/Content/tree.css" rel="stylesheet" />
+<script src="~/Scripts/tree.js"></script>
+
+<div class="panel-heading panel-head">Apply User Rights</div>
+<div id="frm-author" class="panel-body">
+    @using (Html.BeginForm("Index", "UserRight", FormMethod.Post))
+    {
+        <div class="tree">
+            @if (Model.Count() > 0)
+            {
+                for (int i = 0; i < Model.Count(); i++)
+                {
+                    @Html.HiddenFor(model => model[i].ID)
+                    @Html.HiddenFor(model => model[i].UserTypeID)
+                    @Html.HiddenFor(model => model[i].MainMenu)
+                    <ul id="myid">
+                        <li>
+                            <a href="#">
+                                @Html.CheckBoxFor(model => model[i].IsActive, new { @class = "tree-checkbox parent", @id = @Model[i].ID })
+                                <label for=@i>
+                                    @Html.DisplayFor(model => model[i].MainMenu)
+                                </label>
+                            </a>
+                            <ul>
+                                @for (int j = 0; j < Model[i].SubMenus.Count(); j++)
+                                {
+                                    int k = 1 + j;
+                                    @Html.HiddenFor(model => model[i].SubMenus[j].ID)
+                                    @Html.HiddenFor(model => model[i].SubMenus[j].UserTypeID)
+                                    @Html.HiddenFor(model => model[i].SubMenus[j].SubMenu)
+                                    @Html.HiddenFor(model => model[i].SubMenus[j].MainMenuID)
+
+                                    <li>
+                                        <a href="#">
+                                            @Html.CheckBoxFor(model => model[i].SubMenus[j].IsActive, new { @class = "tree-checkbox node-item", @iid = i + "" + j })
+
+                                            <label for=@i@j>
+                                                @Html.DisplayFor(model => model[i].SubMenus[j].SubMenu)
+                                            </label>
+                                        </a>
+                                    </li>
+                                }
+                            </ul>
+                        </li>
+                    </ul>
+                }
+            }
+
+        </div>
+        <div class="form-group">
+            <div class="col-lg-9"></div>
+            <div class="col-lg-3">
+                <button class="btn btn-success" id="btnSubmit">
+                    Submit
+                </button>
+            </div>
+        </div>
+    }
+
+</div>

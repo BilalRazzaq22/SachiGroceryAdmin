@@ -18,5 +18,6 @@ namespace GROCERY.Models
         public string NAME { get; set; }
         public string IMAGE_NAME { get; set; }
         public string RELATIVE_IMAGE_NAME { get; set; }
+        public string NAME_URL { get; set; }
     }
 }

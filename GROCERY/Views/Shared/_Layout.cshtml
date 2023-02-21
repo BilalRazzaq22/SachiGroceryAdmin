@@ -10,7 +10,9 @@
     <link rel="stylesheet" href="~/assets/css/neon-theme.css">
     <link rel="stylesheet" href="~/assets/css/neon-forms.css">
     <link rel="stylesheet" href="~/assets/css/custom.css">
+    <link href="~/Content/tree.css" rel="stylesheet" />
     <script src="~/assets/js/jquery-1.11.0.min.js"></script>
+    <script src="~/Scripts/tree.js"></script>
     <script>$.noConflict();</script>
     <!--[if lt IE 9]><script src="~/assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -35,7 +37,7 @@
                     <!-- logo -->
                     <div class="logo">
                         <a href="index.html">
-                            <img src="~/assets/images/logo.png" width="120" alt="" />
+                            <img src="~/assets/images/Sachi Grocery logo final-07.png" width="120" alt="" />
                         </a>
                     </div>
                     <!-- logo collapse icon -->
@@ -60,29 +62,29 @@
                     <!-- add class "multiple-expanded" to allow multiple submenus to open -->
                     <!-- class "auto-inherit-active-class" will automatically add "active" class for parent elements who are marked already with class "active" -->
                     <li>
-                        <a href="/Home/Index">
+                        <a id="dashboad" href="/Home/Index">
                             <i class="entypo-gauge"></i>
                             <span class="title">Dashboard</span>
                         </a>
                     </li>
                     <li>
-                        <a href="/Item/List">
+                        <a id="product" href="/Item/List">
                             <i class="entypo-layout"></i>
                             <span class="title">Product</span>
                         </a>
 
                         <ul>
-                            <li>
+                            <li id="listallproducts">
                                 <a href="/Item/List">
                                     <span class="title">List All Products</span>
                                 </a>
                             </li>
-                            <li>
+                            <li id="addnewproduct">
                                 <a href="/Item/Add">
                                     <span class="title">Add New Product</span>
                                 </a>
                             </li>
-                            <li>
+                            <li id="uploadnewproduct">
                                 <a href="/Item/Upload">
                                     <span class="title">Upload New Product(s)</span>
                                 </a>
@@ -90,18 +92,18 @@
                         </ul>
                     </li>
                     <li>
-                        <a href="/MiniItem/List">
+                        <a id="miniitems" href="/MiniItem/List">
                             <i class="entypo-layout"></i>
                             <span class="title">Mini Items</span>
                         </a>
 
                         <ul>
-                            <li>
+                            <li id="listallminiitems">
                                 <a href="/MiniItem/List">
                                     <span class="title">List All Mini Items</span>
                                 </a>
                             </li>
-                            <li>
+                            <li id="addnewminiitems">
                                 <a href="/MiniItem/Add">
                                     <span class="title">Add New Mini Item</span>
                                 </a>
@@ -110,42 +112,60 @@
                         </ul>
                     </li>
                     <li>
-                        <a href="/User/List">
+                        <a id="users" href="/User/List">
                             <i class="entypo-newspaper"></i>
                             <span class="title">Users</span>
                         </a>
                         <ul>
-                            <li>
+                            <li id="adduser">
                                 <a href="/User/Add">
                                     <span class="title">Add User</span>
                                 </a>
                             </li>
-                            <li>
+                            <li id="listusers">
                                 <a href="/User/List">
                                     <span class="title">List Users</span>
                                 </a>
                             </li>
-                            <li>
+                            <li id="customers">
                                 <a href="/User/Customers">
                                     <span class="title">Customers</span>
                                 </a>
                             </li>
                         </ul>
                     </li>
+                    <li>
+                        <a id="riders" href="/Rider/List">
+                            <i class="entypo-newspaper"></i>
+                            <span class="title">Riders</span>
+                        </a>
+                        <ul>
+                            <li id="addrider">
+                                <a href="/Rider/Create">
+                                    <span class="title">Add Rider</span>
+                                </a>
+                            </li>
+                            <li id="listriders">
+                                <a href="/Rider/List">
+                                    <span class="title">List Riders</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
 
                     <li>
-                        <a href="/Order/List">
+                        <a id="orders" href="/Order/List">
                             <i class="entypo-layout"></i>
                             <span class="title">Orders</span>
                         </a>
 
                         <ul>
-                            <li>
+                            <li id="listallorders">
                                 <a href="/Order/List">
                                     <span class="title">List All Orders</span>
                                 </a>
                             </li>
-                            <li>
+                            <li id="addneworder">
                                 <a href="/Order/Create">
                                     <span class="title">Add New Order</span>
                                 </a>
@@ -156,18 +176,18 @@
                     </li>
 
                     <li>
-                        <a href="/Coupon/Index">
+                        <a id="coupons" href="/Coupon/Index">
                             <i class="entypo-back"></i>
                             <span class="title">Coupons</span>
                         </a>
 
                         <ul>
-                            <li>
+                            <li id="listallcoupons">
                                 <a href="/Coupon/Index">
                                     <span class="title">List All Coupons</span>
                                 </a>
                             </li>
-                            <li>
+                            <li id="addnewcoupon">
                                 <a href="/Coupon/Create">
                                     <span class="title">Add New Coupon</span>
                                 </a>
@@ -176,18 +196,18 @@
                     </li>
 
                     <li>
-                        <a href="/Ad/Index">
+                        <a id="advertisement" href="/Ad/Index">
                             <i class="entypo-attention"></i>
                             <span class="title">Advertisement</span>
                         </a>
 
                         <ul>
-                            <li>
+                            <li id="listallads">
                                 <a href="/Ad/Index">
                                     <span class="title">List All Ads</span>
                                 </a>
                             </li>
-                            <li>
+                            <li id="addnewad">
                                 <a href="/Ad/Create">
                                     <span class="title">Add New Ad</span>
                                 </a>
@@ -195,13 +215,13 @@
                         </ul>
                     </li>
                     <li>
-                        <a href="/SMS/Bulk">
+                        <a id="smsmarketing" href="/SMS/Bulk">
                             <i class="entypo-flash"></i>
                             <span class="title">SMS Marketing</span>
                         </a>
 
                         <ul>
-                            <li>
+                            <li id="bulksms">
                                 <a href="/SMS/Bulk">
                                     <span class="title">Bulk SMS</span>
                                 </a>
@@ -211,18 +231,18 @@
                     </li>
 
                     <li>
-                        <a href="/Package/Index">
+                        <a id="package" href="/Package/Index">
                             <i class="entypo-bag"></i>
                             <span class="title">Package</span>
                         </a>
 
                         <ul>
-                            <li>
+                            <li id="listallpackages">
                                 <a href="/Package/Index">
                                     <span class="title">List All Packages</span>
                                 </a>
                             </li>
-                            <li>
+                            <li id="createpackage">
                                 <a href="/Package/Create">
                                     <span class="title">Create Package</span>
                                 </a>
@@ -231,9 +251,9 @@
                     </li>
 
                     <li>
-                        <a href="#">
+                        <a id="synchronization" href="#">
                             <i class="entypo-bag"></i>
-                            <span class="title">Syncronization</span>
+                            <span class="title">Synchronization</span>
                         </a>
 
                         <ul>
@@ -255,19 +275,94 @@
                         </ul>
                     </li>
                     <li>
-                        <a href="/User/List">
+                        <a id="branches" href="/User/List">
                             <i class="entypo-newspaper"></i>
                             <span class="title">Branches</span>
                         </a>
                         <ul>
-                            <li>
+                            <li id="addbranch">
                                 <a href="/Branch/Create">
                                     <span class="title">Add Branch</span>
                                 </a>
                             </li>
-                            <li>
+                            <li id="brancheslist">
                                 <a href="/Branch/List">
                                     <span class="title">Branches List</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a id="accountmanagement">
+                            <i class="entypo-newspaper"></i>
+                            <span class="title">Account Management</span>
+                        </a>
+                        <ul>
+                            <li id="userright">
+                                <a href="/UserRight/Index">
+                                    <span class="title">User Rights</span>
+                                </a>
+                            </li>
+                            <li id="addusertype">
+                                <a href="/UserType/Create">
+                                    <span class="title">Add User Type</span>
+                                </a>
+                            </li>
+                            <li id="usertypelist">
+                                <a href="/UserType/Index">
+                                    <span class="title">User Type List</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a id="bannermanagement">
+                            <i class="entypo-newspaper"></i>
+                            <span class="title">Banner Management</span>
+                        </a>
+                        <ul>
+                            <li id="addbanner">
+                                <a href="/Banner/Create">
+                                    <span class="title">Add Banner</span>
+                                </a>
+                            </li>
+                            <li id="bannerlist">
+                                <a href="/Banner/List">
+                                    <span class="title">Banner List</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a id="offermanagement">
+                            <i class="entypo-newspaper"></i>
+                            <span class="title">Offer Management</span>
+                        </a>
+                        <ul>
+                            <li id="addoffer">
+                                <a href="/Offer/Create">
+                                    <span class="title">Add Offer</span>
+                                </a>
+                            </li>
+                            <li id="offerlist">
+                                <a href="/Offer/Index">
+                                    <span class="title">Offer List</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a id="recommendedproduct">
+                            <i class="entypo-newspaper"></i>
+                            <span class="title">Recommended Product</span>
+                        </a>
+                        <ul>
+                            <li id="addrecommendedproduct">
+                                <a href="/RecommendedProduct/Index">
+                                    <span class="title">Recommended Product List</span>
                                 </a>
                             </li>
                         </ul>
@@ -327,7 +422,10 @@
                                         </a>
                                 }
                             </li>*@
-
+                        <li style="color: #373e4a">
+                            <span>Welcome : </span>
+                            @Session["Username"] ( @Session["Rolename"] )
+                        </li>
                         <li class="sep"></li>
 
                         <li>
@@ -347,15 +445,21 @@
             @RenderBody()
             <footer class="main">
 
-                &copy; 2017 <strong>MacroModule</strong>
+                &copy; 2022 <strong>MacroModule Technologies</strong>
 
             </footer>
         </div>
     </div>
-    <div id="wait" style="display: none;width: 120px;height: 130px;border: 1px solid black;position: absolute;top: 50%;left: 50%;padding: 2px;text-align: center;">
+    <div id="wait" style="display: none;width: 120px;height: 130px;position: absolute;top: 50%;left: 50%;padding: 2px;text-align: center;">
         <img src="/loader.gif" width="100" height="100">
         <br>
-        <span style="color: black;text-align: center;font-size: 13px;">Syncing ...</span>
+        <span id="loaderText" style="color: black;text-align: center;font-size: 13px;">Syncing ...</span>
+    </div>
+
+    <div id="load" style="display: none;width: 120px;height: 130px;position: absolute;top: 50%;left: 50%;padding: 2px;text-align: center;">
+        <img src="/loader.gif" width="100" height="100">
+        <br>
+        <span style="color: black;text-align: center;font-size: 13px;">Please Wait ...</span>
     </div>
 
     <!-- Bottom scripts (common) -->
@@ -385,14 +489,21 @@
                     url: '/api/SyncDB/FullSyncData',
                     contentType: 'application/json',
                     success: function (result) {
-                        $("#maindiv").removeClass("disable-maindiv");
-                        $("#wait").css("display", "none");
-                        alert("Barcode Sync Complete Successfully");
+                        if (result == "Success") {
+                            $("#maindiv").removeClass("disable-maindiv");
+                            $("#wait").css("display", "none");
+                            alert("Barcode Sync Complete Successfully");
+                        }
+                        else {
+                            $("#maindiv").removeClass("disable-maindiv");
+                            $("#wait").css("display", "none");
+                            alert(result);
+                        }
                     },
                     error: function (res) {
                         $("#maindiv").removeClass("disable-maindiv");
                         $("#wait").css("display", "none");
-                        alert("Unable to sync check your network");
+                        alert(res);
                     }
                 });
             });
@@ -405,14 +516,22 @@
                     url: '/api/SyncDB/StockSyncData',
                     contentType: 'application/json',
                     success: function (result) {
-                        $("#maindiv").removeClass("disable-maindiv");
-                        $("#wait").css("display", "none");
-                        alert("Stock Sync Complete Successfully");
+                        if (result == "Success") {
+                            $("#maindiv").removeClass("disable-maindiv");
+                            $("#wait").css("display", "none");
+                            alert("Stock Sync Complete Successfully");
+                        }
+                        else {
+                            $("#maindiv").removeClass("disable-maindiv");
+                            $("#wait").css("display", "none");
+                            alert(result);
+                        }
+
                     },
                     error: function (res) {
                         $("#maindiv").removeClass("disable-maindiv");
                         $("#wait").css("display", "none");
-                        alert("Unable to sync check your network");
+                        alert(res);
                     }
                 });
             });
@@ -425,15 +544,20 @@
                     url: '/api/SyncDB/ProductSyncData',
                     contentType: 'application/json',
                     success: function (result) {
-                        console.log(result);
-                        $("#maindiv").removeClass("disable-maindiv");
-                        $("#wait").css("display", "none");
-                        alert("Product Sync Complete Successfully");
+                        if (result == "Success") {
+                            $("#maindiv").removeClass("disable-maindiv");
+                            $("#wait").css("display", "none");
+                            alert("Product Sync Complete Successfully");
+                        } else {
+                            $("#maindiv").removeClass("disable-maindiv");
+                            $("#wait").css("display", "none");
+                            alert(result);
+                        }
                     },
                     error: function (res) {
                         $("#maindiv").removeClass("disable-maindiv");
                         $("#wait").css("display", "none");
-                        alert("Unable to sync check your network");
+                        alert(res);
                     }
                 });
             });

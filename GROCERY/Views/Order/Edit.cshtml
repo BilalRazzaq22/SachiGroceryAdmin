@@ -11,6 +11,12 @@
 
 
     $(document).ready(function () {
+        if (@ViewBag.RoleName == "Admin") {
+            $("#testOrder").show();
+        } else {
+            $("#testOrder").hide();
+        }
+
         $("select[name='rejectionStatus']").change(function () {
             var rejectionStatus = $("select[name='rejectionStatus']").val();
             if (rejectionStatus == 0) {
@@ -82,7 +88,7 @@
             data: JSON.stringify({ custOrd: callOrders_new }),
             success: function (response) {
             if (response == "True")
-            {    
+            {
                 alert("Order updated successfully.");
                 $("#form-orders").submit();
             }
@@ -101,9 +107,9 @@
         $("#orderQty-" + id).attr("disabled", "disabled");
         $("#flag-" + id).val(false);
     }
-    
 
-    
+
+
 </script>
 
 <ol class="breadcrumb">

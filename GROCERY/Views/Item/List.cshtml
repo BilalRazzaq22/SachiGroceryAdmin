@@ -50,6 +50,7 @@
             }
         });
         $("#ddlActive").change(function (e) {
+          
              searchIt();
         });
 
@@ -64,7 +65,8 @@
         });
     });
     function searchIt() {
-
+        $("#maindiv").addClass("disable-maindiv");
+        $("#load").css("display", "block");
         var input = document.getElementById("myInput").value;
         var pID = document.getElementById("myID").value;
         var status = $('#ddlActive').val();
@@ -78,19 +80,23 @@
             success: function (result) {
                 products = jQuery.parseJSON(result);
                 populateProductsTable();
+                $("#maindiv").removeClass("disable-maindiv");
+                $("#load").css("display", "none");
             },
             error: function (res) {
                 alert('failure: ' + res);
+                $("#maindiv").removeClass("disable-maindiv");
+                $("#load").css("display", "none");
             }
         });
-
     }
     function resetIt() {
         $("#table-11-div").show();
         $("#product-all").hide();
     }
     function initializeProductsList(scID) {
-
+        $("#maindiv").addClass("disable-maindiv");
+        $("#load").css("display", "block");
         $.ajax({
             type: "GET",
             url: '/api/product/products?scID=' + scID,
@@ -98,10 +104,14 @@
             success: function (result) {
                 products = jQuery.parseJSON(result);
                 populateProductsTable();
+                $("#maindiv").removeClass("disable-maindiv");
+                $("#load").css("display", "none");
             },
             error: function (res) {
                 console.log(res);
                 alert('failure: ' + res);
+                $("#maindiv").removeClass("disable-maindiv");
+                $("#load").css("display", "none");
             }
         });
     }
@@ -119,7 +129,7 @@
             + '<td>'
             //+ item.PRICE + '</td><td>'
             //+ item.QUANTITY + '</td><td>'
-            + '<a style="color:blue" target="_blank" href ="Update?pID=' + item.PRODUCT_ID + '">Edit</a>'
+            + '<a style="color:blue" target="_blank" href ="Update?pID=' + item.OLD_PRODUCT_ID + '">Edit</a>'
             + '<a style="color:black" target="_blank" href ="Quantity?pID=' + item.PRODUCT_ID + '">/Stock</a>'
             //+ '<a style="color:red" href = "javascript:deleteActionConfirmation("' + item.PRODUCT_ID + ')">/Delete</a>'
             + '<a style="color:red" href = "javascript:deleteActionConfirmation(' + item.PRODUCT_ID + ')">/Delete</a>'

@@ -1,0 +1,67 @@
+﻿@model IEnumerable<GROCERY.Models.OFFER_MANAGEMENT>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<ol class="breadcrumb">
+    <li class="breadcrumb-item">
+        <a href="/Home/Index">Grocery Store</a>
+    </li>
+    <li>Offer Management</li>
+    <li class="breadcrumb-item active">Offers</li>
+</ol>
+
+<h2>Offers</h2>
+
+<br />
+<table class="table table-bordered">
+    <tr>
+        <th>
+            TYPE
+        </th>
+        <th>
+            DISCOUNT %
+        </th>
+        <th>
+            CATEGORY NAME
+        </th>
+        <th>
+            SUB CATEGORY NAME
+        </th>
+        <th>
+            PRODUCT NAME
+        </th>
+        <th>
+            Action
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.TYPE)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DISCOUNT)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CATEGORY_NAME)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SUB_CATEGORY_NAME)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PRODUCT_NAME)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.OFFER_ID }) |
+                @*@Html.ActionLink("Details", "Details", new { id = item.OFFER_ID }) |*@
+                @Html.ActionLink("Delete", "Delete", new { id = item.OFFER_ID }, new { onclick = "return confirm('Are sure wants to delete?');" })
+            </td>
+        </tr>
+    }
+
+</table>

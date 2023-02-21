@@ -33,5 +33,11 @@ namespace GROCERY.Models
         public string DEVICE_ID { get; set; }
         public string IMAGE_PATH { get; set; }
         public string EMAIL { get; set; }
+        public string IPhoneId { get; set; }
+        public string FaceBookId { get; set; }
+        public Nullable<bool> IsSocialLogin { get; set; }
+        public string DEVICE_TYPE { get; set; }
+        public string ResetPasswordCode { get; set; }
+        public Nullable<bool> IS_GUEST { get; set; }
     }
 }

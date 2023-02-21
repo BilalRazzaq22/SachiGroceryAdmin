@@ -32,6 +32,13 @@
 
         });
 
+        $("#btnAddUser").click(function () {
+            if ($("#userType_ID :selected").text() == "Select User Type") {
+                alert("Please select valid user type.");
+                return false;
+            }
+        });
+
         initializeUserTypesList();
 
         initializeBranchesList();
@@ -54,10 +61,11 @@
     }
 
     function populateUserTypesDropDown() {
-        var options = "";
+        var options = '<option value="-1">Select User Type</option>';
         for (i = 0; i < userTypesList.Table.length; i++) {
             var item = userTypesList.Table[i];
-            options = options + '<option value="' + item.USER_TYPE_ID + '">' + item.DESCRIPTION + '</option>';
+            if (item.USER_TYPE_ID != 5)
+                options = options + '<option value="' + item.USER_TYPE_ID + '">' + item.DESCRIPTION + '</option>';
         }
         $("#userType_ID").html(options);
     }
@@ -134,18 +142,18 @@
                             <div class="form-group">
                                 <label for="user_status" class="control-label">Active User</label>
                                 @{
-    List<SelectListItem> listActive = new List<SelectListItem>();
-    listActive.Add(new SelectListItem
-    {
-        Text = "Yes",
-        Value = "true",
-        Selected = true
-    });
-    listActive.Add(new SelectListItem
-    {
-        Text = "No",
-        Value = "false"
-    });
+                                    List<SelectListItem> listActive = new List<SelectListItem>();
+                                    listActive.Add(new SelectListItem
+                                    {
+                                        Text = "Yes",
+                                        Value = "true",
+                                        Selected = true
+                                    });
+                                    listActive.Add(new SelectListItem
+                                    {
+                                        Text = "No",
+                                        Value = "false"
+                                    });
                                 }
                                 @Html.DropDownListFor(model => model.IS_ACTIVE, listActive, null, new { @class = "form-control" })
                             </div>
@@ -157,7 +165,7 @@
                             <div class="form-group">
                                 <label for="user_status" class="control-label">User Type</label>
                                 @{
-    List<SelectListItem> listUserTypes = new List<SelectListItem>();
+                                    List<SelectListItem> listUserTypes = new List<SelectListItem>();
                                 }
                                 @Html.DropDownListFor(model => model.USER_TYPE, listUserTypes, null, new { @class = "form-control", @id = "userType_ID" })
                             </div>
@@ -167,7 +175,7 @@
                             <div class="form-group">
                                 <label for="user_status" class="control-label">Branch</label>
                                 @{
-    List<SelectListItem> branches = new List<SelectListItem>();
+                                    List<SelectListItem> branches = new List<SelectListItem>();
                                 }
                                 @Html.DropDownListFor(model => model.BRANCH_ID, branches, "Select a branch", new { @class = "form-control", @id = "userBranch" })
                             </div>
@@ -216,11 +224,11 @@
                         </div>
                     </div>
 
-                   
+
                 </div>
                 <div class="modal-footer">
                     <button type="reset" class="btn btn-default" data-dismiss="modal">Reset</button>
-                    <button type="submit" class="btn btn-info">Add User</button>
+                    <button type="submit" class="btn btn-info" id="btnAddUser">Add User</button>
                 </div>
             </div>
 

@@ -1,0 +1,338 @@
+﻿@model GROCERY.Models.OFFER_MANAGEMENT
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Create</h2>
+
+<ol class="breadcrumb">
+    <li class="breadcrumb-item">
+        <a href="/Home/Index">Grocery Store</a>
+    </li>
+    <li>Offer Management</li>
+    <li class="breadcrumb-item active">Add Offer</li>
+</ol>
+
+<h2>Offers</h2>
+
+@*@using (Html.BeginForm("Create", "Offer"))
+{*@
+    @Html.AntiForgeryToken()
+
+    <div class="row">
+        <div class="col-md-12">
+
+            <div class="panel panel-primary" data-collapsed="0">
+
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        Add New Offer
+                    </div>
+
+                    <div class="panel-options">
+                        <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                    </div>
+                </div>
+
+
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="product_discount_percentage" class="control-label">Discount %</label>
+                                @Html.TextBoxFor(model => model.DISCOUNT, new { @class = "form-control", placeholder = "Discount %", Type = "Number", Min = "0" })
+                            </div>
+                        </div>
+                        <div class="col-md-6" id="selectedtype">
+                            <div class="form-group">
+                                <label for="user_status" class="control-label">Select Type</label>
+                                @{
+                                    List<SelectListItem> listActive = new List<SelectListItem>();
+                                    listActive.Add(new SelectListItem
+                                    {
+                                        Text = "Select Type",
+                                        Value = "Select Type",
+                                        Selected = true
+                                    });
+                                    listActive.Add(new SelectListItem
+                                    {
+                                        Text = "Category",
+                                        Value = "Category"
+                                    });
+                                    listActive.Add(new SelectListItem
+                                    {
+                                        Text = "Sub Category",
+                                        Value = "Sub Category"
+                                    });
+                                    listActive.Add(new SelectListItem
+                                    {
+                                        Text = "Product",
+                                        Value = "Product"
+                                    });
+                                }
+                                @Html.DropDownListFor(model => model.TYPE, listActive, null, new { @class = "form-control", @Id = "TYPE" })
+                            </div>
+                        </div>
+                        <div class="col-md-6" id="categoryid">
+                            <div class="form-group">
+                                <label for="product_cat" class="control-label">Category</label>
+                                <select class="form-control" name="CATEGORY_ID" id="CATEGORY_ID">
+                                    <option value="-1">Select An Option</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6" id="subcategoryid">
+                            <div class="form-group">
+                                <label for="product_sub_cat" class="control-label">Sub Category</label>
+                                <select class="form-control" name="SUB_CATEGORY_ID" id="SUB_CATEGORY_ID">
+                                    <option value="-1">Select An Option</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6" id="productid">
+                            <div class="form-group">
+                                <label for="product" class="control-label">Product</label>
+                                <select class="form-control" name="PRODUCT_ID" id="PRODUCT_ID">
+                                    <option value="-1">Select An Option</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="btnoffer" type="submit" class="btn btn-info">Add</button>
+                </div>
+            </div>
+        </div>
+    </div>
+@*}*@
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script>
+
+    var categoriesList = {};
+    var subCategoriesList = {};
+    var products = {};
+
+    $(document).ready(function () {
+        $("#CATEGORY_ID").hide();
+        $("#SUB_CATEGORY_ID").hide();
+        $("#PRODUCT_ID").hide();
+        $("#categoryid").hide();
+        $("#subcategoryid").hide();
+        $("#productid").hide();
+
+        initializeCategoriesList();
+        initializeSubCategoriesList();
+        //initializeProductsList();
+    });
+
+    $("#TYPE").on('change', function () {
+
+        initializeCategoriesList();
+        initializeSubCategoriesList();
+        //initializeProductsList();
+
+        if ($("#TYPE").val() == "Select Type") {
+            $("#CATEGORY_ID").hide();
+            $("#SUB_CATEGORY_ID").hide();
+            $("#PRODUCT_ID").hide();
+            $("#CATEGORY_ID").val("");
+            $("#SUB_CATEGORY_ID").val("");
+            $("#PRODUCT_ID").val("");
+        }
+        if ($("#TYPE").val() == "Category") {
+            $("#CATEGORY_ID").show();
+            $("#SUB_CATEGORY_ID").hide();
+            $("#PRODUCT_ID").hide();
+            $("#categoryid").show();
+            $("#subcategoryid").hide();
+            $("#productid").hide();
+        }
+        if ($("#TYPE").val() == "Sub Category") {
+            $("#CATEGORY_ID").show();
+            $("#SUB_CATEGORY_ID").show();
+            $("#PRODUCT_ID").hide();
+            $("#categoryid").show();
+            $("#subcategoryid").show();
+            $("#productid").hide();
+        }
+        if ($("#TYPE").val() == "Product") {
+            $("#CATEGORY_ID").show();
+            $("#SUB_CATEGORY_ID").show();
+            $("#PRODUCT_ID").show();
+            $("#categoryid").show();
+            $("#subcategoryid").show();
+            $("#productid").show();
+        }
+    });
+
+    $("#CATEGORY_ID").change(function () {
+
+        $("#SUB_CATEGORY_ID").empty();
+        populateSubCategoriesDropDown();
+        @*$.ajax({
+            type: 'POST',
+            url: '@Url.Action("GetSubCategory")', // we are calling json method
+            data: { id: $("#CATEGORY_ID").val() },
+            success: function (res) {
+                console.log(res);
+                $("#SUB_CATEGORY_ID").empty();
+                $("#SUB_CATEGORY_ID").append('<option value="' + "0" + '">' + "Select Sub Category" + '</option>');
+                $.each(res, function (i, t) {
+                    $("#SUB_CATEGORY_ID").append('<option value="' + t.Value + '">' + t.Text + '</option>');
+                    // here we are adding option for States
+                });
+            },
+            error: function (ex) {
+                alert('Failed to retrieve states.' + ex);
+            }
+        });
+        return false;*@
+    });
+
+    $("#SUB_CATEGORY_ID").change(function () {
+        $("#PRODUCT_ID").empty();
+        initializeProductsList($("#SUB_CATEGORY_ID").val());
+        @*$.ajax({
+            type: 'POST',
+            url: '@Url.Action("GetProduct")', // we are calling json method
+            data: { id: $("#SUB_CATEGORY_ID").val() },
+            success: function (res) {
+                $("#PRODUCT_ID").empty();
+                $("#PRODUCT_ID").append('<option value="' + "0" + '">' + "Select Product" + '</option>');
+                $.each(res, function (i, t) {
+                    $("#PRODUCT_ID").append('<option value="' + t.Value + '">' + t.Text + '</option>');
+                    // here we are adding option for States
+                });
+            },
+            error: function (ex) {
+                alert('Failed to retrieve states.' + ex);
+            }
+        });
+        return false;*@
+    });
+
+    @*$("#PRODUCT_ID").change(function () {
+
+        console.log($("#PRODUCT_ID").val());
+
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("GetProductID")', // we are calling json method
+            data: { id: $("#PRODUCT_ID").val() },
+            success: function (res) {
+            },
+            error: function (ex) {
+            }
+        });
+        return false;
+    });*@
+
+    function initializeCategoriesList() {
+        $.ajax({
+            type: "GET",
+            url: '/api/product/categories',
+            contentType: 'application/json',
+            success: function (result) {
+                categoriesList = jQuery.parseJSON(result);
+                populateCategoriesDropDown();
+            },
+            error: function (res) {
+                alert('failure: ' + res);
+            }
+        });
+    }
+
+    function initializeSubCategoriesList() {
+        $.ajax({
+            type: "GET",
+            url: '/api/product/subcategories',
+            contentType: 'application/json',
+            success: function (result) {
+                subCategoriesList = jQuery.parseJSON(result);
+                populateSubCategoriesDropDown();
+            },
+            error: function (res) {
+                alert('failure: ' + res);
+            }
+        });
+    }
+
+    function initializeProductsList(scID) {
+        $.ajax({
+            type: "GET",
+            url: '/api/Product/GetProductsBySubCat?scID=' + scID,
+            contentType: 'application/json',
+            success: function (result) {
+                products = jQuery.parseJSON(result);
+                populateProductsDropDown();
+            },
+            error: function (res) {
+                alert('failure: ' + res);
+            }
+        });
+    }
+
+    function populateCategoriesDropDown() {
+        var options = '<option value="-1">---Select an option---</option>';
+        for (i = 0; i < categoriesList.Table.length; i++) {
+            var item = categoriesList.Table[i];
+            options = options + '<option value="' + item.CATEGORY_ID + '">' + item.DESCRIPTION + '</option>';
+        }
+        $("#CATEGORY_ID").html(options);
+    }
+
+    function populateSubCategoriesDropDown() {
+        var options = '<option value="-1">---Select an option---</option>';
+        var selectedCatID = $("#CATEGORY_ID").val();
+        for (i = 0; i < subCategoriesList.Table.length; i++) {
+            var item = subCategoriesList.Table[i];
+            if (selectedCatID == item.CATEGORY_ID)
+                options = options + '<option value="' + item.SUB_CATEGORY_ID + '">' + item.DESCRIPTION + '</option>';
+        }
+        $("#SUB_CATEGORY_ID").html(options);
+    }
+
+    function populateProductsDropDown() {
+        var options = '<option value="-1">---Select an option---</option>';
+        var selectedCatID = $("#SUB_CATEGORY_ID").val();
+        console.log(products);
+        for (i = 0; i < products.Table.length; i++) {
+            var item = products.Table[i];
+            if (selectedCatID == item.SUB_CATEGORY_ID)
+                options = options + '<option value="' + item.PRODUCT_ID + '">' + item.PRODUCT_DESCRIPTION + '</option>';
+        }
+        $("#PRODUCT_ID").html(options);
+    }
+
+    $("#btnoffer").click(function () {
+        alert();
+        var dataO = {
+            DISCOUNT: $("#DISCOUNT").val(),
+            TYPE: $("#TYPE").val(),
+            CATEGORY_ID: $("#CATEGORY_ID").val(),
+            CATEGORY_NAME: $("#CATEGORY_ID option:selected").text(),
+            SUB_CATEGORY_ID: $("#SUB_CATEGORY_ID").val(),
+            SUB_CATEGORY_NAME: $("#SUB_CATEGORY_ID option:selected").text(),
+            PRODUCT_ID: $("#PRODUCT_ID").val(),
+            PRODUCT_NAME: $("#PRODUCT_ID option:selected").text()
+        };
+        console.log(dataO);
+        $.ajax({
+            url: "@Url.Action("Create","Offer")",
+            type: "POST",
+            contentType: 'application/json',
+            data: JSON.stringify({ offer: dataO }),
+            success: function (result) {
+                window.location.href = "@Url.Action("Index","Offer")"
+            },
+            error: function (res) {
+                alert('failure: ' + res);
+            }
+        });
+    });
+
+</script>

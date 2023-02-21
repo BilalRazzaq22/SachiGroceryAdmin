@@ -8,7 +8,6 @@
 <h2>View</h2>
 
 <script src="~/Scripts/jquery-1.10.2.min.js"></script>
-
 <script>
     var tempAmount = 1;
     var categoriesList = {};
@@ -27,7 +26,7 @@
 
         var ele = document.getElementById("txtTotalSum");
         var sum = 0;
-
+        console.log(orders.items);
         for (i2 = 0; i2 < orders.items.length; i2++) {
             var oItm = orders.items[i2];
             sum = sum + oItm.total;
@@ -36,16 +35,15 @@
                 oItm.barcode + ' onblur=addToListUpdated(this.value,' + oItm.product_id + oItm.barcode + ') min=0 /></td><td>' + oItm.price + '</td><td>' +
                 oItm.disc + '</td><td>' + oItm.total + '</td><td><button type="button" class="btn btn-small btn-red" onClick=removeFromList(' + oItm.barcode + ') >Remove</button></td></tr>';
         }
-        debugger;
         ele.value = sum - $(".txtManualDiscount").val() - $("#txtCouponDisc").val();
         $("#tbl-ord").html(ordRows);
     });
 
     $(document).ready(function () {
-        debugger;
+
         $(".txtManualDiscount").val(@ViewBag.Discount);
         $("#txtCouponDisc").val(@ViewBag.CPNDiscount);
-
+        //$("#txtDeliveryTime").datepicker();
         $("#txtCouponCode").blur(function (e) {
             var code = $("#txtCouponCode").val();
             $.ajax({
@@ -105,8 +103,6 @@
             alert('hi');
         });
         $(".txtManualDiscount").blur(function (e) {
-            //debugger;
-
             var ele = document.getElementById("txtTotalSum");
             var sum = 0;
 
@@ -122,9 +118,11 @@
         initializeProductsList(-1, @ViewBag.BranchId);
         initializePaymentModes();
         populatePackage();
-        debugger;
-        //$("#txtDeliveryTime").val(@ViewBag.Time);
 
+        var dateControl = document.querySelector('input[type="datetime-local"]');
+        dateControl.value = '@ViewBag.Time';
+        console.log(dateControl.value);
+        $("#txtDeliveryTime").val(dateControl.value);
         //$("#ddlpackage").val(@ViewBag.Package);
 
 
@@ -277,7 +275,6 @@
 
     function populatePaymentModes() {
         var options = "";
-        debugger;
         var chk = @ViewBag.PaymentMode;
         //options = options + '<option value="' + -1 + '"> Please Select </option>';
         for (i = 0; i < modes.Table.length; i++) {
@@ -1023,7 +1020,7 @@
                                 <div class="form-group">
                                     <label for="user_status" class="control-label">Delivery Time</label>
                                     <input type="datetime-local" id="txtDeliveryTime" class="form-control">
-                                    @*@Html.TextAreaFor(model => model.DELIVERY_TIME, new { @class = "form-control ",  placeholder = "" , })*@
+                                    @*@Html.TextAreaFor(model => model.DELIVERY_TIME, new { @class = "form-control ",  placeholder = "" , @type = "datetime-local", id = "txtDeliveryTime" })*@
                                 </div>
                             </div>
                             <div class="col-md-4">

@@ -1,0 +1,143 @@
+﻿@model GROCERY.Models.BANNER
+
+@{
+    ViewBag.Title = "Add Banner";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="~/assets/js/fileinput.js"></script>
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+
+<h2>Create</h2>
+
+<ol class="breadcrumb">
+    <li class="breadcrumb-item">
+        <a href="/Home/Index">Grocery Store</a>
+    </li>
+    <li>Banner</li>
+    <li class="breadcrumb-item active">Add Banner</li>
+</ol>
+
+<h2>Banner</h2>
+
+@using (Html.BeginForm("Create", "Banner", FormMethod.Post, new
+{
+    enctype = "multipart/form-data"
+}))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="row">
+        <div class="col-md-12">
+
+            <div class="panel panel-primary" data-collapsed="0">
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        Add New Banner
+                    </div>
+
+                    <div class="panel-options">
+                        <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                    </div>
+                </div>
+
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="product_oldId" class="control-label">Banner Title</label>
+                                @Html.TextBoxFor(model => model.BannerTitle, new { @class = "form-control", placeholder = "Banner Title" })
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="product_oldId" class="control-label">Description</label>
+                                @Html.TextBoxFor(model => model.Description, new { @class = "form-control", placeholder = "Description" })
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="product_oldId" class="control-label">Banner Type</label>
+                                @{
+                                    List<SelectListItem> bannertype = new List<SelectListItem>();
+                                    bannertype.Add(new SelectListItem
+                                    {
+                                        Text = "Select Type",
+                                        Value = "Select Type"
+                                    });
+                                    bannertype.Add(new SelectListItem
+                                    {
+                                        Text = "Web",
+                                        Value = "Web"
+                                    });
+                                    bannertype.Add(new SelectListItem
+                                    {
+                                        Text = "Mobile",
+                                        Value = "Mobile"
+                                    });
+                                }
+                                @Html.DropDownListFor(model => model.BannerType, bannertype, null, new { @class = "form-control" })
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="product_oldId" class="control-label">Is Active</label>
+                                @{
+                                    List<SelectListItem> listActive = new List<SelectListItem>();
+                                    listActive.Add(new SelectListItem
+                                    {
+                                        Text = "Yes",
+                                        Value = "true",
+                                        Selected = true
+                                    });
+                                    listActive.Add(new SelectListItem
+                                    {
+                                        Text = "No",
+                                        Value = "false"
+                                    });
+                                }
+                                @Html.DropDownListFor(model => model.IsActive, listActive, null, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="product_name" class="control-label">Width</label>
+                                @Html.TextBoxFor(model => model.Width, new { @class = "form-control", placeholder = "Width", Required = "Required", type = "Number" })
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="product_name" class="control-label">Height</label>
+                                @Html.TextBoxFor(model => model.Height, new { @class = "form-control", placeholder = "Height", Required = "Required", type = "Number" })
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="fileinput fileinput-new" data-provides="fileinput">
+                                <div class="fileinput-new thumbnail" style="width: auto; height: auto;" data-trigger="fileinput">
+
+                                </div>
+                                <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px"></div>
+                                <div>
+                                    <span class="btn btn-white btn-file">
+                                        <span class="fileinput-new">Select File</span>
+                                        <span class="fileinput-exists">Change</span>
+                                        <input type="file" id="thumbnail" name="thumbnail" required />
+                                    </span>
+                                    <a href="#" class="btn btn-orange fileinput-exists" data-dismiss="fileinput">Remove</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-info">Add Banner</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "List")
+</div>

@@ -15,7 +15,7 @@ namespace GROCERY.Models
         public int BranchID { get; set; }
         public string BranchName { get; set; }
         public List<CallOrders> cOrders { get; set; }
-
+        public bool isTestOrder { get; set; }
         public string DeliveryDescription { get; set; }
         public int PaymentMode { get; set; }
         public int extraDisc { get; set; }

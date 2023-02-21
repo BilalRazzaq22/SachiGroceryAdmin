@@ -17,83 +17,394 @@
 
 <h2>Coupons</h2>
 
-@using (Html.BeginForm("Create","Coupon")) 
-{
-    @Html.AntiForgeryToken()
-    
-    
-    <div class="row">
-        <div class="col-md-12">
+@*@using (Html.BeginForm("Create", "Coupon"))
+    {*@
+@Html.AntiForgeryToken()
 
-            <div class="panel panel-primary" data-collapsed="0">
 
-                <div class="panel-heading">
-                    <div class="panel-title">
-                        Add New Coupon
-                    </div>
+<div class="row">
+    <div class="col-md-12">
 
-                    <div class="panel-options">
-                        <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
-                    </div>
+        <div class="panel panel-primary" data-collapsed="0">
+
+            <div class="panel-heading">
+                <div class="panel-title">
+                    Add New Coupon
                 </div>
 
-
-                <div class="panel-body">
-
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label for="product_name" class="control-label">No Of Coupons</label>
-                                @Html.TextBoxFor(model => model.count_coupons, new { @class = "form-control", placeholder = "Coupons Count", Required = "Required", type = "Number" })
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label for="product_name" class="control-label">Promo Name</label>
-                                @Html.TextBoxFor(model => model.PROMO_TEXT, new { @class = "form-control", placeholder = "Name", Required = "Required" })
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label for="product_name" class="control-label">Promo Start Date</label>
-                                @Html.TextBoxFor(model => model.START_DATE, new { @class = "form-control", placeholder = "Promo Start Date", Required = "Required", type = "date" })
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label for="product_name" class="control-label">Promo Expiray Date</label>
-                                @Html.TextBoxFor(model => model.EXPIRY_DATE, new { @class = "form-control", placeholder = "Promo Expiry Date", Required = "Required", type = "date" })
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label for="product_name" class="control-label">Promo Value</label>
-                                @Html.TextBoxFor(model => model.VALUE, new { @class = "form-control", placeholder = "Promo Value", Required = "Required", type = "Number" })
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                                <div class="form-group">
-                                    <label for="product_name" class="control-label">Unlock Amount</label>
-                                    @Html.TextBoxFor(model => model.UNLOCK_AMOUNT, new { @class = "form-control", placeholder = "Unlock Amount", Required = "Required", type = "Number" })
-                                </div>
-                            </div>
-                    </div>
-                    </div>
-
-                <div class="modal-footer">
-                    <button type="reset" class="btn btn-default" data-dismiss="modal">Reset</button>
-                    <button type="submit" class="btn btn-info">Add Promo</button>
-                </div>
+                <div class="panel-options">
+                    <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
                 </div>
             </div>
+
+
+            <div class="panel-body">
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="product_name" class="control-label">No Of Coupons</label>
+                            @Html.TextBoxFor(model => model.count_coupons, new { @class = "form-control", placeholder = "Coupons Count", Required = "Required", type = "Number" })
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="product_name" class="control-label">Promo Name</label>
+                            @Html.TextBoxFor(model => model.PROMO_TEXT, new { @class = "form-control", placeholder = "Name", Required = "Required" })
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="product_name" class="control-label">Promo Start Date</label>
+                            @Html.TextBoxFor(model => model.START_DATE, new { @class = "form-control", placeholder = "Promo Start Date", Required = "Required", type = "date" })
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="product_name" class="control-label">Promo Expiray Date</label>
+                            @Html.TextBoxFor(model => model.EXPIRY_DATE, new { @class = "form-control", placeholder = "Promo Expiry Date", Required = "Required", type = "date" })
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="product_name" class="control-label">Promo Value</label>
+                            @Html.TextBoxFor(model => model.VALUE, new { @class = "form-control", placeholder = "Promo Value", Required = "Required", type = "Number" })
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="product_name" class="control-label">Unlock Amount</label>
+                            @Html.TextBoxFor(model => model.UNLOCK_AMOUNT, new { @class = "form-control", placeholder = "Unlock Amount", Required = "Required", type = "Number" })
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="product_name" class="control-label">Promo Active</label>
+                            <select id="IS_ACTIVE" name="IS_ACTIVE" class="form-control">
+                                <option value="true" selected>Yes</option>
+                                <option value="false">No</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="product_name" class="control-label">Promo Used</label>
+                            <select id="IS_USED" name="IS_USED" class="form-control">
+                                <option value="true" selected>Yes</option>
+                                <option value="false">No</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6" id="coupontype">
+                        <div class="form-group">
+                            <label for="user_status" class="control-label">Select Type</label>
+                            @{
+                                List<SelectListItem> listActive = new List<SelectListItem>();
+                                listActive.Add(new SelectListItem
+                                {
+                                    Text = "Select Coupon Type",
+                                    Value = "Select Coupon Type",
+                                    Selected = true
+                                });
+                                listActive.Add(new SelectListItem
+                                {
+                                    Text = "Category",
+                                    Value = "Category"
+                                });
+                                listActive.Add(new SelectListItem
+                                {
+                                    Text = "Sub Category",
+                                    Value = "Sub Category"
+                                });
+                                listActive.Add(new SelectListItem
+                                {
+                                    Text = "Product",
+                                    Value = "Product"
+                                });
+                            }
+                            @Html.DropDownListFor(model => model.COUPONTYPE, listActive, null, new { @class = "form-control", @Id = "COUPON_TYPE" })
+                        </div>
+                    </div>
+                    <div class="col-md-6" id="categoryid">
+                        <div class="form-group">
+                            <label for="product_cat" class="control-label">Category</label>
+                            <select class="form-control" name="CATEGORY_ID" id="CATEGORY_ID">
+                                <option value="-1">Select An Option</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6" id="subcategoryid">
+                        <div class="form-group">
+                            <label for="product_sub_cat" class="control-label">Sub Category</label>
+                            <select class="form-control" name="SUB_CATEGORY_ID" id="SUB_CATEGORY_ID">
+                                <option value="-1">Select An Option</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6" id="productid">
+                        <div class="form-group">
+                            <label for="product" class="control-label">Product</label>
+                            <select class="form-control" name="PRODUCT_ID" id="PRODUCT_ID">
+                                <option value="-1">Select An Option</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="reset" class="btn btn-default" data-dismiss="modal">Reset</button>
+                <button id="addpromo" type="submit" class="btn btn-info">Add Promo</button>
+            </div>
         </div>
-    
-    
-}
+    </div>
+</div>
+
+
+@*  }*@
 
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script>
+
+    var categoriesList = {};
+    var subCategoriesList = {};
+    var products = {};
+
+    $(document).ready(function () {
+        $("#CATEGORY_ID").hide();
+        $("#SUB_CATEGORY_ID").hide();
+        $("#PRODUCT_ID").hide();
+        $("#categoryid").hide();
+        $("#subcategoryid").hide();
+        $("#productid").hide();
+
+        initializeCategoriesList();
+        initializeSubCategoriesList();
+        //initializeProductsList();
+    });
+
+    $("#COUPON_TYPE").on('change', function () {
+
+        initializeCategoriesList();
+        initializeSubCategoriesList();
+        //initializeProductsList();
+
+        if ($("#COUPON_TYPE").val() == "Select Coupon Type") {
+            $("#CATEGORY_ID").hide();
+            $("#SUB_CATEGORY_ID").hide();
+            $("#PRODUCT_ID").hide();
+            $("#CATEGORY_ID").val("");
+            $("#SUB_CATEGORY_ID").val("");
+            $("#PRODUCT_ID").val("");
+        }
+        if ($("#COUPON_TYPE").val() == "Category") {
+            $("#CATEGORY_ID").show();
+            $("#SUB_CATEGORY_ID").hide();
+            $("#PRODUCT_ID").hide();
+            $("#categoryid").show();
+            $("#subcategoryid").hide();
+            $("#productid").hide();
+        }
+        if ($("#COUPON_TYPE").val() == "Sub Category") {
+            $("#CATEGORY_ID").show();
+            $("#SUB_CATEGORY_ID").show();
+            $("#PRODUCT_ID").hide();
+            $("#categoryid").show();
+            $("#subcategoryid").show();
+            $("#productid").hide();
+        }
+        if ($("#COUPON_TYPE").val() == "Product") {
+            $("#CATEGORY_ID").show();
+            $("#SUB_CATEGORY_ID").show();
+            $("#PRODUCT_ID").show();
+            $("#categoryid").show();
+            $("#subcategoryid").show();
+            $("#productid").show();
+        }
+    });
+
+    $("#CATEGORY_ID").change(function () {
+
+        $("#SUB_CATEGORY_ID").empty();
+        populateSubCategoriesDropDown();
+        @*$.ajax({
+            type: 'POST',
+            url: '@Url.Action("GetSubCategory")', // we are calling json method
+            data: { id: $("#CATEGORY_ID").val() },
+            success: function (res) {
+                console.log(res);
+                $("#SUB_CATEGORY_ID").empty();
+                $("#SUB_CATEGORY_ID").append('<option value="' + "0" + '">' + "Select Sub Category" + '</option>');
+                $.each(res, function (i, t) {
+                    $("#SUB_CATEGORY_ID").append('<option value="' + t.Value + '">' + t.Text + '</option>');
+                    // here we are adding option for States
+                });
+            },
+            error: function (ex) {
+                alert('Failed to retrieve states.' + ex);
+            }
+        });
+        return false;*@
+    });
+
+    $("#SUB_CATEGORY_ID").change(function () {
+        $("#PRODUCT_ID").empty();
+        initializeProductsList($("#SUB_CATEGORY_ID").val());
+        @*$.ajax({
+            type: 'POST',
+            url: '@Url.Action("GetProduct")', // we are calling json method
+            data: { id: $("#SUB_CATEGORY_ID").val() },
+            success: function (res) {
+                $("#PRODUCT_ID").empty();
+                $("#PRODUCT_ID").append('<option value="' + "0" + '">' + "Select Product" + '</option>');
+                $.each(res, function (i, t) {
+                    $("#PRODUCT_ID").append('<option value="' + t.Value + '">' + t.Text + '</option>');
+                    // here we are adding option for States
+                });
+            },
+            error: function (ex) {
+                alert('Failed to retrieve states.' + ex);
+            }
+        });
+        return false;*@
+    });
+
+    @*$("#PRODUCT_ID").change(function () {
+
+        console.log($("#PRODUCT_ID").val());
+
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("GetProductID")', // we are calling json method
+            data: { id: $("#PRODUCT_ID").val() },
+            success: function (res) {
+            },
+            error: function (ex) {
+            }
+        });
+        return false;
+    });*@
+
+    function initializeCategoriesList() {
+        $.ajax({
+            type: "GET",
+            url: '/api/product/categories',
+            contentType: 'application/json',
+            success: function (result) {
+                categoriesList = jQuery.parseJSON(result);
+                populateCategoriesDropDown();
+            },
+            error: function (res) {
+                alert('failure: ' + res);
+            }
+        });
+    }
+
+    function initializeSubCategoriesList() {
+        $.ajax({
+            type: "GET",
+            url: '/api/product/subcategories',
+            contentType: 'application/json',
+            success: function (result) {
+                subCategoriesList = jQuery.parseJSON(result);
+                populateSubCategoriesDropDown();
+            },
+            error: function (res) {
+                alert('failure: ' + res);
+            }
+        });
+    }
+
+    function initializeProductsList(scID) {
+        $.ajax({
+            type: "GET",
+            url: '/api/Product/GetProductsBySubCat?scID=' + scID,
+            contentType: 'application/json',
+            success: function (result) {
+                products = jQuery.parseJSON(result);
+                populateProductsDropDown();
+            },
+            error: function (res) {
+                alert('failure: ' + res);
+            }
+        });
+    }
+
+    function populateCategoriesDropDown() {
+        var options = '<option value="-1">---Select an option---</option>';
+        for (i = 0; i < categoriesList.Table.length; i++) {
+            var item = categoriesList.Table[i];
+            options = options + '<option value="' + item.CATEGORY_ID + '">' + item.DESCRIPTION + '</option>';
+        }
+        $("#CATEGORY_ID").html(options);
+    }
+
+    function populateSubCategoriesDropDown() {
+        var options = '<option value="-1">---Select an option---</option>';
+        var selectedCatID = $("#CATEGORY_ID").val();
+        for (i = 0; i < subCategoriesList.Table.length; i++) {
+            var item = subCategoriesList.Table[i];
+            if (selectedCatID == item.CATEGORY_ID)
+                options = options + '<option value="' + item.SUB_CATEGORY_ID + '">' + item.DESCRIPTION + '</option>';
+        }
+        $("#SUB_CATEGORY_ID").html(options);
+    }
+
+    function populateProductsDropDown() {
+        var options = '<option value="-1">---Select an option---</option>';
+        var selectedCatID = $("#SUB_CATEGORY_ID").val();
+        console.log(products);
+        for (i = 0; i < products.Table.length; i++) {
+            var item = products.Table[i];
+            if (selectedCatID == item.SUB_CATEGORY_ID)
+                options = options + '<option value="' + item.PRODUCT_ID + '">' + item.PRODUCT_DESCRIPTION + '</option>';
+        }
+        $("#PRODUCT_ID").html(options);
+    }
+
+    $("#addpromo").click(function () {
+
+        var couponType;
+
+        if ($("#COUPON_TYPE").val() == "Select Coupon Type") {
+            couponType = "No Type Selected";
+        } else {
+            couponType = $("#COUPON_TYPE").val();
+        }
+
+        var dataO = {
+            count_coupons: $("#count_coupons").val(),
+            PROMO_TEXT: $("#PROMO_TEXT").val(),
+            START_DATE: $("#START_DATE").val(),
+            EXPIRY_DATE: $("#EXPIRY_DATE").val(),
+            VALUE: $("#VALUE").val(),
+            UNLOCK_AMOUNT: $("#UNLOCK_AMOUNT").val(),
+            COUPONTYPE: couponType,
+            CATEGORYID: $("#CATEGORY_ID").val(),
+            SUBCATEGORYID: $("#SUB_CATEGORY_ID").val(),
+            PRODUCTID: $("#PRODUCT_ID").val(),
+            IS_ACTIVE: $("#IS_ACTIVE").val(),
+            IS_USED: $("#IS_USED").val()
+        };
+
+        $.ajax({
+            url: "@Url.Action("Create","Coupon")",
+            type: "POST",
+            contentType: 'application/json',
+            data: JSON.stringify({ couponObj: dataO }),
+            success: function (result) {
+                window.location.href = "@Url.Action("Index","Coupon")"
+            },
+            error: function (res) {
+                alert('failure: ' + res);
+            }
+        });
+    });
+
+</script>

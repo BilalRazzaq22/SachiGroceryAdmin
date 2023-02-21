@@ -1,0 +1,90 @@
+﻿@model List<GROCERY.Models.BANNER>
+
+@{
+    ViewBag.Title = "List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<ol class="breadcrumb">
+    <li class="breadcrumb-item">
+        <a href="/Home/Index">Grocery Store</a>
+    </li>
+    <li>Banner Management</li>
+    <li class="breadcrumb-item active">Banners</li>
+</ol>
+
+<h2>Banners</h2>
+
+<table class="table table-bordered datatable" id="table-1">
+    <tr>
+        <th width="200">
+            ImageUrl
+        </th>
+        <th>
+            BannerTitle
+        </th>
+        <th>
+            Description
+        </th>
+        <th>
+            BannerType
+        </th>
+        <th>
+            CreatedDate
+        </th>
+        @*<th>
+                ModifiedDate
+            </th>
+            <th>
+                RecordStatus
+            </th>*@
+        <th>
+            IsActive
+        </th>
+        <th>Action</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                <img src="@item.AdminImagePath" height="100" width="200" />
+                @*@Html.DisplayFor(modelItem => item.ImageUrl)*@
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BannerTitle)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BannerType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedDate)
+            </td>
+            @* <td>
+                     @Html.DisplayFor(modelItem => item.ModifiedDate)
+                 </td>
+                <td>
+                     @Html.DisplayFor(modelItem => item.RecordStatus)
+                 </td>*@
+            <td>
+                @if (item.IsActive.Value == true)
+                {
+                    @Html.LabelForModel("Yes")
+                }
+                else
+                {
+                    @Html.LabelForModel("No")
+                }
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.BannerId }) |
+                @*@Html.ActionLink("Details", "Details", new { id=item.BannerId }) |*@
+                @Html.ActionLink("Delete", "Delete", new { id = item.BannerId }, new { onclick = "return confirm('Are sure wants to delete?');" })
+            </td>
+        </tr>
+    }
+
+</table>

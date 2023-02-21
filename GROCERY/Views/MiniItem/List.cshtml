@@ -64,7 +64,8 @@
         });
     });
     function searchIt() {
-
+        $("#maindiv").addClass("disable-maindiv");
+        $("#load").css("display", "block");
         var input = document.getElementById("myInput").value;
         var pID = document.getElementById("myID").value;
         var status = $('#ddlActive').val();
@@ -78,19 +79,23 @@
             success: function (result) {
                 products = jQuery.parseJSON(result);
                 populateProductsTable();
+                $("#maindiv").removeClass("disable-maindiv");
+                $("#load").css("display", "none");
             },
             error: function (res) {
                 alert('failure: ' + res);
+                $("#maindiv").removeClass("disable-maindiv");
+                $("#load").css("display", "none");
             }
         });
-
     }
     function resetIt() {
         $("#table-11-div").show();
         $("#product-all").hide();
     }
     function initializeProductsList(scID) {
-
+        $("#maindiv").addClass("disable-maindiv");
+        $("#load").css("display", "block");
         $.ajax({
             type: "GET",
             url: '/api/product/miniProducts?scID=' + scID,
@@ -98,10 +103,14 @@
             success: function (result) {
                 products = jQuery.parseJSON(result);
                 populateProductsTable();
+                $("#maindiv").removeClass("disable-maindiv");
+                $("#load").css("display", "none");
             },
             error: function (res) {
                 console.log(res);
                 alert('failure: ' + res);
+                $("#maindiv").removeClass("disable-maindiv");
+                $("#load").css("display", "none");
             }
         });
     }

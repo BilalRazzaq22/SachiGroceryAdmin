@@ -1,0 +1,123 @@
+﻿@model IEnumerable<GROCERY.Models.USER>
+
+@{
+    ViewBag.Title = "Rider List";
+}
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script>
+    var users = {};
+    $(document).ready(function () {
+        initializeRiderList();
+    });
+
+    function deleteActionConfirmation(id) {
+        var txt;
+        var r = confirm("Are you sure you want to delete this rider?? Press OK if Yes otherwise Cancel!");
+        if (r == true) {
+            $.ajax({
+                type: "GET",
+                url: '/api/admin/deleteuser?uID=' + id,
+                contentType: 'application/json',
+                success: function (result) {
+                    var res = jQuery.parseJSON(result);
+                    if (res == 1) {
+                        alert("Selected record is deleted successfully.");
+                        initializeRiderList();
+                    }
+                    else {
+                        alert("Failed to delete selected record.");
+                    }
+
+                },
+                error: function (res) {
+                    alert('failure: ' + res);
+                }
+            });
+        }
+    }
+
+    function initializeRiderList() {
+        $.ajax({
+            type: "GET",
+            url: '/api/admin/riders',
+            contentType: 'application/json',
+            success: function (result) {
+                console.log(result);
+                riders = jQuery.parseJSON(result);
+                populateRidersTable();
+            },
+            error: function (res) {
+                //console.log(res);
+                alert('failure: ' + res);
+            }
+        });
+    }
+
+    function populateRidersTable() {
+        var rows = '';
+        var riderStatus = "";
+        for (i = 0; i < riders.Table.length; i++) {
+            var item = riders.Table[i];
+            //console.log(item);
+            if (item.IS_ACTIVE == false) {
+                riderStatus = "In Active";
+            } else {
+                riderStatus = "Active";
+            }
+
+            rows = rows + '<tr><td>' + item.USER_ID + '</td><td>' + item.USERNAME + '</td><td>' + item.USER_TYPE_DESCRIPTION +
+                '</td><td>' + riderStatus + '</td>' +
+                '<td class="test"> <a style="color:blue" href="Edit/' + item.USER_ID + '">Edit</a>'
+                + '<a style="color:red" href = "javascript:deleteActionConfirmation(' + item.USER_ID + ')">/Delete</a>'
+                + '<a style="color:green" href = "View/' + item.USER_ID + '">/View</a>' 
+                + '<a style="color:black" href = "GetRiderJobs/' + item.USER_ID + '">/ViewRiderJobs</a></td ></tr > ';
+        }
+            console.log(item);
+
+        console.log("@ViewBag.Data");
+        if ("@ViewBag.Data" !== "Admin" && "@ViewBag.Data" !== "Super Admin") {
+            $("#ridersTable").find("tr td.test").remove();
+            $("#table-1").find("thead tr th.hiderider").hide();
+            $("#table-1").find("tfoot tr th.hiderider").hide();
+        }
+
+        $("#ridersTable").html(rows);
+    }
+</script>
+
+<ol class="breadcrumb">
+    <li class="breadcrumb-item">
+                            <a href="/Home/Index">Grocery Store</a>
+                        </li>
+                        <li>User Management</li>
+                        <li class="breadcrumb-item active">Riders</li>
+                    </ol>
+
+                    <h2>Riders</h2>
+
+                <br />
+
+            <table class="table table-bordered datatable" id="table-1">
+            <thead>
+                <tr>
+                <th>User ID</th>
+                <th>User Name</th>
+            <th>User Type</th>
+            <th>Status</th>
+            <th class="hiderider">Action</th>
+        </tr>
+    </thead>
+    <tbody id="ridersTable"></tbody>
+    <tfoot>
+        <tr>
+            <th>User ID</th>
+            <th>User Name</th>
+            <th>User Type</th>
+            <th>Status</th>
+            <th class="hiderider">Action</th>
+        </tr>
+    </tfoot>
+</table>
+
+<br />

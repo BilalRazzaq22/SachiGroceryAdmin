@@ -32,7 +32,7 @@ namespace GROCERY.DAL.Core
                 {
                     gEnt.STOCKs.Add(new STOCK
                     {
-                        PRODUCT_ID = (obj.OLD_PRODUCT_ID != null) ? (int)obj.OLD_PRODUCT_ID : (int)obj.PRODUCT_ID,
+                        PRODUCT_ID = (int)obj.OLD_PRODUCT_ID,
                         BRANCH_ID = Convert.ToInt16(item.BRANCH_ID),
                         IsActive = true,
                         QTY = 0

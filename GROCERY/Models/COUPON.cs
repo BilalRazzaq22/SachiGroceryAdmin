@@ -28,5 +28,9 @@ namespace GROCERY.Models
         public string PROMO { get; set; }
         public Nullable<int> updated_by { get; set; }
         public Nullable<System.DateTime> updated_on { get; set; }
+        public Nullable<int> CATEGORYID { get; set; }
+        public Nullable<int> SUBCATEGORYID { get; set; }
+        public Nullable<int> PRODUCTID { get; set; }
+        public string COUPONTYPE { get; set; }
     }
 }

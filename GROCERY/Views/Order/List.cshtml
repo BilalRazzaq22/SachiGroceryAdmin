@@ -4,80 +4,218 @@
     ViewBag.Title = "Orders";
 }
 <style>
-    .orderByCustomer{
-        background-color:red;
+    .orderByCustomer {
+        background-color: red;
         color: white;
+    }
+    /*Generic*/
+    .wrapper {
+        margin: 60px auto;
+        text-align: center;
+    }
+
+    h1 {
+        margin-bottom: 1.25em;
+    }
+
+    td {
+        word-break: break-all;
+    }
+
+    /*Specific styling*/
+    #content {
+        padding: 15px;
+        border: solid 1px #eee;
+        max-width: 660px;
+        margin: auto;
+        border-radius: 4px;
     }
 </style>
 <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+@*<script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>*@
+<script src="https://cdn.rawgit.com/botmonster/jquery-bootpag/master/lib/jquery.bootpag.min.js"></script>
+@*<script src="~/Scripts/bootpage.js"></script>*@
 <script>
-
     var orders = {};
-
+    var allordercount = 0;
+    var populateordercount = 0;
+    var allocationordercount = 0;
+    var dispatchordercount = 0;
+    var shippedordercount = 0;
     var orderStatusesList = {};
 
     $(document).ready(function () {
-       
+        loadRights();
         loadDatesStartEnd();  //being used for default date setup
-        initializeOrdersList(0, null, null);
+        initializeOrdersList(1, 0, null, null, 'CREATED_DATE', 'desc', null);
         $("#btnLoad").click(function () {
-        
+
             var selectedDateFrom = $("#orderDateFrom").val();
             var selectedDateTo = $("#orderDateTo").val();
-
+            $("#tabName").val($("ul#mainTab").find('li.active').text().trim());
             if (selectedDateFrom != "" && selectedDateTo != "") {
-                initializeOrdersList(0, null, null);
-                initializeOrdersList(1, selectedDateFrom, selectedDateTo);
-                initializeOrdersList(2, selectedDateFrom, selectedDateTo);
-                initializeOrdersList(3, selectedDateFrom, selectedDateTo);
-                initializeOrdersList(4, selectedDateFrom, selectedDateTo);
-                    
+                initializeOrdersList(1, 0, null, null,'CREATED_DATE','desc',null);
+                initializeOrdersList(1, 1, selectedDateFrom, selectedDateTo, 'CREATED_DATE', 'desc', null);
+                initializeOrdersList(1, 2, selectedDateFrom, selectedDateTo, 'CREATED_DATE', 'desc', null);
+                initializeOrdersList(1, 3, selectedDateFrom, selectedDateTo, 'CREATED_DATE', 'desc', null);
+                initializeOrdersList(1, 4, selectedDateFrom, selectedDateTo, 'CREATED_DATE', 'desc', null);
+
             }
             if (selectedDateFrom == "" || selectedDateTo == "")
                 alert('Please select date value');
-                
+
         });
 
+        $("#btnGenerateExcel").click(function () {
+            $("#maindiv").addClass("disable-maindiv");
+            $("#wait").css("display", "block");
+            $("#wait").find("#loaderText").hide();
+            $.ajax({
+                url:  window.location = "/Order/ExportOrdersToExcel?tabName=" + $("ul#mainTab").find('li.active').text().trim() + '&oDateFrom=' + $("#orderDateFrom").val() + '&oDateTo=' + $("#orderDateTo").val(),
+                type: "GET",
+                success: function (result) {
+                    console.log(result);
+                    $("#maindiv").removeClass("disable-maindiv");
+                    $("#wait").css("display", "none");
+                },
+                error: function (res) {
+                    console.log(res);
+                    $("#maindiv").removeClass("disable-maindiv");
+                    $("#wait").css("display", "none");
+                }
+            });
+        });
     });
 
-    function loadAllOrders()
-    {
-        if ($.fn.DataTable.isDataTable('#table-15')) {
-            $('#table-15').DataTable().destroy();
-        }
+    function GetAllOrderPagination(orders) {
+        $('#allorderpagination').bootpag({
+            total: orders[0].TotalPages,
+            //page: 1,
+            maxVisible: 10,
+            leaps: true,
+            href: "#result-page-{{number}}",
+        })
+
+        //page click action
+        $('#allorderpagination').on("page", function (event, num) {
+            //show / hide content or pull via ajax etc
+            initializeOrdersList(num, 0, null, null, 'CREATED_DATE', 'desc', null);
+            //$("#content").html("Page " + num);
+        });
+    }
+
+    function PopulateOrderPagination(orders) {
+        $('#populateorderpagination').bootpag({
+            total: orders[0].TotalPages,
+            //page: 1,
+            maxVisible: 10,
+            leaps: true,
+            href: "#result-page-{{number}}",
+        })
+
+        //page click action
+        $('#populateorderpagination').on("page", function (event, num) {
+            //show / hide content or pull via ajax etc
+            initializeOrdersList(num, 1, $("#orderDateFrom").val(), $("#orderDateTo").val(), 'CREATED_DATE', 'desc', null);
+            //$("#content").html("Page " + num);
+        });
+    }
+
+    function AllocateOrderPagination(orders) {
+        //console.log(orders);
+        $('#allocateorderpagination').bootpag({
+            total: orders[0].TotalPages,
+            //page: 1,
+            maxVisible: 10,
+            leaps: true,
+            href: "#result-page-{{number}}",
+        })
+
+        //page click action
+        $('#allocateorderpagination').on("page", function (event, num) {
+            //show / hide content or pull via ajax etc
+            initializeOrdersList(num, 2, $("#orderDateFrom").val(), $("#orderDateTo").val(), 'CREATED_DATE', 'desc', null);
+            //$("#content").html("Page " + num);
+        });
+    }
+
+    function DispatchOrderPagination(orders) {
+        $('#dispatchorderpagination').bootpag({
+            total: orders[0].TotalPages,
+            //page: 1,
+            maxVisible: 10,
+            leaps: true,
+            href: "#result-page-{{number}}",
+        })
+
+        //page click action
+        $('#dispatchorderpagination').on("page", function (event, num) {
+            //show / hide content or pull via ajax etc
+            initializeOrdersList(num, 3, $("#orderDateFrom").val(), $("#orderDateTo").val(), 'CREATED_DATE', 'desc', null);
+            //$("#content").html("Page " + num);
+        });
+    }
+
+    function ShippedOrderPagination(orders) {
+        $('#shippedorderpagination').bootpag({
+            total: orders[0].TotalPages,
+            //page: 1,
+            maxVisible: 10,
+            leaps: true,
+            href: "#result-page-{{number}}",
+        })
+
+        //page click action
+        $('#shippedorderpagination').on("page", function (event, num) {
+            //show / hide content or pull via ajax etc
+            initializeOrdersList(num, 4, $("#orderDateFrom").val(), $("#orderDateTo").val(), 'CREATED_DATE', 'desc', null);
+            //$("#content").html("Page " + num);
+        });
+    }
+
+    function loadAllOrders() {
+        //if ($.fn.DataTable.isDataTable('#table-15')) {
+        //    $('#table-15').DataTable().destroy();
+        //}
+        allordercount = 0;
         var rows = '';
-        for (i = 0; i < orders.Table.length; i++) {
-            var item = orders.Table[i];
+        for (i = 0; i < orders.length; i++) {
+            allordercount = allordercount + 1;
+            var item = orders[i];
             var bgclass = "";
             if (item.ADDED_BY && item.ADDED_BY == 2) {
                 bgclass = "orderByCustomer";
             }
             rows = rows + '<tr class=' + bgclass + '><td>' + item.ORDER_ID + '</td><td>' + item.CUSTOMER_ID + '</td><td>' + item.NAME + '</td><td>'
-                        + item.MOBILE + '</td><td>' + item.ADDRESS + '</td><td>'
-                        + item.DELIVERY_DESCRIPTION + '</td><td>' + item.DELIVERY_TIME + '</td><td>'
-                        + item.MANUAL_DISCOUNT + '</td><td>' + item.COUPON_DISCOUNT + '</td><td>'
-                        + item.IS_PACKAGE + '</td><td>'
-                        + item.TOTAL_ITEMS + '</td><td>' + item.TOTAL_AMOUNT + '</td><td>' + item.STATUS_DESCRIPTION + '</td>'
-                        + '<td><a style="color:green" target="_blank" href = "View?oID=' + item.ORDER_ID + '">View</a></td></tr>';
-        }
+                + item.MOBILE + '</td><td>' + item.ADDRESS + '</td><td>'
+                + item.DELIVERY_DESCRIPTION + '</td><td id="times' + allordercount + '">' + item.DELIVERY_TIME + '</td><td>'
+                + item.MANUAL_DISCOUNT + '</td><td>' + item.COUPON_DISCOUNT + '</td><td>'
+                + item.IS_PACKAGE + '</td><td>'
+                + item.TOTAL_ITEMS + '</td><td>' + item.TOTAL_AMOUNT + '</td><td>' + item.STATUS_DESCRIPTION + '</td>'
+                + '<td><a style="color:green" target="_blank" href = "View?oID=' + item.ORDER_ID + '">View</a></td></tr>';
 
+            if (allordercount == 1) {
+                GetAllOrderPagination(orders);
+            }
+        }
         $("#ordersTable5").html(rows);
-        loadDT5();
+        //loadDT5();
+
     }
 
-    function initializeOrdersList(oStID, oDateFrom, oDateTo) {
+    function initializeOrdersList(pageIndex, oStID, oDateFrom, oDateTo, sortColumn, sortOrder, searchText) {
         $.ajax({
             type: "GET",
-            url: '/api/order/orders?oStID=' + oStID + '&oDateFrom=' + oDateFrom + '&oDateTo=' + oDateTo,
+            url: '/api/order/orders?pageIndex=' + pageIndex + '&oStID=' + oStID + '&oDateFrom=' + oDateFrom + '&oDateTo=' + oDateTo + '&sortColumn=' + sortColumn + '&sortOrder=' + sortOrder + '&searchText=' + searchText,
             contentType: 'application/json',
             success: function (result) {
-                console.log("data: " + result);
+                //console.log("data: " + result);
                 orders = jQuery.parseJSON(result);
                 if (oStID == 1)
                     populateOrdersTable();
-                else
-                    if (oStID == 2)
-                        populateAllocatedOrdersTable();
+                else if (oStID == 2) {
+                    populateAllocatedOrdersTable();
+                }
                     else
                         if (oStID == 3) {
                             populateDispatchedOrdersTable();
@@ -89,100 +227,120 @@
                                 loadAllOrders();
             },
             error: function (res) {
-                //console.log(res);
-                alert('failure: ' + res);
+                //alert('failure: ' + res);
             }
         });
     }
 
     function populateOrdersTable() {
-        
-        if ($.fn.DataTable.isDataTable('#table-11')) {
-            $('#table-11').DataTable().destroy();
-        }
 
+        //if ($.fn.DataTable.isDataTable('#table-11')) {
+        //    $('#table-11').DataTable().destroy();
+        //}
+        populateordercount = 0;
         //$("#pendingOrders").show();
         var rows = '';
-        for (i = 0; i < orders.Table.length; i++) {
-            var item = orders.Table[i];
+        for (i = 0; i < orders.length; i++) {
+            var item = orders[i];
+            populateordercount = populateordercount + 1;
             rows = rows + '<tr><td>' + item.ORDER_ID + '</td><td>' + item.CUSTOMER_ID + '</td><td>' + item.NAME + '</td><td>'
-                        + item.MOBILE + '</td><td>' + item.ADDRESS + '</td><td>'
-                        + item.DELIVERY_DESCRIPTION + '</td><td>' + item.DELIVERY_TIME + '</td><td>'
-                        + item.MANUAL_DISCOUNT + '</td><td>' + item.COUPON_DISCOUNT + '</td><td>'
-                        + item.IS_PACKAGE + '</td><td>'
-                        + item.TOTAL_ITEMS + '</td><td>' + item.TOTAL_AMOUNT + '</td>'
-                        //+ '<td><a style="color:green" href="javascript:void(0);" onclick = "completeOrder(' + item.ORDER_ID + ')">Tracking</a></td>'
-                        + '<td><a style="color:green" target="_blank" href = "View?oID=' + item.ORDER_ID + '">View</a></td>'
-                        + '<td><button type="button" class="btn btn-xs btn-warning" onclick= javascript:allocateOrderByID(' + item.ORDER_ID + ') id="check-box-' + item.ORDER_ID + '" >Allocate</button></div></td>'
-                        + '</tr>';
+                + item.MOBILE + '</td><td>' + item.ADDRESS + '</td><td>'
+                + item.DELIVERY_DESCRIPTION + '</td><td>' + item.DELIVERY_TIME + '</td><td>'
+                + item.MANUAL_DISCOUNT + '</td><td>' + item.COUPON_DISCOUNT + '</td><td>'
+                + item.IS_PACKAGE + '</td><td>'
+                + item.TOTAL_ITEMS + '</td><td>' + item.TOTAL_AMOUNT + '</td>'
+                //+ '<td><a style="color:green" href="javascript:void(0);" onclick = "completeOrder(' + item.ORDER_ID + ')">Tracking</a></td>'
+                + '<td><a style="color:green" target="_blank" href = "View?oID=' + item.ORDER_ID + '">View</a></td>'
+                + '<td><button type="button" class="btn btn-xs btn-warning" onclick= javascript:allocateOrderByID(' + item.ORDER_ID + ') id="check-box-' + item.ORDER_ID + '" >Allocate</button></div></td>'
+                + '</tr>';
+
+            if (populateordercount == 1) {
+                PopulateOrderPagination(orders);
+            }
         }
 
         $("#ordersTable").html(rows);
-        loadDT1();
+        //loadDT1();
 
     }
 
     function populateAllocatedOrdersTable() {
-        if ($.fn.DataTable.isDataTable('#table-12')) {
-            $('#table-12').DataTable().destroy();
-        }
-
+        //if ($.fn.DataTable.isDataTable('#table-12')) {
+        //    $('#table-12').DataTable().destroy();
+        //}
+        allocationordercount = 0;
         var rows = '';
-        for (i = 0; i < orders.Table.length; i++) {
-            var item = orders.Table[i];
+        for (i = 0; i < orders.length; i++) {
+            var item = orders[i];
+            allocationordercount = allocationordercount + 1;
             rows = rows + '<tr><td>' + item.ORDER_ID + '</td><td>' + item.CUSTOMER_ID + '</td><td>' + item.NAME + '</td><td>'
-                        + item.MOBILE + '</td><td>' + item.ADDRESS + '</td><td>'
-                        + item.TOTAL_ITEMS + '</td><td>' + item.TOTAL_AMOUNT + '</td>'
-//                        + '<td><input type="checkbox" onchange=         javascript:dispatchOrderByID(' + item.ORDER_ID + ') id="check-box-' + item.ORDER_ID + '"></input></div></td>'
-  //                      + '</tr>';
-            + '<td><button type="button" class="btn btn-xs btn-warning" onclick= loadDispatchModal(' + item.ORDER_ID + ') id="check-box-' + item.ORDER_ID + '" >Dispatch</button></div></td>'
-                                    + '</tr>';
+                + item.MOBILE + '</td><td>' + item.ADDRESS + '</td><td>'
+                + item.TOTAL_ITEMS + '</td><td>' + item.TOTAL_AMOUNT + '</td>'
+                + '<td>' + item.USERNAME + '</td>'
+                //                        + '<td><input type="checkbox" onchange=         javascript:dispatchOrderByID(' + item.ORDER_ID + ') id="check-box-' + item.ORDER_ID + '"></input></div></td>'
+                //                      + '</tr>';
+                + '<td><button type="button" class="btn btn-xs btn-warning" onclick= loadDispatchModal(' + item.ORDER_ID + ') id="check-box-' + item.ORDER_ID + '" >Dispatch</button></div></td>'
+                + '<td><a style="color:green" target="_blank" href = "View?oID=' + item.ORDER_ID + '">View</a></td></tr>';
+            if (allocationordercount == 1) {
+                AllocateOrderPagination(orders);
+            }
         }
 
         $("#orderTable2").html(rows);
-        loadDT2();
+        //loadDT2();
 
     }
 
     function populateDispatchedOrdersTable() {
-        if ($.fn.DataTable.isDataTable('#table-13')) {
-            $('#table-13').DataTable().destroy();
-        }
+        //if ($.fn.DataTable.isDataTable('#table-13')) {
+        //    $('#table-13').DataTable().destroy();
+        //}
+        dispatchordercount = 0;
         var rows = '';
-        for (i = 0; i < orders.Table.length; i++) {
-            var item = orders.Table[i];
+        for (i = 0; i < orders.length; i++) {
+            var item = orders[i];
+            dispatchordercount = dispatchordercount + 1;
             rows = rows + '<tr><td>' + item.ORDER_ID + '</td><td>' + item.CUSTOMER_ID + '</td><td>' + item.NAME + '</td><td>'
-                        + item.MOBILE + '</td><td>' + item.ADDRESS + '</td><td>'
-                        + item.TOTAL_ITEMS + '</td><td>' + item.TOTAL_AMOUNT + '</td>'
-                        + '</tr>';
+                + item.MOBILE + '</td><td>' + item.ADDRESS + '</td><td>'
+                + item.TOTAL_ITEMS + '</td><td>' + item.TOTAL_AMOUNT + '</td>'
+                + '</tr>';
+
+            if (dispatchordercount == 1) {
+                DispatchOrderPagination(orders);
+            }
         }
         $("#ordersTable3").html(rows);
-        loadDT3();
+        //loadDT3();
 
     }
 
     function populateShippedOrdersTable() {
 
-        if ($.fn.DataTable.isDataTable('#table-14')) {
-            $('#table-14').DataTable().destroy();
-        }
-
+        //if ($.fn.DataTable.isDataTable('#table-14')) {
+        //    $('#table-14').DataTable().destroy();
+        //}
+        shippedordercount = 0;
         //$("#shippedOrders").show();
         var rows = '';
-        for (i = 0; i < orders.Table.length; i++) {
-            var item = orders.Table[i];
+        for (i = 0; i < orders.length; i++) {
+            var item = orders[i];
+            shippedordercount = shippedordercount + 1;
             rows = rows + '<tr><td>' + item.ORDER_ID + '</td><td>' + item.CUSTOMER_ID + '</td><td>' + item.NAME + '</td><td>'
-                        + item.MOBILE + '</td><td>' + item.ADDRESS + '</td><td>'
+                + item.MOBILE + '</td><td>' + item.ADDRESS + '</td><td>'
                 + item.TOTAL_ITEMS + '</td><td>' + item.TOTAL_AMOUNT + '</td>'
-                +'<td><a style="color:green" target="_blank" href = "View?oID=' + item.ORDER_ID + '">View</a></td></tr>';
+                + '<td><a style="color:green" target="_blank" href = "View?oID=' + item.ORDER_ID + '">View</a></td></tr>';
+
+            if (shippedordercount == 1) {
+                ShippedOrderPagination(orders);
+            }
         }
 
         $("#ordersTable4").html(rows);
-        loadDT4();
+        //loadDT4();
 
     }
 
-   
+
 
     function initializeOrderStatusesList() {
         $.ajax({
@@ -200,8 +358,7 @@
     }
 
 
-    function loadDatesStartEnd()
-    {
+    function loadDatesStartEnd() {
         var today = new Date();
 
         var dd = today.getDate();
@@ -233,11 +390,11 @@
         $("#orderDateFrom").val(todayDate7);
         $("#orderDateTo").val(todayDate);
 
-        initializeOrdersList(0, null, null);
-        initializeOrdersList(1, todayDate7, todayDate);
-        initializeOrdersList(2, todayDate7, todayDate);
-        initializeOrdersList(3, todayDate7, todayDate);
-        initializeOrdersList(4, todayDate7, todayDate);
+        initializeOrdersList(1, 0, null, null, 'CREATED_DATE', 'desc', null);
+        initializeOrdersList(1, 1, todayDate7, todayDate, 'CREATED_DATE', 'desc', null);
+        initializeOrdersList(1, 2, todayDate7, todayDate, 'CREATED_DATE', 'desc', null);
+        initializeOrdersList(1, 3, todayDate7, todayDate, 'CREATED_DATE', 'desc', null);
+        initializeOrdersList(1, 4, todayDate7, todayDate, 'CREATED_DATE', 'desc', null);
 
     }
 
@@ -246,27 +403,27 @@
         var optionsNew = '';
 
         optionsNew = optionsNew + '<span class="radio-inline">' +
-                        '<label>' +
-                            '<input type="radio" name="optionsStatuses" value="' + 0 + '" checked> All</label>' +
-                    '</span>';
+            '<label>' +
+            '<input type="radio" name="optionsStatuses" value="' + 0 + '" checked> All</label>' +
+            '</span>';
         for (i = 0; i < orderStatusesList.Table.length; i++) {
             var item = orderStatusesList.Table[i];
             //options = options + '<option value="' + item.ORDER_STATUS_ID + '">' + item.DESCRIPTION + '</option>';
 
             optionsNew = optionsNew + '<span class="radio-inline">' +
-                     '<label>' +
-                         '<input type="radio" name="optionsStatuses" value="' + item.ORDER_STATUS_ID + '"> ' + item.DESCRIPTION +
-                     '</label>' +
-                 '</span>';
+                '<label>' +
+                '<input type="radio" name="optionsStatuses" value="' + item.ORDER_STATUS_ID + '"> ' + item.DESCRIPTION +
+                '</label>' +
+                '</span>';
         }
         //$("#order_sts").html(options);
 
         $("#order_sts_new").html(optionsNew);
-        
-        
-        
 
-       // initializeOrdersList(1, today);
+
+
+
+        // initializeOrdersList(1, today);
     }
 
     //function allocate(oStID, oDate){
@@ -283,8 +440,7 @@
     //    });
     //}
 
-    function loadDispatchModal(id)
-    {
+    function loadDispatchModal(id) {
         $("#order_id").val(id);
         jQuery("#modal-1").modal("show");
     }
@@ -299,7 +455,7 @@
         if (confirm("Ready to Dispatch?")) {
             var ID = $("#order_id").val();
             var element = $("#check-box-" + ID);
-            
+
             //var selectedStatusID = $("#order_sts").val();
             var selectedStatusID = $("input[name='optionsStatuses']:checked").val();
             var selectedDateFrom = $("#orderDateFrom").val();
@@ -347,6 +503,167 @@
 
     }
 
+    function loadRights() {
+        $("#maindiv").addClass("load-maindiv");
+        $("#load").css("display", "block");
+         $.ajax({
+        type: 'GET',
+        url: '@Url.Action("GetRights")', // we are calling json method
+        contentType: "application/json; charset=utf-8",
+             success: function (states) {
+            $.each(states, function (index, item) {
+                if (item.MainMenu == "Dashboard" && item.IsActive == false) {
+                    $(".page-body #maindiv").find("#main-menu").find("#dashboad").hide();
+                }
+                if (item.MainMenu == "Product" && item.IsActive == false) {
+                    $(".page-body #maindiv").find("#main-menu").find("#product").hide();
+                }
+                if (item.MainMenu == "Mini Items" && item.IsActive == false) {
+                    $(".page-body #maindiv").find("#main-menu").find("#miniitems").hide();
+                }
+                if (item.MainMenu == "Users" && item.IsActive == false) {
+                    $(".page-body #maindiv").find("#main-menu").find("#users").hide();
+                }
+                if (item.MainMenu == "Riders" && item.IsActive == false) {
+                    $(".page-body #maindiv").find("#main-menu").find("#riders").hide();
+                }
+                if (item.MainMenu == "Orders" && item.IsActive == false) {
+                    $(".page-body #maindiv").find("#main-menu").find("#orders").hide();
+                }
+                if (item.MainMenu == "Coupons" && item.IsActive == false) {
+                    $(".page-body #maindiv").find("#main-menu").find("#coupons").hide();
+                }
+                if (item.MainMenu == "Advertisement" && item.IsActive == false) {
+                    $(".page-body #maindiv").find("#main-menu").find("#advertisement").hide();
+                }
+                if (item.MainMenu == "SMS Marketing" && item.IsActive == false) {
+                    $(".page-body #maindiv").find("#main-menu").find("#smsmarketing").hide();
+                }
+                if (item.MainMenu == "Package" && item.IsActive == false) {
+                    $(".page-body #maindiv").find("#main-menu").find("#package").hide();
+                }
+                if (item.MainMenu == "Synchronization" && item.IsActive == false) {
+                    $(".page-body #maindiv").find("#main-menu").find("#synchronization").hide();
+                }
+                if (item.MainMenu == "Branches" && item.IsActive == false) {
+                    $(".page-body #maindiv").find("#main-menu").find("#branches").hide();
+                }
+                if (item.MainMenu == "Account Management" && item.IsActive == false) {
+                    $(".page-body #maindiv").find("#main-menu").find("#accountmanagement").hide();
+                }
+                if (item.MainMenu == "Banner Management" && item.IsActive == false) {
+                    $(".page-body #maindiv").find("#main-menu").find("#bannermanagement").hide();
+                }
+                if (item.MainMenu == "Offer Management" && item.IsActive == false) {
+                    $(".page-body #maindiv").find("#main-menu").find("#offermanagement").hide();
+                }
+                if (item.MainMenu == "Recommended Product" && item.IsActive == false) {
+                    $(".page-body #maindiv").find("#main-menu").find("#recommendedproduct").hide();
+                }
+                $.each(item.SubMenus, function (i, t) {
+                    if (t.SubMenu == "List All Products" && t.IsActive == false) {
+                        $(".page-body #maindiv").find("#main-menu").find("#listallproducts").hide();
+                    }
+                    if (t.SubMenu == "Add New Product" && t.IsActive == false) {
+                        $(".page-body #maindiv").find("#main-menu").find("#addnewproduct").hide();
+                    }
+                    if (t.SubMenu == "Upload New Product" && t.IsActive == false) {
+                        $(".page-body #maindiv").find("#main-menu").find("#uploadnewproduct").hide();
+                    }
+                    if (t.SubMenu == "List All Mini Items" && t.IsActive == false) {
+                        $(".page-body #maindiv").find("#main-menu").find("#listallminiitems").hide();
+                    }
+                    if (t.SubMenu == "Add New Mini Item" && t.IsActive == false) {
+                        $(".page-body #maindiv").find("#main-menu").find("#addnewminiitems").hide();
+                    }
+                    if (t.SubMenu == "Add User" && t.IsActive == false) {
+                        $(".page-body #maindiv").find("#main-menu").find("#adduser").hide();
+                    }
+                    if (t.SubMenu == "List Users" && t.IsActive == false) {
+                        $(".page-body #maindiv").find("#main-menu").find("#listusers").hide();
+                    }
+                    if (t.SubMenu == "Add Rider" && t.IsActive == false) {
+                        $(".page-body #maindiv").find("#main-menu").find("#addrider").hide();
+                    }
+                    if (t.SubMenu == "List Riders" && t.IsActive == false) {
+                        $(".page-body #maindiv").find("#main-menu").find("#listriders").hide();
+                    }
+                    if (t.SubMenu == "Customers" && t.IsActive == false) {
+                        $(".page-body #maindiv").find("#main-menu").find("#customers").hide();
+                    }
+                    if (t.SubMenu == "List All Orders" && t.IsActive == false) {
+                        $(".page-body #maindiv").find("#main-menu").find("#listallorders").hide();
+                    }
+                    if (t.SubMenu == "Add New Order" && t.IsActive == false) {
+                        $(".page-body #maindiv").find("#main-menu").find("#addneworder").hide();
+                    }
+                    if (t.SubMenu == "List All Coupons" && t.IsActive == false) {
+                        $(".page-body #maindiv").find("#main-menu").find("#listallcoupons").hide();
+                    }
+                    if (t.SubMenu == "Add New Coupon" && t.IsActive == false) {
+                        $(".page-body #maindiv").find("#main-menu").find("#addnewcoupon").hide();
+                    }
+                    if (t.SubMenu == "List All Ads" && t.IsActive == false) {
+                        $(".page-body #maindiv").find("#main-menu").find("#listallads").hide();
+                    }
+                    if (t.SubMenu == "Add New Ad" && t.IsActive == false) {
+                        $(".page-body #maindiv").find("#main-menu").find("#addnewad").hide();
+                    }
+                    if (t.SubMenu == "Bulk SMS" && t.IsActive == false) {
+                        $(".page-body #maindiv").find("#main-menu").find("#bulksms").hide();
+                    }
+                    if (t.SubMenu == "List All Packages" && t.IsActive == false) {
+                        $(".page-body #maindiv").find("#main-menu").find("#listallpackages").hide();
+                    }
+                    if (t.SubMenu == "Create Package" && t.IsActive == false) {
+                        $(".page-body #maindiv").find("#main-menu").find("#createpackage").hide();
+                    }
+                    if (t.SubMenu == "Full Sync" && t.IsActive == false) {
+                        $(".page-body #maindiv").find("#main-menu").find("#fullsync").hide();
+                    }
+                    if (t.SubMenu == "Stock Sync" && t.IsActive == false) {
+                        $(".page-body #maindiv").find("#main-menu").find("#stocksync").hide();
+                    }
+                    if (t.SubMenu == "Product Sync" && t.IsActive == false) {
+                        $(".page-body #maindiv").find("#main-menu").find("#productsync").hide();
+                    }
+                    if (t.SubMenu == "Add Branch" && t.IsActive == false) {
+                        $(".page-body #maindiv").find("#main-menu").find("#addbranch").hide();
+                    }
+                    if (t.SubMenu == "Branches List" && t.IsActive == false) {
+                        $(".page-body #maindiv").find("#main-menu").find("#brancheslist").hide();
+                    }
+                    if (t.SubMenu == "Add Banner" && t.IsActive == false) {
+                        $(".page-body #maindiv").find("#main-menu").find("#addbanner").hide();
+                    }
+                    if (t.SubMenu == "Banner List" && t.IsActive == false) {
+                        $(".page-body #maindiv").find("#main-menu").find("#bannerlist").hide();
+                    }
+                    if (t.SubMenu == "Add Offer" && t.IsActive == false) {
+                        $(".page-body #maindiv").find("#main-menu").find("#addoffer").hide();
+                    }
+                    if (t.SubMenu == "Offer List" && t.IsActive == false) {
+                        $(".page-body #maindiv").find("#main-menu").find("#offerlist").hide();
+                    }
+                    if (t.SubMenu == "Recommended Product List" && t.IsActive == false) {
+                        $(".page-body #maindiv").find("#main-menu").find("#addrecommendedproduct").hide();
+                    }
+                })
+            });
+            $("#maindiv").removeClass("load-maindiv");
+            $("#load").css("display", "none");
+
+            if ($(".page-body #maindiv").find($("#main-menu")).find("li").find($("[style]")).length == 35) {
+                $(".main-content").html("Hello <b>world</b>!");
+                //$(".main-content").add("../UserRight.html");
+            }
+        },
+        error: function (ex) {
+            alert('Failed to retrieve states.' + ex);
+        }
+    });
+    }
+
 </script>
 
 
@@ -385,7 +702,7 @@
             <div class="form-group">
                 <label for="order status" class="control-label">Order Date From</label>
 
-                <input type="date" class="form-control" style="line-height:15px"  id="orderDateFrom" />
+                <input type="date" class="form-control" style="line-height:15px" id="orderDateFrom" />
             </div>
         </div>
         <div class="col-md-6">
@@ -396,23 +713,24 @@
             </div>
         </div>
     </div>
-
-
 </div>
 
 
 <div class="row">
     <div class="col-md-6">
     </div>
-
     <div class="col-md-6">
         <button class="btn btn-info pull-right btn-lg" id="btnLoad">Load</button>
+        <button id="btnGenerateExcel" class="btn btn-info pull-right btn-lg" style="margin-right: 5px;">Excel Export</button>
     </div>
 </div>
 
 <div class="col-md-12">
-
-    <ul class="nav nav-tabs bordered">
+    <div style="float:right;">
+        <label>Search :</label>
+        <input id="searchOrder" type="text" />
+    </div>
+    <ul class="nav nav-tabs bordered" id="mainTab">
         <!-- available classes "bordered", "right-aligned" -->
         <li class="active">
             <a href="#tab-all" data-toggle="tab">
@@ -444,7 +762,7 @@
                 <span class="hidden-xs">Shipped Orders</span>
             </a>
         </li>
-        
+
     </ul>
 
     <div class="tab-content">
@@ -473,28 +791,29 @@
                         </tr>
                     </thead>
                     <tbody id="ordersTable5"></tbody>
-                    <tfoot>
-                        <tr>
-                            <th style="width: 8%; word-wrap: break-word">Order ID</th>
-                            <th style="width: 5%; word-wrap: break-word">Customer ID</th>
-                            <th style="width: 13%; word-wrap: break-word">Name</th>
-                            <th style="width: 10%; word-wrap: break-word">Mobile</th>
-                            <th style="width: 15%; word-wrap: break-word">Address</th>
-                            <th style="width: 12%; word-wrap: break-word">Message</th>
-                            <th style="width: 10%; word-wrap: break-word">Time</th>
-                            <th style="width: 5%; word-wrap: break-word">Manual Disc</th>
-                            <th style="width: 5%; word-wrap: break-word">Coupon Disc</th>
-                            <th style="width: 3%; word-wrap: break-word">Package</th>
-                            <th style="width: 4%; word-wrap: break-word">Items</th>
-                            <th style="width: 5%; word-wrap: break-word">Amount</th>
-                            <th style="width: 5%; word-wrap: break-word">Status</th>
-                            <th style="width: 10%; word-wrap: break-word">Action</th>
+                    @*<tfoot>
+                            <tr>
+                                <th style="width: 8%; word-wrap: break-word">Order ID</th>
+                                <th style="width: 5%; word-wrap: break-word">Customer ID</th>
+                                <th style="width: 13%; word-wrap: break-word">Name</th>
+                                <th style="width: 10%; word-wrap: break-word">Mobile</th>
+                                <th style="width: 15%; word-wrap: break-word">Address</th>
+                                <th style="width: 12%; word-wrap: break-word">Message</th>
+                                <th style="width: 10%; word-wrap: break-word">Time</th>
+                                <th style="width: 5%; word-wrap: break-word">Manual Disc</th>
+                                <th style="width: 5%; word-wrap: break-word">Coupon Disc</th>
+                                <th style="width: 3%; word-wrap: break-word">Package</th>
+                                <th style="width: 4%; word-wrap: break-word">Items</th>
+                                <th style="width: 5%; word-wrap: break-word">Amount</th>
+                                <th style="width: 5%; word-wrap: break-word">Status</th>
+                                <th style="width: 10%; word-wrap: break-word">Action</th>
 
 
-                        </tr>
-                    </tfoot>
+                            </tr>
+                        </tfoot>*@
                 </table>
 
+                <p id="allorderpagination" style="text-align: center"></p>
             </div>
         </div>
 
@@ -502,48 +821,48 @@
 
             <div id="pendingOrders">
 
-    <table class="table table-bordered datatable" id="table-11">
-        <thead>
-            <tr>
-                <th>Order ID</th>
-                <th>Customer ID</th>
-                <th>Name</th>
-                <th>Mobile</th>
-                <th>Address</th>
-                
-                <th>Message</th>
-                <th>Time</th>
-                <th>Manual Disc</th>
-                <th>Coupon Disc</th>
-                <th>Package</th>
-                <th>Items</th>
-                <th>Amount</th>
-                <th>Action</th>
-                <th>Allocate</th>
-            </tr>
-        </thead>
-        <tbody id="ordersTable"></tbody>
-        <tfoot>
-            <tr>
-                <th>Order ID</th>
-                <th>Customer ID</th>
-                <th>Name</th>
-                <th>Mobile</th>
-                <th>Address</th>
-                
-                <th>Message</th>
-                <th>Time</th>
-                <th>Manual Disc</th>
-                <th>Coupon Disc</th>
-                <th>Package</th>
-                <th>Items</th>
-                <th>Amount</th>
-                <th>Action</th>
-                <th>Allocate</th>
-            </tr>
-        </tfoot>
-    </table>
+                <table class="table table-bordered datatable" id="table-11">
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Customer ID</th>
+                            <th>Name</th>
+                            <th>Mobile</th>
+                            <th>Address</th>
 
+                            <th>Message</th>
+                            <th>Time</th>
+                            <th>Manual Disc</th>
+                            <th>Coupon Disc</th>
+                            <th>Package</th>
+                            <th>Items</th>
+                            <th>Amount</th>
+                            <th>Action</th>
+                            <th>Allocate</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ordersTable"></tbody>
+                    @*<tfoot>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Customer ID</th>
+                                <th>Name</th>
+                                <th>Mobile</th>
+                                <th>Address</th>
+
+                                <th>Message</th>
+                                <th>Time</th>
+                                <th>Manual Disc</th>
+                                <th>Coupon Disc</th>
+                                <th>Package</th>
+                                <th>Items</th>
+                                <th>Amount</th>
+                                <th>Action</th>
+                                <th>Allocate</th>
+                            </tr>
+                        </tfoot>*@
+                </table>
+                <p id="populateorderpagination" style="text-align: center"></p>
             </div>
 
         </div>
@@ -561,25 +880,27 @@
                             <th>Address</th>
                             <th>Items</th>
                             <th>Amount</th>
+                            <th>Rider</th>
                             <th>Dispatch</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody id="orderTable2"></tbody>
-                    <tfoot>
-                        <tr>
-                            <th>Order ID</th>
-                            <th>Customer ID</th>
-                            <th>Name</th>
-                            <th>Mobile</th>
-                            <th>Address</th>
-                            <th>Items</th>
-                            <th>Amount</th>
-                            <th>Dispatch</th>
-                        </tr>
-                    </tfoot>
+                    @*<tfoot>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Customer ID</th>
+                                <th>Name</th>
+                                <th>Mobile</th>
+                                <th>Address</th>
+                                <th>Items</th>
+                                <th>Amount</th>
+                                <th>Dispatch</th>
+                            </tr>
+                        </tfoot>*@
                 </table>
 
-
+                <p id="allocateorderpagination" style="text-align: center"></p>
             </div>
         </div>
 
@@ -598,18 +919,19 @@
                         </tr>
                     </thead>
                     <tbody id="ordersTable3"></tbody>
-                    <tfoot>
-                        <tr>
-                            <th>Order ID</th>
-                            <th>Customer ID</th>
-                            <th>Name</th>
-                            <th>Mobile</th>
-                            <th>Address</th>
-                            <th>Items</th>
-                            <th>Amount</th>
-                        </tr>
-                    </tfoot>
+                    @*<tfoot>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Customer ID</th>
+                                <th>Name</th>
+                                <th>Mobile</th>
+                                <th>Address</th>
+                                <th>Items</th>
+                                <th>Amount</th>
+                            </tr>
+                        </tfoot>*@
                 </table>
+                <p id="dispatchorderpagination" style="text-align: center"></p>
             </div>
         </div>
 
@@ -630,20 +952,21 @@
                         </tr>
                     </thead>
                     <tbody id="ordersTable4"></tbody>
-                    <tfoot>
-                        <tr>
-                            <th>Order ID</th>
-                            <th>Customer ID</th>
-                            <th>Name</th>
-                            <th>Mobile</th>
-                            <th>Address</th>
-                            <th>Items</th>
-                            <th>Amount</th>
-                            <th>Action</th>
+                    @*<tfoot>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Customer ID</th>
+                                <th>Name</th>
+                                <th>Mobile</th>
+                                <th>Address</th>
+                                <th>Items</th>
+                                <th>Amount</th>
+                                <th>Action</th>
 
-                        </tr>
-                    </tfoot>
+                            </tr>
+                        </tfoot>*@
                 </table>
+                <p id="shippedorderpagination" style="text-align: center"></p>
             </div>
         </div>
     </div>
@@ -672,7 +995,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <input type="hidden" value="" id="order_id"/>
+                                <input type="hidden" value="" id="order_id" />
                                 @Html.Label("Rider", new { @class = "control-label col-md-2" })
 
                                 <select class="form-control" name="riders" id="rider">
@@ -687,7 +1010,7 @@
                                 </select>
                             </div>
                         </div>
-                        
+
                     </div>
 
                 </div>
@@ -771,7 +1094,7 @@
     }
 
     function loadDT3() {
-        
+
         tableContainer = $("#table-13");
 
         tableContainer.dataTable({
@@ -817,12 +1140,12 @@
                     responsiveHelper = new ResponsiveDatatablesHelper(tableContainer, breakpointDefinition);
                 }
             },
-        //    fnRowCallback: function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
-        //        responsiveHelper.createExpandIcon(nRow);
-        //    },
-        //    fnDrawCallback: function (oSettings) {
-        //        responsiveHelper.respond();
-        //    }
+            //    fnRowCallback: function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+            //        responsiveHelper.createExpandIcon(nRow);
+            //    },
+            //    fnDrawCallback: function (oSettings) {
+            //        responsiveHelper.respond();
+            //    }
         });
     }
 
@@ -834,7 +1157,7 @@
             "sPaginationType": "bootstrap",
             "aLengthMenu": [[30, 100, 1000, -1], [30, 100, 1000, "All"]],
             "bStateSave": true,
-            
+
             "oTableTools": {
             },
 
@@ -854,6 +1177,32 @@
             }
         });
     }
+
+    //$("#searchOrder").keyup(function () {
+    //    setTimeout(function () {
+    //        alert();
+    //    }, 3000);
+    //    return;
+    //});
+
+    function delay(callback, ms) {
+        var timer = 0;
+        return function () {
+            var context = this, args = arguments;
+            clearTimeout(timer);
+            timer = setTimeout(function () {
+                callback.apply(context, args);
+            }, ms || 0);
+        };
+    }
+
+
+    // Example usage:
+
+    $('#searchOrder').keyup(delay(function (e) {
+        initializeOrdersList(1, 0, null, null, 'CREATED_DATE', 'desc', $('#searchOrder').val());
+    }, 300));
+
 </script>
 
 <br />

@@ -16,7 +16,7 @@ namespace GROCERY.Controllers
         OrderManger daOrder = new OrderManger();
         StoreManager daStore = new StoreManager();
         CommonManager daCommon = new CommonManager();
-        
+        RiderManager riderManager = new RiderManager();
 
         public DataSet getPackages()
         {
@@ -70,6 +70,16 @@ namespace GROCERY.Controllers
             return daProduct.getAllSubCategories();
         }
 
+        public DataSet GetProductsBySubCat(int scID)
+        {
+            return daProduct.GetProductsBySubCat(scID);
+        }
+        
+        public DataSet GetProducts()
+        {
+            return daProduct.GetProducts();
+        }
+
         public DataSet getAllVendors()
         {
             return daProduct.getAllVendors();
@@ -102,6 +112,16 @@ namespace GROCERY.Controllers
             return daUser.getUsers();
         }
 
+        public DataSet getAllRiders()
+        {
+            return riderManager.getRiders();
+        }
+        
+        public DataSet getRiderOrderJobs(int riderId)
+        {
+            return riderManager.getRiderOrderJobs(riderId);
+        }
+
         public DataSet getUserscContacts()
         {
             return daUser.getUserscContacts();
@@ -125,6 +145,12 @@ namespace GROCERY.Controllers
         {
             return daOrder.getOrders(oStID, oDateFrom, oDateTo);
         }
+
+        public DataSet getOrdersForExcel(int oStID, string oDateFrom, string oDateTo)
+        {
+            return daOrder.getOrdersForExcel(oStID, oDateFrom, oDateTo);
+        }
+
         public DataSet getCustomerOrders(int uId)
         {
             return daOrder.getCustomerOrders(uId);
@@ -178,6 +204,12 @@ namespace GROCERY.Controllers
         public DataSet getCouponInfo(string code)
         {
             return daStore.getCouponInfo(code);
+        }
+
+        public DataSet managerFCMToken(string branchId)
+        {
+            return daOrder.managerFCMToken(branchId);
+
         }
     }
 }

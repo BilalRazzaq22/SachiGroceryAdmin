@@ -12,23 +12,44 @@ namespace GROCERY.Controllers
     {
         [Route("api/SyncDB/FullSyncData")]
         [HttpGet]
-        public void FullSyncData()
+        public string FullSyncData()
         {
-            DataSyncService.Instance.StartFullSyncing();
+            try
+            {
+                return DataSyncService.Instance.StartFullSyncing();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         [Route("api/SyncDB/StockSyncData")]
         [HttpGet]
-        public void StockSyncData()
+        public string StockSyncData()
         {
-            DataSyncService.Instance.StockSync();
+            try
+            {
+                return DataSyncService.Instance.StockSync();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         [Route("api/SyncDB/ProductSyncData")]
         [HttpGet]
-        public void ProductSyncData()
+        public string ProductSyncData()
         {
-            DataSyncService.Instance.ProductSync();
+            try
+            {
+                return DataSyncService.Instance.ProductSync();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }

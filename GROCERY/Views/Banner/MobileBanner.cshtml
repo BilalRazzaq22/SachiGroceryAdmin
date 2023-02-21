@@ -1,0 +1,81 @@
+﻿
+@{
+    ViewBag.Title = "MobileBanner";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>MobileBanner</h2>
+
+<form role="form" action="UploadMobileBannerThumbnail" method="post" id="form-image-thumbnail-product" enctype="multipart/form-data">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-primary" data-collapsed="0">
+
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        Product Thumbnail
+                        @*                        @Model.SEC_SUB_CATEGORY_A*@
+                    </div>
+
+                    <div class="panel-options">
+                        <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                    </div>
+                </div>
+
+
+                <div class="panel-body">
+
+
+                    <div class="row">
+
+                        <div class="col-md-12">
+                            <div class="col-md-4">
+                                @*<div class="form-group">
+                                    <label for="product_name" class="control-label">Product ID</label>
+                                    @Html.TextBoxFor(model => model.PRODUCT_ID, new { @class = "form-control", @readonly = "readonly" })
+                                </div>*@
+                                <div>
+                                    <div class="col-md-1"></div>
+
+                                    <div class="col-md-11">
+                                        <div class="fileinput fileinput-new" data-provides="fileinput">
+                                            <div class="fileinput-new thumbnail" style="width: auto; height: auto;" data-trigger="fileinput">
+
+                                            </div>
+                                            <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px"></div>
+                                            <div>
+                                                <span class="btn btn-white btn-file">
+                                                    <span class="fileinput-new">Select File</span>
+                                                    <span class="fileinput-exists">Change</span>
+                                                    <input type="file" id="thumbnail" name="thumbnail" required />
+                                                </span>
+                                                <a href="#" class="btn btn-orange fileinput-exists" data-dismiss="fileinput">Remove</a>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+
+                            </div>
+
+                            <div class="col-md-6">
+                                <img src="@ViewBag.Thumbnail" id="pImageThumnailID" width="200" />
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <div class="modal-footer">
+                        <button type="reset" class="btn btn-default" data-dismiss="modal">Reset</button>
+                        <button type="submit" class="btn btn-info">Upload</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</form>
+

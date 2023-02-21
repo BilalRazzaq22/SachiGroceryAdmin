@@ -1,0 +1,104 @@
+﻿@model List<GROCERY.Models.MainMenuModel>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+@*@section head{
+        @Styles.Render("~/Content/css/tree.css")
+    }*@
+
+<div class="panel-body">
+    <div class="row">
+        <div class="col-md-4" id="user-role-id">
+            <div class="form-group">
+                <label class="control-label">User Role</label>
+                <select class="form-control" name="USER_TYPE_ID" id="USER_TYPE_ID">
+                    <option value="-1">Select User Role</option>
+                </select>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-primary">
+
+    <div id="partialDiv">
+
+    </div>
+</div>
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        var UserTypeList = {};
+        initializeUserTypeList();
+
+        function initializeUserTypeList() {
+            $.ajax({
+                type: "GET",
+                url: '/api/admin/usertypes',
+                contentType: 'application/json',
+                success: function (result) {
+                    UserTypeList = jQuery.parseJSON(result);
+                    populateUserTypeDropDown();
+                },
+                error: function (res) {
+                    alert('failure: ' + res);
+                }
+            });
+        }
+
+        function populateUserTypeDropDown() {
+            var options = '<option value="-1">---Select an option---</option>';
+            for (i = 0; i < UserTypeList.Table.length; i++) {
+                var item = UserTypeList.Table[i];
+                options = options + '<option value="' + item.USER_TYPE_ID + '">' + item.DESCRIPTION + '</option>';
+            }
+            $("#USER_TYPE_ID").html(options);
+        }
+
+        $("#add").on('click', function () {
+            $("#rolename").show();
+            $("#btnrole").show();
+        });
+
+          //Dropdownlist Selectedchange event
+          $("#user-role-id").change(function () {
+              $("#maindiv").addClass("load-maindiv");
+              $("#load").css("display", "block");
+              //$("#user-id").empty();
+              $.ajax({
+                  type: 'GET',
+                  async: false,
+                  url: '@Url.Action("GetUser")', // we are calling json method
+                  //contentType: "application/json; charset=utf-8",
+                  dataType: 'html',
+                  data: { userTypeId: $("#user-role-id").val() },
+                  success: function (states) {
+                      console.log(states);
+
+                      $("#partialDiv").html(states);
+                      // states contains the JSON formatted list
+                      // of states passed from the controller
+
+                      //$("#user-id").append('<option value="' + "0" + '">' + "Select Username" + '</option>');
+                      //$.each(states, function (i, state) {
+                      //    $("#user-id").append('<option value="' + state.Value + '">' + state.Text + '</option>');
+                          // here we are adding option for States
+                      //});
+                      $("#maindiv").removeClass("load-maindiv");
+                      $("#load").css("display", "none");
+                  },
+                  error: function (ex) {
+                      console.log(ex);
+                      $("#maindiv").removeClass("load-maindiv");
+                      $("#load").css("display", "none");
+                  }
+              });
+              //return false;
+          });
+      });
+</script>

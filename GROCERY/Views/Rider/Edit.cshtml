@@ -1,0 +1,257 @@
+﻿@model GROCERY.Models.USER
+
+@{
+    ViewBag.Title = "Update Rider";
+}
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+<script>
+
+    var userTypesList = {};
+
+    $(document).ready(function () {
+
+        jQuery(window).load(function () {
+            //alert('page is loaded');
+
+            setTimeout(function () {
+                //alert('page is loaded and 1 minute has passed');
+                //var userType_ID = $("#USER_TYPE_ID").val();
+                $("#userType_ID").val($("#USER_TYPE").val());
+                $("#USER_TYPE").hide();
+
+                $("#userBranches").val($("#BRANCH_ID").val());
+                $("#BRANCH_ID").hide();
+
+                var uTypeID = $("#userType_ID").val();
+                if (uTypeID != 5)
+                    $("#vDetails").hide();
+                else
+                    $("#vDetails").show();
+            }, 600);
+
+        });
+
+        //$("#userType_ID").change(function () {
+        //    var uTypeID = $("#userType_ID").val();
+        //    if (uTypeID != 5)
+        //        $("#vDetails").hide();
+        //    else
+        //        $("#vDetails").show();
+
+        //});
+
+        initializeUserTypesList();
+
+        initializeBranchesList();
+    });
+
+    function formatAMPM(date) {
+        var hours = date.getHours();
+        var minutes = date.getMinutes();
+        var ampm = hours >= 12 ? 'pm' : 'am';
+        hours = hours % 12;
+        hours = hours ? hours : 12; // the hour '0' should be '12'
+        minutes = minutes < 10 ? '0' + minutes : minutes;
+        var strTime = hours + ':' + minutes + ' ' + ampm;
+        console.log(strTime);
+        return strTime;
+    }
+
+    function initializeUserTypesList() {
+        $.ajax({
+            type: "GET",
+            url: '/api/admin/usertypes',
+            contentType: 'application/json',
+            success: function (result) {
+                userTypesList = jQuery.parseJSON(result);
+                populateUserTypesDropDown();
+            },
+            error: function (res) {
+                alert('failure: ' + res);
+            }
+        });
+    }
+
+    function populateUserTypesDropDown() {
+        var options = "";
+        for (i = 0; i < userTypesList.Table.length; i++) {
+            var item = userTypesList.Table[i];
+            if (item.USER_TYPE_ID == 5) {
+                options = options + '<option selected="selected" value="' + item.USER_TYPE_ID + '">' + item.DESCRIPTION + '</option>';
+                $("#vDetails").show();
+            } else {
+                options = options + '<option value="' + item.USER_TYPE_ID + '">' + item.DESCRIPTION + '</option>';
+            }
+        }
+        $("#userType_ID").html(options);
+    }
+
+    function populateBranchesDropDown() {
+        var options = "";
+        for (i = 0; i < branches.Table.length; i++) {
+            var item = branches.Table[i];
+            options = options + '<option value="' + item.BRANCH_ID + '">' + item.BRANCH_NAME + '</option>';
+        }
+        $("#userBranches").html(options);
+    }
+
+
+    function initializeBranchesList() {
+        $.ajax({
+            type: "GET",
+            url: '/api/admin/branches',
+            contentType: 'application/json',
+            success: function (result) {
+                branches = jQuery.parseJSON(result);
+                populateBranchesDropDown();
+            },
+            error: function (res) {
+                alert('failure: ' + res);
+            }
+        });
+    }
+
+    
+
+</script>
+
+<ol class="breadcrumb">
+    <li class="breadcrumb-item">
+        <a href="/Home/Index">Grocery Store</a>
+    </li>
+    <li>Rider Management</li>
+    <li class="breadcrumb-item active">Update Rider</li>
+</ol>
+
+<h2>Rider</h2>
+
+@using (Html.BeginForm("Edit", "Rider", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="row">
+        <div class="col-md-12">
+            <hr />
+
+            @Html.ValidationSummary(true)
+            <div class="panel panel-primary" data-collapsed="0">
+
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        Edit Rider
+                    </div>
+
+                    <div class="panel-options">
+                        <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                    </div>
+                </div>
+
+
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="user_name" class="control-label">Rider ID</label>
+                                @Html.TextBoxFor(model => model.USER_ID, new { @class = "form-control", @placeholder = "Rider ID", @required = "Required", @readonly = "readonly" })
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="user_name" class="control-label">Name</label>
+                                @Html.TextBoxFor(model => model.USERNAME, new { @class = "form-control", @placeholder = "Rider Name", @required = "Required" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="user_status" class="control-label">Active Rider</label>
+                                @{
+                                    List<SelectListItem> listActive = new List<SelectListItem>();
+                                    listActive.Add(new SelectListItem
+                                    {
+                                        Text = "Yes",
+                                        Value = "true",
+                                        Selected = true
+                                    });
+                                    listActive.Add(new SelectListItem
+                                    {
+                                        Text = "No",
+                                        Value = "false"
+                                    });
+                                }
+                                @Html.DropDownListFor(model => model.IS_ACTIVE, listActive, null, new { @class = "form-control" })
+                            </div>
+                        </div>
+                    </div>
+
+                    @*<div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="user_status" class="control-label">User Type</label>
+                                @{
+                                    List<SelectListItem> listUserTypes = new List<SelectListItem>();
+                                }
+                                @Html.DropDownListFor(model => model.USER_TYPE, listUserTypes, null, new { @class = "form-control", @id = "userType_ID", @disabled = true })
+                            </div>
+                        </div>
+
+                    </div>*@
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="user_status" class="control-label">Rider Branch</label>
+                                @{
+                                    List<SelectListItem> branches = new List<SelectListItem>();
+                                }
+                                @Html.DropDownListFor(model => model.BRANCH_ID, branches, null, new { @class = "form-control", @id = "userBranches" })
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="user_password" class="control-label">Address</label>
+                                @Html.TextBoxFor(model => model.ADDRESS, new { @class = "form-control", @placeholder = "Address", @required = "Required" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="user_password" class="control-label">Vehicle Number</label>
+                                @Html.TextBoxFor(model => model.VEHICLE_NUMBER, new { @class = "form-control", @placeholder = "Vehicle Number" })
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="user_password" class="control-label">Vehicle Description</label>
+                                @Html.TextBoxFor(model => model.VEHICLE_DESCRIPTION, new { @class = "form-control", @placeholder = "Vehicle Description" })
+                            </div>
+                        </div>
+                    </div>
+
+                    @Html.TextBoxFor(model => model.USER_TYPE, new { @type = "text" })
+                    @Html.TextBoxFor(model => model.BRANCH_ID, new { @type = "text" })
+                    <div class="modal-footer">
+                        <button type="reset" class="btn btn-default" data-dismiss="modal">Reset</button>
+                        <button type="submit" class="btn btn-info">Update</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+}

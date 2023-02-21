@@ -78,5 +78,14 @@ namespace GROCERY.Controllers
             string json = JsonConvert.SerializeObject(controller.getCouponInfo(code), Formatting.Indented);
             return Request.CreateResponse(HttpStatusCode.OK, json);
         }
+
+        [Route("api/admin/riders")]
+        [HttpGet]
+        public HttpResponseMessage GetAllRiders()
+        {
+            DataSet obj = controller.getAllRiders();
+            string json = JsonConvert.SerializeObject(obj, Formatting.Indented);
+            return Request.CreateResponse(HttpStatusCode.OK, json);
+        }
     }
 }

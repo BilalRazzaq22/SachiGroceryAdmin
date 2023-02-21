@@ -147,6 +147,9 @@ namespace GROCERY.Controllers
                     return Redirect("/Home/Login");
                 }
                 Session["UserLoggedIn"] = u;
+                LoginUser.Instance.GetRoleName(u);
+                Session["Username"] = u.USERNAME;
+                Session["Rolename"] = LoginUser.Instance.RoleName;
                 return Redirect("/Order/List");
             }
             catch (Exception e)

@@ -19,6 +19,7 @@ namespace GROCERY.DAL.Managers
             string query = "";
             if (oStID == 0)
             {
+
                 query = @"SELECT o.ORDER_ID, o.CUSTOMER_ID, o.NAME, o.MOBILE, o.ADDRESS, o.DELIVERY_DESCRIPTION,o.DELIVERY_TIME,o.MANUAL_DISCOUNT,o.COUPON_DISCOUNT,o.ADDED_BY,
                         case when STATUS = 1 then 'Pending' when STATUS = 2 then 'In Process' when STATUS = 3 then 'Dispatched' when STATUS = 4 then 'Delivered' when STATUS = 5 then 'Bounced' when STATUS = 6 then 'Rejected By Manager' when STATUS = 7 then 'Rejected by Rider'  ELSE 'none' end as STATUS_DESCRIPTION,
                         case when o.IS_PACKAGE = 1 then 'Yes' else 'No' end as IS_PACKAGE,       SUM(op.QUANTITY) TOTAL_ITEMS,
@@ -64,6 +65,59 @@ namespace GROCERY.DAL.Managers
                            "o.ORDER_ID, o.CUSTOMER_ID, o.NAME, o.MOBILE,o.MANUAL_DISCOUNT, o.ADDRESS,o.Status,o.COUPON_DISCOUNT,o.DELIVERY_DESCRIPTION,o.DELIVERY_TIME,o.MANUAL_DISCOUNT,o.COUPON_DISCOUNT,o.IS_PACKAGE  order by o.ORDER_ID desc";
             return ExecuteDataSet(query);
         }
+
+        public DataSet getOrdersForExcel(int oStID, string oDateFrom, string oDateTo)
+        {
+            string query = "";
+            if (oStID == 0)
+            {
+
+                query = @"SELECT o.ORDER_ID, o.CUSTOMER_ID, o.NAME, o.MOBILE, o.ADDRESS, o.DELIVERY_DESCRIPTION,CONVERT(varchar,o.DELIVERY_TIME,22) as DELIVERY_TIME,o.MANUAL_DISCOUNT,o.COUPON_DISCOUNT,o.ADDED_BY,
+                        case when STATUS = 1 then 'Pending' when STATUS = 2 then 'In Process' when STATUS = 3 then 'Dispatched' when STATUS = 4 then 'Delivered' when STATUS = 5 then 'Bounced' when STATUS = 6 then 'Rejected By Manager' when STATUS = 7 then 'Rejected by Rider'  ELSE 'none' end as STATUS_DESCRIPTION,
+                        case when o.IS_PACKAGE = 1 then 'Yes' else 'No' end as IS_PACKAGE,       SUM(op.QUANTITY) TOTAL_ITEMS,
+                        CEILING(SUM((b.UNIT_PRICE - b.DISC)  * op.QUANTITY)) - isnull(o.MANUAL_DISCOUNT,0) - isnull(o.COUPON_DISCOUNT,0) as TOTAL_AMOUNT, '' as USERNAME--,o.CREATED_ON      
+                        FROM ORDER_PRODUCTS OP --,PRODUCTS P,BARCODES b,ORDERS O
+                        INNER JOIN PRODUCTS P on op.PRODUCT_ID = P.OLD_PRODUCT_ID
+                        inner join BARCODES b on OP.PRODUCT_ID = B.ITEM_CODE
+                        INNER JOIN ORDERS O ON OP.ORDER_ID = O.ORDER_ID
+                        where (o.created_on > DATEADD(day,-60,getdate())) and ( B.bDefault =1 and  B.IsActive =1 and b.LOCNO = o.BRANCH_ID and  OP.IS_ACTIVE =1 )
+                        GROUP BY o.ORDER_ID, o.CUSTOMER_ID, o.NAME, o.MOBILE,o.MANUAL_DISCOUNT, o.ADDRESS,o.Status,o.DELIVERY_DESCRIPTION,o.DELIVERY_TIME,o.MANUAL_DISCOUNT,o.COUPON_DISCOUNT,o.IS_PACKAGE,o.ADDED_BY";
+                //query = "SELECT " +
+                //       " case when STATUS = 1 then 'Pending' when STATUS = 2 then 'In Process' when STATUS = 3 then 'Dispatched' when STATUS = 4 then 'Delivered' when STATUS = 5 then 'Bounced' when STATUS = 6 then 'Rejected By Manager' when STATUS = 7 then 'Rejected by Rider'  ELSE 'none' end as STATUS_DESCRIPTION, " +
+                //       "o.ORDER_ID, o.CUSTOMER_ID, o.NAME, o.MOBILE, o.ADDRESS, " +
+                //       "o.DELIVERY_DESCRIPTION,o.DELIVERY_TIME,o.MANUAL_DISCOUNT,o.COUPON_DISCOUNT,case when o.IS_PACKAGE = 1 then 'Yes' else 'No' end as IS_PACKAGE," +
+                //        "       SUM(op.QUANTITY) TOTAL_ITEMS, " +
+                //         "      CEILING(SUM((b.UNIT_PRICE - b.DISC)  * op.QUANTITY)) - isnull(o.MANUAL_DISCOUNT,0) - isnull(o.COUPON_DISCOUNT,0) as TOTAL_AMOUNT " +
+                //          "     FROM " +
+                //           "    ORDERS o, ORDER_PRODUCTS op, PRODUCTS p, BARCODES b " +
+                //            "   WHERE  " +
+                //             "  o.ORDER_ID = op.ORDER_ID  " +
+                //              " AND op.BAR_CODE = b.bar_code " +
+                //               " and b.ITEM_CODE = p.OLD_PRODUCT_ID AND O.BRANCH_ID = B.LOCNO" +
+                //             " AND o.IS_ACTIVE = 1 " +
+                //              " GROUP BY " +
+                //              "o.ORDER_ID, o.CUSTOMER_ID, o.NAME, o.MOBILE,o.MANUAL_DISCOUNT, o.ADDRESS,o.Status,o.DELIVERY_DESCRIPTION,o.DELIVERY_TIME,o.MANUAL_DISCOUNT,o.COUPON_DISCOUNT,o.IS_PACKAGE order by o.ORDER_ID desc";
+            }
+            else
+                query = @"SELECT  
+                     case when STATUS = 1 then 'Pending' when STATUS = 2 then 'In Process' when STATUS = 3 then 'Dispatched' when STATUS = 4 then 'Delivered' when STATUS = 5 then 'Bounced' when STATUS = 6 then 'Rejected By Manager' when STATUS = 7 then 'Rejected by Rider'  ELSE 'none' end as STATUS_DESCRIPTION,  
+                           o.ORDER_ID, o.CUSTOMER_ID, o.NAME, o.MOBILE, o.ADDRESS,  
+                           o.DELIVERY_DESCRIPTION,CONVERT(varchar,o.DELIVERY_TIME,22) as DELIVERY_TIME,o.MANUAL_DISCOUNT,o.COUPON_DISCOUNT,o.ADDED_BY,case when o.IS_PACKAGE = 1 then 'Yes' else 'No' end as IS_PACKAGE, 
+                            SUM(op.QUANTITY) TOTAL_ITEMS,  
+                            CEILING(SUM((b.UNIT_PRICE - b.DISC)  * op.QUANTITY)) - isnull(o.MANUAL_DISCOUNT,0) - isnull(o.COUPON_DISCOUNT,0) as TOTAL_AMOUNT,''  as USERNAME--,o.CREATED_ON  
+                            FROM  
+                            ORDERS o, ORDER_PRODUCTS op, PRODUCTS p, BARCODES b 
+                            WHERE   
+                            o.ORDER_ID = op.ORDER_ID   
+                            AND op.BAR_CODE = b.bar_code  
+                             and b.ITEM_CODE = p.OLD_PRODUCT_ID AND O.BRANCH_ID = B.LOCNO 
+                            AND o.STATUS = " + oStID + " " +
+                            "AND CONVERT(date,o.CREATED_ON) between '" + oDateFrom + "' AND '" + oDateTo + "' " + " AND o.IS_ACTIVE = 1 " +
+                            "GROUP BY " +
+                            "o.ORDER_ID, o.CUSTOMER_ID, o.NAME, o.MOBILE,o.MANUAL_DISCOUNT, o.ADDRESS,o.Status,o.COUPON_DISCOUNT,o.DELIVERY_DESCRIPTION,o.DELIVERY_TIME,o.MANUAL_DISCOUNT,o.COUPON_DISCOUNT,o.IS_PACKAGE,o.ADDED_BY--,o.CREATED_ON--,u.USERNAME  --order by o.ORDER_ID desc";
+            return ExecuteDataSet(query);
+        }
+
         public DataSet getCustomerOrders(int uid)
         {
             string query = "";
@@ -109,6 +163,12 @@ namespace GROCERY.DAL.Managers
             string query = "SELECT USER_ID, USERNAME, VEHICLE_NUMBER, VEHICLE_DESCRIPTION, IS_ACTIVE  FROM USERS  WHERE USER_TYPE = 5 AND IS_AVAILABLE = 1  AND IS_ACTIVE = 1;";
             return ExecuteDataSet(query);
         }
-        
+
+        public DataSet managerFCMToken(string branchId)
+        {
+            //return ExecuteDataSet(string.Format("select * from users where user_type = 2 and BRANCH_ID = {0} and DEVICE_ID is not null and IS_ACTIVE = 1", branchId));
+            return ExecuteDataSet($"select ud.FCM_TOKEN from USERS u INNER JOIN USER_DEVICES ud ON u.USER_ID = ud.USER_ID where BRANCH_ID = {branchId} and USER_TYPE = 2 ");
+        }
+
     }
 }

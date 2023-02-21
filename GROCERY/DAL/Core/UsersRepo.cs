@@ -6,13 +6,16 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using GROCERY.Models;
 using System;
+using GROCERY.DAL.Managers;
+using System.Collections.Generic;
+
 namespace GROCERY.DAL.Core
 {
     public class UsersRepo
     {
-       
-        GROCERYEntities gEnt = new GROCERYEntities();
 
+        GROCERYEntities gEnt = new GROCERYEntities();
+        RiderManager riderManager = new RiderManager();
         public int addUser(USER u)
         {
             try
@@ -106,13 +109,32 @@ namespace GROCERY.DAL.Core
             }
         }
 
+        public bool DeleteUser(int userId)
+        {
+            try
+            {
+                USER obj = getUser(userId);
+                if (obj != null)
+                {
+                    gEnt.USERS.Remove(obj); 
+                    gEnt.SaveChanges();
+                    return true;
+                }
+                return false;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         public USER getUserByMobileNumber(string mobNo)
         {
             try
             {
                 var query = from u in gEnt.USERS
-                           where u.MOBILE_NO.ToUpper() == mobNo.ToUpper()
-                           select u;
+                            where u.MOBILE_NO.ToUpper() == mobNo.ToUpper()
+                            select u;
                 if (query.Any())
                     return query.First();
                 return null;
@@ -122,7 +144,7 @@ namespace GROCERY.DAL.Core
                 throw;
             }
         }
-        public void saveAddress(string address,int userId)
+        public void saveAddress(string address, int userId)
         {
             try
             {
@@ -130,7 +152,7 @@ namespace GROCERY.DAL.Core
                             where u.ADDRESS.ToUpper() == address.ToUpper() && u.USER_ID == userId
                             select u;
                 if (query.Any())
-                    return ;
+                    return;
                 else
                 {
                     USER_ADDRESSES u_add = new USER_ADDRESSES();
@@ -156,6 +178,7 @@ namespace GROCERY.DAL.Core
                 var query = (from u in gEnt.USERS
                              where u.USERNAME.ToUpper() == uName.ToUpper()
                              && u.PASSWORD.ToUpper() == uPassword.ToUpper()
+                             && u.IS_ACTIVE == true
                              select u);
                 if (query.Any())
                     return query.FirstOrDefault();
@@ -163,7 +186,39 @@ namespace GROCERY.DAL.Core
             }
             catch (Exception)
             {
-                
+
+                throw;
+            }
+        }
+
+        public List<RiderOrderModel> GetRiderOrderJobs(int riderId)
+        {
+            try
+            {
+                List<RiderOrderModel> riderOrdersList = new List<RiderOrderModel>();
+                DataSet ds = riderManager.getRiderOrderJobs(riderId);
+                if (ds.Tables.Count > 0)
+                {
+                    foreach (DataRow dr in ds.Tables[0].Rows)
+                    {
+                        RiderOrderModel riderOrderModel = new RiderOrderModel()
+                        {
+                            USER_ID = Convert.ToInt32(dr["USER_ID"]?.ToString()),
+                            IS_RIDER_BACK = Convert.ToBoolean(dr["IS_RIDER_BACK"]?.ToString()),
+                            RIDER_TIME_IN = dr["RIDER_TIME_IN"]?.ToString(),
+                            RIDER_TIME_OUT = dr["RIDER_TIME_OUT"]?.ToString(),
+                            USERNAME = dr["USERNAME"]?.ToString(),
+                            USER_STATUS = Convert.ToBoolean(dr["USER_STATUS"]?.ToString()),
+                            USER_TYPE_DESCRIPTION = dr["USER_TYPE_DESCRIPTION"]?.ToString()
+                        };
+                        riderOrdersList.Add(riderOrderModel);   
+                    }
+                }
+
+                return riderOrdersList;
+            }
+            catch (Exception ex)
+            {
                 throw;
             }
         }

@@ -14,7 +14,12 @@ namespace GROCERY.Controllers
     public class CouponController : Controller
     {
         private CouponsRepo cRepo = new CouponsRepo();
-
+        private ProductsRepo productsRepo = new ProductsRepo();
+        GROCERYEntities GROCERYEntities = new GROCERYEntities();
+        private static int CategoryID = 0;
+        private static int SubCategoryID = 0;
+        private static int ProductID = 0;
+        [AllowAnonymous]
         public ActionResult Index()
         {
             try
@@ -27,7 +32,7 @@ namespace GROCERY.Controllers
             }
         }
 
-        public ActionResult Details(string id)
+        public ActionResult Details(int id)
         {
             try
             {
@@ -59,6 +64,9 @@ namespace GROCERY.Controllers
         {
             try
             {
+                //ViewBag.Categories = new SelectList(GROCERYEntities.CATEGORIES, "CATEGORY_ID", "DESCRIPTION");
+                //ViewBag.SubCategories = new SelectList(GROCERYEntities.SUB_CATEGORIES, "SUB_CATEGORY_ID", "DESCRIPTION");
+                //ViewBag.Products = new SelectList(productsRepo.GetAllProducts(), "PRODUCT_ID", "DESCRIPTION");
                 return View();
             }
             catch (Exception)
@@ -70,27 +78,32 @@ namespace GROCERY.Controllers
         // POST: /Coupon/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         public ActionResult Create(COUPONSBO couponObj)
         {
             try
             {
                 COUPON coupon = new COUPON
-                    {
-                        COUPON_ID = couponObj.COUPON_ID,
-                        PROMO_TEXT = couponObj.PROMO_TEXT,
-                        START_DATE = couponObj.START_DATE,
-                        EXPIRY_DATE = couponObj.EXPIRY_DATE,
-                        IS_ACTIVE = true,
-                        IS_USED = false,
-                        UNLOCK_AMOUNT = couponObj.UNLOCK_AMOUNT,
-                        VALUE = couponObj.VALUE
-                    };
+                {
+                    COUPON_ID = couponObj.COUPON_ID,
+                    PROMO_TEXT = couponObj.PROMO_TEXT,
+                    START_DATE = couponObj.START_DATE,
+                    EXPIRY_DATE = couponObj.EXPIRY_DATE,
+                    IS_ACTIVE = true,
+                    IS_USED = false,
+                    UNLOCK_AMOUNT = couponObj.UNLOCK_AMOUNT,
+                    VALUE = couponObj.VALUE,
+                    COUPONTYPE = couponObj.COUPONTYPE,
+                    CATEGORYID = (couponObj.CATEGORYID == -1 || couponObj.CATEGORYID == null) ? null : couponObj.CATEGORYID,
+                    SUBCATEGORYID = (couponObj.SUBCATEGORYID == -1 || couponObj.SUBCATEGORYID == null) ? null : couponObj.SUBCATEGORYID,
+                    PRODUCTID = (couponObj.PRODUCTID == -1 || couponObj.PRODUCTID == null) ? null : couponObj.PRODUCTID,
+                    //IsCartBased = (couponObj.COUPONTYPE == "No Type Selected") ? true : false
+                };
 
                 if (ModelState.IsValid)
                 {
                     cRepo.addCoupon(coupon, couponObj.count_coupons);
-                    return Redirect("/Coupon/Details?id="+coupon.PROMO_TEXT);
+                    //return RedirectToAction("Index");
                 }
 
                 return View("Error");
@@ -106,7 +119,7 @@ namespace GROCERY.Controllers
             try
             {
                 bool flag = cRepo.updateCoupon(copn);
-                if (flag)
+                if (!flag)
                     return Redirect("/Coupon/Index");
                 return View("Error");
             }
@@ -126,6 +139,9 @@ namespace GROCERY.Controllers
                 {
                     return HttpNotFound();
                 }
+                ViewBag.CATEGORYID = coupon.CATEGORYID;
+                ViewBag.SUBCATEGORYID = coupon.SUBCATEGORYID;
+                ViewBag.PRODUCTID = coupon.PRODUCTID;
                 return View(coupon);
             }
             catch (Exception)
@@ -203,5 +219,48 @@ namespace GROCERY.Controllers
             }
             base.Dispose(disposing);
         }*/
+
+        public JsonResult GetSubCategory(string id)
+        {
+            if (id == null)
+            {
+                id = "0";
+            }
+
+            CategoryID = Convert.ToInt32(id);
+
+            var subcat = (from slist in GROCERYEntities.SUB_CATEGORIES
+                          where (slist.CATEGORY_ID == CategoryID)
+                          select new { slist.SUB_CATEGORY_ID, slist.DESCRIPTION }).ToList();
+            ViewBag.SubCategories = new SelectList(subcat, "SUB_CATEGORY_ID", "DESCRIPTION");
+            return Json(new SelectList(subcat, "SUB_CATEGORY_ID", "DESCRIPTION"));
+        }
+
+        public JsonResult GetProduct(string id)
+        {
+            if (id == null)
+            {
+                id = "0";
+            }
+
+            SubCategoryID = Convert.ToInt32(id);
+
+            var prod = (from slist in GROCERYEntities.PRODUCTS
+                        where (slist.SUB_CATEGORY_ID == SubCategoryID)
+                        select new { slist.PRODUCT_ID, slist.DESCRIPTION }).ToList();
+            ViewBag.Products = new SelectList(prod, "PRODUCT_ID", "DESCRIPTION");
+            return Json(new SelectList(prod, "PRODUCT_ID", "DESCRIPTION"));
+        }
+
+        public JsonResult GetProductID(string id)
+        {
+            if (id == null)
+            {
+                id = "0";
+            }
+
+            ProductID = Convert.ToInt32(id);
+            return Json(ProductID);
+        }
     }
 }

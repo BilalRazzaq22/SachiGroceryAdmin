@@ -1,0 +1,43 @@
+﻿@model List<GROCERY.Models.USER_TYPES>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<ol class="breadcrumb">
+    <li class="breadcrumb-item">
+        <a href="/Home/Index">Grocery Store</a>
+    </li>
+    <li>User Types</li>
+    <li class="breadcrumb-item active">User Type List</li>
+</ol>
+
+<h2>User Types</h2>
+
+<br />
+
+<table class="table table-bordered">
+    <tr>
+        <th>
+            DESCRIPTION
+        </th>
+        <th>
+            Action
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.DESCRIPTION)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.USER_TYPE_ID }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.USER_TYPE_ID }, new { onclick = "return confirm('Are sure wants to delete?');" })
+            </td>
+        </tr>
+    }
+
+</table>

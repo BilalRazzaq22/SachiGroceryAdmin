@@ -1,4 +1,5 @@
 ﻿using GROCERY.DAL.Core;
+using GROCERY.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -23,14 +24,39 @@ namespace GROCERY.Controllers
             return Request.CreateResponse(HttpStatusCode.OK, json);
         }
 
+        //[Route("api/Order/Orders")]
+        //[HttpGet]
+        //public HttpResponseMessage GetAllOrders(int oStID, string oDateFrom, string oDateTo)
+        //{
+        //    DataSet obj = controller.getAllOrders(oStID, oDateFrom, oDateTo);
+        //    string json = JsonConvert.SerializeObject(obj, Formatting.Indented);
+        //    return Request.CreateResponse(HttpStatusCode.OK, json);
+        //}
+
         [Route("api/Order/Orders")]
         [HttpGet]
-        public HttpResponseMessage GetAllOrders(int oStID, string oDateFrom, string oDateTo)
+        public HttpResponseMessage AjaxMethod(int pageIndex, int oStID, string oDateFrom, string oDateTo, string sortColumn,string searchText, string sortOrder)
         {
-            DataSet obj = controller.getAllOrders(oStID, oDateFrom, oDateTo);
-            string json = JsonConvert.SerializeObject(obj, Formatting.Indented);
+            GROCERYEntities entities = new GROCERYEntities();
+            OrderModel model = new OrderModel
+            {
+                PageIndex = pageIndex,
+                PageSize = 20,
+                oStID = oStID,
+                oDateFrom = oDateFrom,
+                oDateTo = oDateTo,
+                SortColumn = sortColumn,
+                SearchText = searchText,
+                SortOrder = sortOrder
+            };
+            //ObjectParameter recordCount = new ObjectParameter("RecordCount", typeof(int));
+            var aa = entities.SpGetAllOrders(model.PageIndex, model.PageSize, model.SortColumn, model.SortOrder, model.SearchText, model.oStID, model.oDateFrom, model.oDateTo).ToList();
+            //model.Orders = entities.GetAllOrders(model.PageIndex, model.PageSize, model.SortColumn, model.SortOrder, model.SearchText, model.oStID, model.oDateFrom, model.oDateTo).ToList();
+            //model.RecordCount = Convert.ToInt32(recordCount.Value);
+            string json = JsonConvert.SerializeObject(aa, Formatting.Indented);
             return Request.CreateResponse(HttpStatusCode.OK, json);
         }
+
         [Route("api/Order/customerOrders")]
         [HttpGet]
         public HttpResponseMessage getCustomerOrders(int uId)
@@ -76,10 +102,10 @@ namespace GROCERY.Controllers
             string json = JsonConvert.SerializeObject(obj, Formatting.Indented);
             return Request.CreateResponse(HttpStatusCode.OK, json);
         }
-        
+
     }
 
-    
 
-   
+
+
 }

@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\EntityFramework.6.4.4\build\EntityFramework.props" Condition="Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -13,7 +14,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>GROCERY</RootNamespace>
     <AssemblyName>GROCERY</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
@@ -23,6 +24,8 @@
     <Use64BitIISExpress />
     <UseGlobalApplicationHostFile />
     <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -42,11 +45,23 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ClosedXML, Version=0.97.0.0, Culture=neutral, PublicKeyToken=fd1eb21b62ae805b, processorArchitecture=MSIL">
+      <HintPath>..\packages\ClosedXML.0.97.0\lib\netstandard2.0\ClosedXML.dll</HintPath>
+    </Reference>
+    <Reference Include="DocumentFormat.OpenXml, Version=2.16.0.0, Culture=neutral, PublicKeyToken=8fb06cb64d019a17, processorArchitecture=MSIL">
+      <HintPath>..\packages\DocumentFormat.OpenXml.2.16.0\lib\net46\DocumentFormat.OpenXml.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="ExcelNumberFormat, Version=1.1.0.0, Culture=neutral, PublicKeyToken=23c6f5d73be07eca, processorArchitecture=MSIL">
+      <HintPath>..\packages\ExcelNumberFormat.1.1.0\lib\net20\ExcelNumberFormat.dll</HintPath>
+    </Reference>
+    <Reference Include="Irony, Version=1.0.11.0, Culture=neutral, PublicKeyToken=ca48ace7223ead47, processorArchitecture=MSIL">
+      <HintPath>..\packages\Irony.NetCore.1.0.11\lib\net461\Irony.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Office.Interop.Excel, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
@@ -69,12 +84,54 @@
       <HintPath>..\packages\MicrosoftOfficeCore.15.0.0\lib\net35\Office.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="ReachFramework" />
+    <Reference Include="SixLabors.Fonts, Version=1.0.0.0, Culture=neutral, PublicKeyToken=d998eea7b14cab13, processorArchitecture=MSIL">
+      <HintPath>..\packages\SixLabors.Fonts.1.0.0-beta19\lib\netstandard2.0\SixLabors.Fonts.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
+    </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Compression, Version=4.1.2.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.Compression.4.3.0\lib\net46\System.IO.Compression.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.IO.FileSystem.Primitives, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.FileSystem.Primitives.4.3.0\lib\net46\System.IO.FileSystem.Primitives.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.IO.Packaging, Version=4.0.5.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.Packaging.4.7.0\lib\net46\System.IO.Packaging.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO.UnmanagedMemoryStream, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.UnmanagedMemoryStream.4.3.0\lib\net46\System.IO.UnmanagedMemoryStream.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Memory.4.5.4\lib\net461\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Printing" />
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.7.0\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
+    <Reference Include="System.ServiceModel.Web" />
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -83,6 +140,7 @@
     <Reference Include="System.Web.Abstractions" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Configuration" />
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -141,6 +199,10 @@
       <Private>True</Private>
       <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="XLParser, Version=1.5.2.0, Culture=neutral, PublicKeyToken=63397e1e46bb91b4, processorArchitecture=MSIL">
+      <HintPath>..\packages\XLParser.1.5.2\lib\net461\XLParser.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="assets\images\Ads\" />
@@ -155,7 +217,10 @@
     <Folder Include="assets\js\aci-tree\php\tree\Item 7\Item 4\Item 3\" />
     <Folder Include="assets\js\aci-tree\php\tree\Item 7\Item 4\Item 4\" />
     <Folder Include="assets\js\selectboxit\css\" />
+    <Folder Include="Banner_Images\Mobile_Banner\" />
+    <Folder Include="Banner_Images\Web_Banner\" />
     <Folder Include="Product_Images\Thumbnails\" />
+    <Folder Include="Views\General\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs">
@@ -186,6 +251,7 @@
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\AdController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\BannerController.cs" />
     <Compile Include="Controllers\BranchController.cs" />
     <Compile Include="Controllers\BusinessController.cs">
       <SubType>Code</SubType>
@@ -197,33 +263,44 @@
     </Compile>
     <Compile Include="Controllers\ItemController.cs" />
     <Compile Include="Controllers\MiniItemController.cs" />
+    <Compile Include="Controllers\OfferController.cs" />
     <Compile Include="Controllers\OrderApiController.cs" />
     <Compile Include="Controllers\OrderController.cs" />
     <Compile Include="Controllers\PackageController.cs" />
     <Compile Include="Controllers\ProductController.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Controllers\RecommendedProductController.cs" />
+    <Compile Include="Controllers\RiderController.cs" />
     <Compile Include="Controllers\SMSController.cs" />
     <Compile Include="Controllers\SyncDBController.cs" />
     <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Controllers\UserRightController.cs" />
+    <Compile Include="Controllers\UserTypeController.cs" />
     <Compile Include="Controllers\VendorController.cs" />
     <Compile Include="Controllers\WarrantyController.cs" />
     <Compile Include="DAL\Core\AdRepo.cs" />
+    <Compile Include="DAL\Core\BannerRepo.cs" />
     <Compile Include="DAL\Core\BranchRepo.cs" />
     <Compile Include="DAL\Core\CouponsRepo.cs" />
     <Compile Include="DAL\Core\DABase.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DAL\Core\EmailHelper.cs" />
+    <Compile Include="DAL\Core\OfferRepo.cs" />
     <Compile Include="DAL\Core\OrdersRepo.cs" />
     <Compile Include="DAL\Core\PackageRepo.cs" />
     <Compile Include="DAL\Core\ProductsRepo.cs" />
+    <Compile Include="DAL\Core\RecommendedProductRepo.cs" />
     <Compile Include="DAL\Core\StoredProcedureParams.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="DAL\Core\UserRightRepo.cs" />
     <Compile Include="DAL\Core\UsersRepo.cs" />
+    <Compile Include="DAL\Core\UserTypeRepo.cs" />
     <Compile Include="DAL\Managers\CommonManager.cs" />
     <Compile Include="DAL\Managers\OrderManger.cs" />
+    <Compile Include="DAL\Managers\RiderManager.cs" />
     <Compile Include="DAL\Managers\Store Manager.cs" />
     <Compile Include="DAL\Managers\UserManager.cs" />
     <Compile Include="DAL\Managers\ProductManager.cs">
@@ -239,6 +316,13 @@
     <Compile Include="Models\AREA.cs">
       <DependentUpon>GROCERY.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\AuthorViewModel.cs" />
+    <Compile Include="Models\BANNER.cs">
+      <DependentUpon>GROCERY.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\BANNER_IMAGES.cs">
+      <DependentUpon>GROCERY.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\BARCODE.cs">
       <DependentUpon>GROCERY.tt</DependentUpon>
     </Compile>
@@ -248,6 +332,10 @@
     <Compile Include="Models\BARCODESTest.cs">
       <DependentUpon>GROCERY.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Blog.cs">
+      <DependentUpon>GROCERY.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\BookViewModel.cs" />
     <Compile Include="Models\BRANCH.cs">
       <DependentUpon>GROCERY.tt</DependentUpon>
     </Compile>
@@ -255,7 +343,16 @@
       <DependentUpon>GROCERY.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\CallOrders.cs" />
+    <Compile Include="Models\CART.cs">
+      <DependentUpon>GROCERY.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\CATEGORy.cs">
+      <DependentUpon>GROCERY.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CompanyInfo.cs">
+      <DependentUpon>GROCERY.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ContactU.cs">
       <DependentUpon>GROCERY.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\COUPON.cs">
@@ -263,6 +360,7 @@
     </Compile>
     <Compile Include="Models\COUPONSBO.cs" />
     <Compile Include="Models\CustomerOrderBO.cs" />
+    <Compile Include="Models\ExcelOrderDto.cs" />
     <Compile Include="Models\GROCERY.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -284,9 +382,21 @@
     <Compile Include="Models\ITEMINFO.cs">
       <DependentUpon>GROCERY.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\LoginUser.cs" />
+    <Compile Include="Models\MAINMENU.cs">
+      <DependentUpon>GROCERY.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\MainMenuModel.cs" />
+    <Compile Include="Models\OFFER_MANAGEMENT.cs">
+      <DependentUpon>GROCERY.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ONLINE_TRANSACTION.cs">
+      <DependentUpon>GROCERY.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\ORDER.cs">
       <DependentUpon>GROCERY.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\OrderModel.cs" />
     <Compile Include="Models\OrderViewModel.cs" />
     <Compile Include="Models\ORDER_PRODUCTS.cs">
       <DependentUpon>GROCERY.tt</DependentUpon>
@@ -329,6 +439,9 @@
     <Compile Include="Models\PRODUCT_PACKINGS.cs">
       <DependentUpon>GROCERY.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\PRODUCT_REVIEWS.cs">
+      <DependentUpon>GROCERY.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\PRODUCT_TAGS.cs">
       <DependentUpon>GROCERY.tt</DependentUpon>
     </Compile>
@@ -341,15 +454,89 @@
     <Compile Include="Models\PS000Test.cs">
       <DependentUpon>GROCERY.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\RECOMMENDED_PRODUCTS.cs">
+      <DependentUpon>GROCERY.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\RiderOrderModel.cs" />
+    <Compile Include="Models\RIDER_ORDER.cs">
+      <DependentUpon>GROCERY.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\SM.cs">
       <DependentUpon>GROCERY.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\SMS_TYPES.cs">
       <DependentUpon>GROCERY.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\SpGetAllBannersHome_Result.cs">
+      <DependentUpon>GROCERY.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SpGetAllBanners_Result.cs">
+      <DependentUpon>GROCERY.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SpGetAllBlogs_Result.cs">
+      <DependentUpon>GROCERY.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SpGetAllCartItemsByUserId_Result.cs">
+      <DependentUpon>GROCERY.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SpGetAllOrdersByCustomerId_Result.cs">
+      <DependentUpon>GROCERY.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SpGetAllOrders_Result.cs">
+      <DependentUpon>GROCERY.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SpGetAllProductReviewsHome_Result.cs">
+      <DependentUpon>GROCERY.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SpGetAllProductReviews_Result.cs">
+      <DependentUpon>GROCERY.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SpGetAllProducts_Result.cs">
+      <DependentUpon>GROCERY.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SPGetAllRecommendedProducts_Result.cs">
+      <DependentUpon>GROCERY.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SpGetBlogDetailByBlogTitleUrl_Result.cs">
+      <DependentUpon>GROCERY.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SpGetHomeBlogs_Result.cs">
+      <DependentUpon>GROCERY.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SpGetHomeProducts_Result.cs">
+      <DependentUpon>GROCERY.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SpGetProductDetailByProductNameUrl_Result.cs">
+      <DependentUpon>GROCERY.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SpGetProductImagesByProductId_Result.cs">
+      <DependentUpon>GROCERY.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SpGetProductReviewsByProductId_Result.cs">
+      <DependentUpon>GROCERY.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SPGetSearchProducts_Result.cs">
+      <DependentUpon>GROCERY.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SpGetUserProfileById_Result.cs">
+      <DependentUpon>GROCERY.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SpGetWishList_Result.cs">
+      <DependentUpon>GROCERY.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\sp_helpdiagramdefinition_Result.cs">
+      <DependentUpon>GROCERY.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\sp_helpdiagrams_Result.cs">
+      <DependentUpon>GROCERY.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\STOCK.cs">
       <DependentUpon>GROCERY.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\SUBMENU.cs">
+      <DependentUpon>GROCERY.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SubMenuViewModel.cs" />
     <Compile Include="Models\SUB_CATEGORIES.cs">
       <DependentUpon>GROCERY.tt</DependentUpon>
     </Compile>
@@ -359,6 +546,9 @@
     <Compile Include="Models\TEMP_CUSTOMERS.cs">
       <DependentUpon>GROCERY.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\TERMINFO.cs">
+      <DependentUpon>GROCERY.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\TEST.cs">
       <DependentUpon>GROCERY.tt</DependentUpon>
     </Compile>
@@ -366,6 +556,9 @@
       <DependentUpon>GROCERY.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\USER_ADDRESSES.cs">
+      <DependentUpon>GROCERY.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\USER_DEVICES.cs">
       <DependentUpon>GROCERY.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\USER_FAVOURITES.cs">
@@ -380,6 +573,13 @@
     <Compile Include="Models\VENDOR_BRANCHES.cs">
       <DependentUpon>GROCERY.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\WebsitePage.cs">
+      <DependentUpon>GROCERY.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\WISHES_PRODUCT.cs">
+      <DependentUpon>GROCERY.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Notifications\FCMPushNotification.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SyncService\DataSyncService.cs" />
   </ItemGroup>
@@ -403,6 +603,7 @@
     <Content Include="assets\images\loader-2.gif" />
     <Content Include="assets\images\login_bg.png" />
     <Content Include="assets\images\logo.png" />
+    <Content Include="assets\images\Sachi Grocery logo final-07.png" />
     <Content Include="assets\images\sample-crop-2.png" />
     <Content Include="assets\images\sample-crop.jpg" />
     <Content Include="assets\images\sample.jpg" />
@@ -410,6 +611,7 @@
     <Content Include="assets\images\timeline-image-2.png" />
     <Content Include="assets\images\timeline-image-3.png" />
     <Content Include="assets\images\timeline-image-4.png" />
+    <Content Include="Content\tree.css" />
     <Content Include="loader.gif" />
     <Content Include="Models\GROCERY.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -1746,6 +1948,8 @@
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="Global.asax" />
+    <Content Include="Scripts\ASPSnippets_Pager.min.js" />
+    <Content Include="Scripts\bootpage.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
@@ -1975,12 +2179,32 @@
     <Content Include="App_Data\Items - Copy.xlsx" />
     <Content Include="App_Data\Items.xlsx" />
     <Content Include="App_Data\Sample %282%29.xlsx" />
-    <Content Include="Web.config">
-      <SubType>Designer</SubType>
-    </Content>
+    <Content Include="Scripts\tree.js" />
     <Content Include="Views\Branch\Create.cshtml" />
     <Content Include="Views\Branch\List.cshtml" />
     <Content Include="Views\Branch\Edit.cshtml" />
+    <Content Include="App_Code\TreeView.cshtml" />
+    <Content Include="Views\UserRight\Index.cshtml" />
+    <Content Include="Views\Shared\_UserRight.cshtml" />
+    <Content Include="Views\Rider\List.cshtml" />
+    <Content Include="Views\Rider\Edit.cshtml" />
+    <Content Include="Views\Rider\View.cshtml" />
+    <Content Include="Views\Rider\Create.cshtml" />
+    <Content Include="Views\Banner\MobileBanner.cshtml" />
+    <Content Include="Views\Banner\List.cshtml" />
+    <Content Include="Views\Banner\Create.cshtml" />
+    <Content Include="Views\Banner\Edit.cshtml" />
+    <Content Include="Views\UserType\Index.cshtml" />
+    <Content Include="Views\UserType\Create.cshtml" />
+    <Content Include="Views\UserType\Edit.cshtml" />
+    <Content Include="Views\Offer\Index.cshtml" />
+    <Content Include="Views\Offer\Edit.cshtml" />
+    <Content Include="Views\Offer\Create.cshtml" />
+    <Content Include="Views\RecommendedProduct\Index.cshtml" />
+    <Content Include="Views\Rider\GetRiderJobs.cshtml" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <EntityDeploy Include="Models\GROCERY.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>GROCERY.Designer.cs</LastGenOutput>
@@ -1988,12 +2212,6 @@
     <Content Include="Models\GROCERY.edmx.diagram">
       <DependentUpon>GROCERY.edmx</DependentUpon>
     </Content>
-    <None Include="Web.Debug.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </None>
-    <None Include="Web.Release.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </None>
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Properties\PublishProfiles\imran.pubxml" />
     <None Include="Scripts\_references.js" />
@@ -2049,6 +2267,12 @@
     <Content Include="Views\User\Customers.cshtml" />
     <Content Include="Views\User\Orders.cshtml" />
     <Content Include="Views\User\ViewOrder.cshtml" />
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
@@ -2089,6 +2313,14 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.4\build\EntityFramework.props'))" />
+    <Error Condition="!Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.4\build\EntityFramework.targets'))" />
+  </Target>
+  <Import Project="..\packages\EntityFramework.6.4.4\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

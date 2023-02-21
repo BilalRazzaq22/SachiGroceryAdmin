@@ -21,7 +21,7 @@ namespace GROCERY.Models
         public decimal UNIT { get; set; }
         public bool bDEFAULT { get; set; }
         public string BAR_CODE { get; set; }
-        public byte BARTYPE { get; set; }
+        public short BARTYPE { get; set; }
         public decimal UNIT_PRICE { get; set; }
         public decimal DEALER_PRICE1 { get; set; }
         public decimal DEALER_PRICE2 { get; set; }
@@ -37,41 +37,8 @@ namespace GROCERY.Models
         public System.DateTime DiscEndTime { get; set; }
         public short DISC_TYPE { get; set; }
         public decimal DISC { get; set; }
+        public decimal LOYALTY_DISC { get; set; }
+        public decimal STAFF_DISC { get; set; }
         public bool IsActive { get; set; }
-        public bool NeedsReplication { get; set; }
-        public bool NeedsUpdation { get; set; }
-        public bool L1P1NeedsUpdation { get; set; }
-        public bool L1P2NeedsUpdation { get; set; }
-        public bool L1P3NeedsUpdation { get; set; }
-        public bool L1P4NeedsUpdation { get; set; }
-        public bool L1P5NeedsUpdation { get; set; }
-        public bool L1P6NeedsUpdation { get; set; }
-        public bool L1P7NeedsUpdation { get; set; }
-        public bool L1P8NeedsUpdation { get; set; }
-        public bool L1P9NeedsUpdation { get; set; }
-        public bool L1P10NeedsUpdation { get; set; }
-        public bool L2P1NeedsUpdation { get; set; }
-        public bool L2P2NeedsUpdation { get; set; }
-        public bool L2P3NeedsUpdation { get; set; }
-        public bool L3P1NeedsUpdation { get; set; }
-        public bool L3P2NeedsUpdation { get; set; }
-        public bool L3P3NeedsUpdation { get; set; }
-        public bool L3P4NeedsUpdation { get; set; }
-        public bool L3P5NeedsUpdation { get; set; }
-        public bool L3P6NeedsUpdation { get; set; }
-        public bool L3P7NeedsUpdation { get; set; }
-        public bool L3P8NeedsUpdation { get; set; }
-        public bool L4P1NeedsUpdation { get; set; }
-        public bool L5P1NeedsUpdation { get; set; }
-        public bool L6P1NeedsUpdation { get; set; }
-        public bool L4P2NeedsUpdation { get; set; }
-        public bool L4P3NeedsUpdation { get; set; }
-        public bool L5P3NeedsUpdation { get; set; }
-        public bool L6P3NeedsUpdation { get; set; }
-        public bool L5P2NeedsUpdation { get; set; }
-        public bool L6P2NeedsUpdation { get; set; }
-        public bool L7P1NeedsUpdation { get; set; }
-        public bool L7P2NeedsUpdation { get; set; }
-        public bool L7P3NeedsUpdation { get; set; }
     }
 }

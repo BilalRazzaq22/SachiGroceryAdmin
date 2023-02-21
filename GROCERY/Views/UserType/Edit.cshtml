@@ -1,0 +1,55 @@
+﻿@model GROCERY.Models.USER_TYPES
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Edit</h2>
+
+<ol class="breadcrumb">
+    <li class="breadcrumb-item">
+        <a href="/Home/Index">Grocery Store</a>
+    </li>
+    <li>User Type</li>
+    <li class="breadcrumb-item active">Update User Type</li>
+</ol>
+
+<h2>User Type</h2>
+
+@using (Html.BeginForm("Edit", "UserType"))
+{
+    @Html.AntiForgeryToken()
+    <div class="row">
+        <div class="col-md-12">
+
+            <div class="panel panel-primary" data-collapsed="0">
+
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        Update User Type
+                    </div>
+
+                    <div class="panel-options">
+                        <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                    </div>
+                </div>
+
+                <div class="panel-body">
+                    @Html.HiddenFor(model => model.USER_TYPE_ID)
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="product_oldId" class="control-label">Description</label>
+                                @Html.TextBoxFor(model => model.DESCRIPTION, new { @class = "form-control", placeholder = "DESCRIPTION" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-info">Update</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}

@@ -20,5 +20,6 @@ namespace GROCERY.Models
         public Nullable<System.DateTime> CREATED_ON { get; set; }
         public Nullable<System.DateTime> UPDATED_ON { get; set; }
         public Nullable<int> IS_ACTIVE { get; set; }
+        public Nullable<bool> IS_FAVOURITE { get; set; }
     }
 }

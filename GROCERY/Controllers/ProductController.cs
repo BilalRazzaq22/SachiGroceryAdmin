@@ -114,6 +114,24 @@ namespace GROCERY.Controllers
             return Request.CreateResponse(HttpStatusCode.OK, json);
         }
 
+        [Route("api/Product/GetProductsBySubCat")]
+        [HttpGet]
+        public HttpResponseMessage GetProductsBySubCat(int scID)
+        {
+            DataSet subCat = controller.GetProductsBySubCat(scID);
+            string json = JsonConvert.SerializeObject(subCat, Formatting.Indented);
+            return Request.CreateResponse(HttpStatusCode.OK, json);
+        }
+
+        [Route("api/Product/GetProducts")]
+        [HttpGet]
+        public HttpResponseMessage GetProducts()
+        {
+            DataSet subCat = controller.GetProducts();
+            string json = JsonConvert.SerializeObject(subCat, Formatting.Indented);
+            return Request.CreateResponse(HttpStatusCode.OK, json);
+        }
+
 
         [Route("api/Product/Vendors")]
         [HttpGet]

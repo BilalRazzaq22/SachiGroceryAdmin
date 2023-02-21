@@ -42,5 +42,6 @@ namespace GROCERY.Models
         public Nullable<System.DateTime> PICKUP_TIME { get; set; }
         public Nullable<int> IS_PACKAGE { get; set; }
         public Nullable<byte> ADDED_BY { get; set; }
+        public Nullable<bool> IsTestOrder { get; set; }
     }
 }

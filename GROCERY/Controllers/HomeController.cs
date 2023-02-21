@@ -25,10 +25,10 @@ namespace GROCERY.Controllers
             ViewBag.Title = "Home";
 
 
-            ViewBag.ProductsCount = gEnt.PRODUCTS.Count();
-            ViewBag.UsersCount = gEnt.USERS.Count();
-            ViewBag.VendorsCount = gEnt.VENDORS.Count();
-            ViewBag.CategoriesCount = gEnt.CATEGORIES.Count();
+            //ViewBag.ProductsCount = gEnt.PRODUCTS.Count();
+            //ViewBag.UsersCount = gEnt.USERS.Count();
+            //ViewBag.VendorsCount = gEnt.VENDORS.Count();
+            //ViewBag.CategoriesCount = gEnt.CATEGORIES.Count();
 
             return View();
             //return Redirect("/Item/List");

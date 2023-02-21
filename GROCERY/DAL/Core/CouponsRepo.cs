@@ -20,7 +20,7 @@ namespace GROCERY.DAL.Core
 
                 List<int> listNumbers = new List<int>();
                 int number;
-                
+
 
                 for (int i = 0; i < noOfCoupons; i++)
                 {
@@ -49,12 +49,13 @@ namespace GROCERY.DAL.Core
             try
             {
                 var q = from c in gEnt.COUPONS
+                        where c.IS_ACTIVE == true
                         select c;
-                if (q.Any())
-                {
-                    return q.ToList();
-                }
-                return null;
+                //if (q.Any())
+                //{
+                //    return q.ToList();
+                //}
+                return q.ToList();
             }
             catch (Exception)
             {
@@ -62,17 +63,17 @@ namespace GROCERY.DAL.Core
             }
         }
 
-        public List<COUPON> getAllCouponsByID(string ID)
+        public List<COUPON> getAllCouponsByID(int ID)
         {
             try
             {
                 var q = from c in gEnt.COUPONS
-                        where c.PROMO_TEXT == ID
+                        where c.COUPON_ID == ID
                         && c.IS_ACTIVE == true
                         && c.IS_USED == false
-                        && c.CREATED_ON.Value.Day == DateTime.Now.Day
-                        && c.CREATED_ON.Value.Month == DateTime.Now.Month
-                        && c.CREATED_ON.Value.Year == DateTime.Now.Year
+                        //&& c.CREATED_ON.Value.Day == DateTime.Now.Day
+                        //&& c.CREATED_ON.Value.Month == DateTime.Now.Month
+                        //&& c.CREATED_ON.Value.Year == DateTime.Now.Year
                         select c;
                 if (q.Any())
                 {
@@ -114,6 +115,7 @@ namespace GROCERY.DAL.Core
             {
                 var q = from c in gEnt.COUPONS
                         where c.COUPON_ID == cID
+                        && c.IS_ACTIVE == true
                         select c;
                 if (q.Any())
                 {
@@ -160,6 +162,11 @@ namespace GROCERY.DAL.Core
                 cpn.IS_USED = coupon.IS_USED;
                 cpn.updated_by = 1;
                 cpn.updated_on = DateTime.Now;
+                cpn.COUPONTYPE = coupon.COUPONTYPE;
+                cpn.CATEGORYID = (coupon.CATEGORYID == -1 || coupon.CATEGORYID == null) ? null : coupon.CATEGORYID;
+                cpn.SUBCATEGORYID = (coupon.SUBCATEGORYID == -1 || coupon.SUBCATEGORYID == null) ? null : coupon.SUBCATEGORYID;
+                cpn.PRODUCTID = (coupon.PRODUCTID == -1 || coupon.PRODUCTID == null) ? null : coupon.PRODUCTID;
+                //cpn.IsCartBased = (coupon.COUPONTYPE == "No Type Selected") ? true : false;
                 int res = gEnt.SaveChanges();
                 return res > 0;
             }
