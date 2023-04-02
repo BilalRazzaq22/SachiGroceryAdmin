@@ -204,6 +204,8 @@
     }
 
     function initializeOrdersList(pageIndex, oStID, oDateFrom, oDateTo, sortColumn, sortOrder, searchText) {
+        $("#maindiv").addClass("disable-maindiv");
+        $("#load").css("display", "block");
         $.ajax({
             type: "GET",
             url: '/api/order/orders?pageIndex=' + pageIndex + '&oStID=' + oStID + '&oDateFrom=' + oDateFrom + '&oDateTo=' + oDateTo + '&sortColumn=' + sortColumn + '&sortOrder=' + sortOrder + '&searchText=' + searchText,
@@ -216,17 +218,21 @@
                 else if (oStID == 2) {
                     populateAllocatedOrdersTable();
                 }
-                    else
-                        if (oStID == 3) {
-                            populateDispatchedOrdersTable();
-                        }
-                        else
-                            if (oStID == 4)
-                                populateShippedOrdersTable();
-                            else if (oStID == 0)
-                                loadAllOrders();
+                else if (oStID == 3) {
+                    populateDispatchedOrdersTable();
+                }
+                else if (oStID == 4) {
+                    populateShippedOrdersTable();
+                }
+                else if (oStID == 0) {
+                    loadAllOrders();
+                }
+                $("#maindiv").removeClass("disable-maindiv");
+                $("#load").css("display", "none");
             },
             error: function (res) {
+                $("#maindiv").removeClass("disable-maindiv");
+                $("#load").css("display", "none");
                 //alert('failure: ' + res);
             }
         });
@@ -1199,9 +1205,17 @@
 
     // Example usage:
 
-    $('#searchOrder').keyup(delay(function (e) {
-        initializeOrdersList(1, 0, null, null, 'CREATED_DATE', 'desc', $('#searchOrder').val());
-    }, 300));
+
+    $('#searchOrder').keypress(function (e) {
+        if (e.which == 13) {
+            initializeOrdersList(1, 0, null, null, 'CREATED_DATE', 'desc', $('#searchOrder').val());
+        }
+    });
+
+
+    //$('#searchOrder').keyup(delay(function (e) {
+    //    initializeOrdersList(1, 0, null, null, 'CREATED_DATE', 'desc', $('#searchOrder').val());
+    //}, 300));
 
 </script>
 
