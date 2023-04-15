@@ -242,10 +242,10 @@ namespace GROCERY.Controllers
 
         public void sendOrderSms(string msg, string num)
         {
-            string username = "chaarsu@bizsms.pk";
-            string pass = "ch33rsuw9";
+            string username = "923183183341";
+            string pass = "Zong@123";
             string destinationnum = num;
-            string masking = "CHAARSU";
+            string masking = "SachiChakki";
             string text = msg;
             string language = "English";
             int msgCount = 0;
@@ -284,27 +284,20 @@ namespace GROCERY.Controllers
             //var sr = new System.IO.StreamReader(resp.GetResponseStream());
             //return sr.ReadToEnd().Trim();
 
-            // NEW IMPLEMENTATION
-            //string URI = @"http://api.bizsms.pk/api-send-branded-sms.aspx?username=" + MyUsername + "&pass=" + MyPassword +
-            //    "&text=" + MessageText + "&masking=" + Masking + "&destinationnum=" + toNumber + "&language=English";
+            SmsApiService.QuickSMSResquest quickSMSResquest = new SmsApiService.QuickSMSResquest()
+            {
+                loginId = MyUsername,
+                loginPassword = MyPassword,
+                Destination = toNumber,
+                Mask = Masking,
+                Message = MessageText,
+                ShortCodePrefered = "n",
+                UniCode = "0"
+            };
 
-            //string URI = "@https://cbs.zong.com.pk/reachcwsv2?loginId= chaarsu@bizsms.pk&loginPassword=ch33rsuw9&Message=Your order (76470 ) has been placed &Mask=CHAARSU&Destination=03314784501&UniCode=0" +
-            //    "&ShortCodePrefered=n";
-            string URI = @"http://cbs.zong.com.pk/reachcwsv2/corporatesms.svc?wsdl&loginId=" + MyUsername + "&loginPassword=" + MyPassword +
-                "&Message=" + MessageText + "&Mask=" + Masking + "&Destination=" + toNumber + "&UniCode=0&ShortCodePrefered=n";
-
-            WebRequest req = WebRequest.Create(URI);
-            req.Method = "GET";
-            ServicePointManager.Expect100Continue = true;
-            ServicePointManager.DefaultConnectionLimit = 9999;
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12  | SecurityProtocolType.Ssl3;
-            //ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls13;
-            //    ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
-
-
-            WebResponse resp = req.GetResponse();
-            var sr = new System.IO.StreamReader(resp.GetResponseStream());
-            return sr.ReadToEnd().Trim();
+            SmsApiService.BasicHttpBinding_ICorporateCBS client = new SmsApiService.BasicHttpBinding_ICorporateCBS();
+            string message = client.QuickSMS(quickSMSResquest);
+            return message;
         }
         #endregion
         public bool UpdateOrder(CustomerOrderBO custOrd)

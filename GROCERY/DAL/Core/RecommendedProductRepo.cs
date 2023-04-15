@@ -21,7 +21,7 @@ namespace GROCERY.DAL.Core
                 RECOMMENDED_PRODUCTS recommenedProduct = new RECOMMENDED_PRODUCTS();
                 recommenedProduct.RECOMMENDED_PRODUCT_ID = dataRow.Field<int>("RECOMMENDED_PRODUCT_ID");
                 recommenedProduct.PRODUCT_ID = dataRow.Field<int>("PRODUCT_ID");
-                recommenedProduct.PRODUCT_NAME = dataRow.Field<string>("PRODUCT_NAME");
+                recommenedProduct.PRODUCT_NAME = dataRow.Field<string>("NAME");
                 recommenedProduct.PACKING = dataRow.Field<string>("PACKING");
                 if (dataRow.Field<decimal?>("PRICE") != null)
                     recommenedProduct.PRICE = dataRow.Field<decimal>("PRICE");

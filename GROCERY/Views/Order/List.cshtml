@@ -211,6 +211,8 @@
             url: '/api/order/orders?pageIndex=' + pageIndex + '&oStID=' + oStID + '&oDateFrom=' + oDateFrom + '&oDateTo=' + oDateTo + '&sortColumn=' + sortColumn + '&sortOrder=' + sortOrder + '&searchText=' + searchText,
             contentType: 'application/json',
             success: function (result) {
+                $("#maindiv").removeClass("disable-maindiv");
+                $("#load").css("display", "none");
                 //console.log("data: " + result);
                 orders = jQuery.parseJSON(result);
                 if (oStID == 1)
@@ -227,8 +229,7 @@
                 else if (oStID == 0) {
                     loadAllOrders();
                 }
-                $("#maindiv").removeClass("disable-maindiv");
-                $("#load").css("display", "none");
+                
             },
             error: function (res) {
                 $("#maindiv").removeClass("disable-maindiv");
@@ -510,8 +511,8 @@
     }
 
     function loadRights() {
-        $("#maindiv").addClass("load-maindiv");
-        $("#load").css("display", "block");
+       // $("#maindiv").addClass("load-maindiv");
+        //$("#load").css("display", "block");
          $.ajax({
         type: 'GET',
         url: '@Url.Action("GetRights")', // we are calling json method

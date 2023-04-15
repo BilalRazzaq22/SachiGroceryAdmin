@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<DiscoveryClientResultsFile xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Results>
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.ContractReference" url="https://cbs.zong.com.pk/reachcwsv2/corporatesms.svc?wsdl" filename="Service1.wsdl" />
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.SchemaReference" url="https://cbs.zong.com.pk/ReachCWSv2/CorporateSMS.svc?xsd=xsd2" filename="CorporateSMS.xsd" />
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.SchemaReference" url="https://cbs.zong.com.pk/ReachCWSv2/CorporateSMS.svc?xsd=xsd1" filename="CorporateSMS0.xsd" />
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.SchemaReference" url="https://cbs.zong.com.pk/ReachCWSv2/CorporateSMS.svc?xsd=xsd0" filename="CorporateSMS1.xsd" />
+  </Results>
+</DiscoveryClientResultsFile>

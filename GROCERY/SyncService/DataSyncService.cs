@@ -10,7 +10,7 @@ namespace GROCERY.SyncService
 {
     public class DataSyncService
     {
-        readonly string charsuDb = "data source=68.66.211.65;initial catalog=anytimea_GROCERY;user id=sa;password=:gRqlrv3wsR1lw;MultipleActiveResultSets=True;App=EntityFramework&quot;";
+        readonly string charsuDb = "data source=192.185.10.110;initial catalog=sachiery_GroceryApps;user id=sachiery_admin;password=bkY000o$3;MultipleActiveResultSets=True;App=EntityFramework&quot;";
         readonly string sachiChakkiDb = "data source=sachichakkiwh.mine.nu;initial catalog=BIZPRO_WH;user id=sa;password=golden@3864;MultipleActiveResultSets=True;App=EntityFramework&quot;";
         readonly SqlConnection charsuConnection = null;
         readonly SqlConnection sachiChakkiConnection = null;

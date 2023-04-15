@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/CBSCustomerAPI" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/CBSCustomerAPI" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:complexType name="reportRequest">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="loginId" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="loginPassword" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="datefrom" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="dateto" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="reportRequest" nillable="true" type="tns:reportRequest" />
+  <xs:complexType name="ArrayOfreportResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="reportResponse" nillable="true" type="tns:reportResponse" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfreportResponse" nillable="true" type="tns:ArrayOfreportResponse" />
+  <xs:complexType name="reportResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Mobile" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Masking" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Message" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SentDate" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="STATUS" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ErrorMessage" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="reportResponse" nillable="true" type="tns:reportResponse" />
+  <xs:complexType name="CampaignsResquest">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="loginId" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="loginPassword" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CampaignsResquest" nillable="true" type="tns:CampaignsResquest" />
+  <xs:complexType name="ArrayOfCampaignsResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CampaignsResponse" nillable="true" type="tns:CampaignsResponse" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCampaignsResponse" nillable="true" type="tns:ArrayOfCampaignsResponse" />
+  <xs:complexType name="CampaignsResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="GroupName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ErrorMessage" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CampaignsResponse" nillable="true" type="tns:CampaignsResponse" />
+  <xs:complexType name="QuickSMSResquest">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="loginId" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="loginPassword" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Destination" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Mask" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Message" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="UniCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ShortCodePrefered" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="QuickSMSResquest" nillable="true" type="tns:QuickSMSResquest" />
+  <xs:complexType name="CounterRequest">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="loginId" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="loginPassword" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CounterRequest" nillable="true" type="tns:CounterRequest" />
+  <xs:complexType name="ArrayOfCounterResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CounterResponse" nillable="true" type="tns:CounterResponse" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCounterResponse" nillable="true" type="tns:ArrayOfCounterResponse" />
+  <xs:complexType name="CounterResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Total_Balance" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Total_Broadcasted" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Total_Successful" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Total_Failed" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="User_Masks" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ErrorMessage" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CounterResponse" nillable="true" type="tns:CounterResponse" />
+  <xs:complexType name="BulkSMSResquest">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="loginId" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="loginPassword" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CampaignName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Mask" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Message" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="UniCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="lstNL" nillable="true" type="tns:ArrayOfnumbersList" />
+      <xs:element minOccurs="0" name="CampaignDate" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ShortCodePrefered" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="BulkSMSResquest" nillable="true" type="tns:BulkSMSResquest" />
+  <xs:complexType name="ArrayOfnumbersList">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="numbersList" nillable="true" type="tns:numbersList" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfnumbersList" nillable="true" type="tns:ArrayOfnumbersList" />
+  <xs:complexType name="numbersList">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Number" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="numbersList" nillable="true" type="tns:numbersList" />
+  <xs:complexType name="DynamicSMSRequest">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="loginId" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="loginPassword" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Mask" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Message" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="lstNL" nillable="true" type="tns:ArrayOfDynamicList" />
+      <xs:element minOccurs="0" name="CampaignDate" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ShortCodePrefered" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="DynamicSMSRequest" nillable="true" type="tns:DynamicSMSRequest" />
+  <xs:complexType name="ArrayOfDynamicList">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="DynamicList" nillable="true" type="tns:DynamicList" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfDynamicList" nillable="true" type="tns:ArrayOfDynamicList" />
+  <xs:complexType name="DynamicList">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Number" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Var1" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Var2" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Var3" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Var4" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Var5" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="DynamicList" nillable="true" type="tns:DynamicList" />
+  <xs:complexType name="InboxRequest">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="loginId" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="loginPassword" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="InboxRequest" nillable="true" type="tns:InboxRequest" />
+  <xs:complexType name="ArrayOfInboxResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="InboxResponse" nillable="true" type="tns:InboxResponse" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfInboxResponse" nillable="true" type="tns:ArrayOfInboxResponse" />
+  <xs:complexType name="InboxResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Mobile" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Reply" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ReplyDate" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ErrorMessage" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="InboxResponse" nillable="true" type="tns:InboxResponse" />
+</xs:schema>
