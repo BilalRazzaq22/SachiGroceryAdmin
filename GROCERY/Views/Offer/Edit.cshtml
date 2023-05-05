@@ -18,95 +18,95 @@
 <h2>Offers</h2>
 
 @*@using (Html.BeginForm("Edit", "Offer"))
-{*@
-    @Html.AntiForgeryToken()
-    @Html.HiddenFor(model => model.OFFER_ID)
-    <div class="row">
-        <div class="col-md-12">
+    {*@
+@Html.AntiForgeryToken()
+@Html.HiddenFor(model => model.OFFER_ID)
+<div class="row">
+    <div class="col-md-12">
 
-            <div class="panel panel-primary" data-collapsed="0">
+        <div class="panel panel-primary" data-collapsed="0">
 
-                <div class="panel-heading">
-                    <div class="panel-title">
-                        Update Offer
-                    </div>
-
-                    <div class="panel-options">
-                        <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
-                    </div>
+            <div class="panel-heading">
+                <div class="panel-title">
+                    Update Offer
                 </div>
 
+                <div class="panel-options">
+                    <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                </div>
+            </div>
 
-                <div class="panel-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="product_discount_percentage" class="control-label">Discount %</label>
-                                @Html.TextBoxFor(model => model.DISCOUNT, new { @class = "form-control", placeholder = "Discount %", Type = "Number", Min = "0" })
-                            </div>
+
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="product_discount_percentage" class="control-label">Discount %</label>
+                            @Html.TextBoxFor(model => model.DISCOUNT, new { @class = "form-control", placeholder = "Discount %", Type = "Number", Min = "0" })
                         </div>
-                        <div class="col-md-6" id="coupontype">
-                            <div class="form-group">
-                                <label for="user_status" class="control-label">Select Type</label>
-                                @{
-                                    List<SelectListItem> listActive = new List<SelectListItem>();
-                                    listActive.Add(new SelectListItem
-                                    {
-                                        Text = "Select Type",
-                                        Value = "Select Type",
-                                        Selected = true
-                                    });
-                                    listActive.Add(new SelectListItem
-                                    {
-                                        Text = "Category",
-                                        Value = "Category"
-                                    });
-                                    listActive.Add(new SelectListItem
-                                    {
-                                        Text = "Sub Category",
-                                        Value = "Sub Category"
-                                    });
-                                    listActive.Add(new SelectListItem
-                                    {
-                                        Text = "Product",
-                                        Value = "Product"
-                                    });
-                                }
-                                @Html.DropDownListFor(model => model.TYPE, listActive, null, new { @class = "form-control", @Id = "TYPE" })
-                            </div>
+                    </div>
+                    <div class="col-md-6" id="coupontype">
+                        <div class="form-group">
+                            <label for="user_status" class="control-label">Select Type</label>
+                            @{
+                                List<SelectListItem> listActive = new List<SelectListItem>();
+                                listActive.Add(new SelectListItem
+                                {
+                                    Text = "Select Type",
+                                    Value = "Select Type",
+                                    Selected = true
+                                });
+                                listActive.Add(new SelectListItem
+                                {
+                                    Text = "Category",
+                                    Value = "Category"
+                                });
+                                listActive.Add(new SelectListItem
+                                {
+                                    Text = "Sub Category",
+                                    Value = "Sub Category"
+                                });
+                                listActive.Add(new SelectListItem
+                                {
+                                    Text = "Product",
+                                    Value = "Product"
+                                });
+                            }
+                            @Html.DropDownListFor(model => model.TYPE, listActive, null, new { @class = "form-control", @Id = "TYPE" })
                         </div>
-                        <div class="col-md-6" id="categoryid">
-                            <div class="form-group">
-                                <label for="product_cat" class="control-label">Category</label>
-                                <select class="form-control" name="CATEGORY_ID" id="CATEGORY_ID">
-                                    <option value="-1">Select An Option</option>
-                                </select>
-                            </div>
+                    </div>
+                    <div class="col-md-6" id="categoryid">
+                        <div class="form-group">
+                            <label for="product_cat" class="control-label">Category</label>
+                            <select class="form-control" name="CATEGORY_ID" id="CATEGORY_ID">
+                                <option value="-1">Select An Option</option>
+                            </select>
                         </div>
-                        <div class="col-md-6" id="subcategoryid">
-                            <div class="form-group">
-                                <label for="product_sub_cat" class="control-label">Sub Category</label>
-                                <select class="form-control" name="SUB_CATEGORY_ID" id="SUB_CATEGORY_ID">
-                                    <option value="-1">Select An Option</option>
-                                </select>
-                            </div>
+                    </div>
+                    <div class="col-md-6" id="subcategoryid">
+                        <div class="form-group">
+                            <label for="product_sub_cat" class="control-label">Sub Category</label>
+                            <select class="form-control" name="SUB_CATEGORY_ID" id="SUB_CATEGORY_ID">
+                                <option value="-1">Select An Option</option>
+                            </select>
                         </div>
-                        <div class="col-md-6" id="productid">
-                            <div class="form-group">
-                                <label for="product" class="control-label">Product</label>
-                                <select class="form-control" name="PRODUCT_ID" id="PRODUCT_ID">
-                                    <option value="-1">Select An Option</option>
-                                </select>
-                            </div>
+                    </div>
+                    <div class="col-md-6" id="productid">
+                        <div class="form-group">
+                            <label for="product" class="control-label">Product</label>
+                            <select class="form-control" name="PRODUCT_ID" id="PRODUCT_ID">
+                                <option value="-1">Select An Option</option>
+                            </select>
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button id="btnupdate" type="submit" class="btn btn-info">Update</button>
-                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="btnupdate" type="submit" class="btn btn-info">Update</button>
             </div>
         </div>
     </div>
+</div>
 @*}*@
 
 
@@ -198,9 +198,9 @@
 
     $("#CATEGORY_ID").change(function () {
         if ($("#TYPE").val() == "Sub Category") {
+        }
             $("#SUB_CATEGORY_ID").empty();
             populateSubCategoriesDropDown();
-        }
         @*$.ajax({
             type: 'POST',
             url: '@Url.Action("GetSubCategory")', // we are calling json method
@@ -224,8 +224,8 @@
     $("#SUB_CATEGORY_ID").change(function () {
         if ($("#TYPE").val() == "Product") {
             $("#PRODUCT_ID").empty();
-            initializeProductsList($("#SUB_CATEGORY_ID").val());
         }
+            initializeProductsList($("#SUB_CATEGORY_ID").val());
         @*$.ajax({
             type: 'POST',
             url: '@Url.Action("GetProduct")', // we are calling json method
@@ -324,11 +324,11 @@
         }
         $("#SUB_CATEGORY_ID").html(options);
 
-        $("#SUB_CATEGORY_ID").val(@ViewBag.SUBCATEGORYID);
+      $("#SUB_CATEGORY_ID").val(@ViewBag.SUBCATEGORYID);
 
-        if ($("#TYPE").val() == "Product") {
+        @*  if ($("#TYPE").val() == "Product") {
             initializeProductsList($("#SUB_CATEGORY_ID").val());
-        }
+       *@
     }
 
     function populateProductsDropDown() {

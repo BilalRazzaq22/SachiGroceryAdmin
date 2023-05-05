@@ -7,7 +7,7 @@ namespace GROCERY.DAL.Managers
     {
         public DataSet getAllProducts(int scID)
         {
-            string q = @"SELECT top 1000  P.PRODUCT_ID, P.NAME, P.DESCRIPTION PRODUCT_DESCRIPTION, ISNULL(P.PRICE,0) PRICE, P.OLD_PRODUCT_ID,
+            string q = @"SELECT top 1000  P.PRODUCT_ID, P.NAME, P.DESCRIPTION PRODUCT_DESCRIPTION, ISNULL((SELECT TOP 1 UNIT_PRICE FROM BARCODES B WHERE B.ITEM_CODE = P.PRODUCT_ID AND B.IsActive = 1 AND B.bDEFAULT = 1),0) PRICE, P.OLD_PRODUCT_ID,
                         case 
                         when P.HAS_IMAGE = 1 then 'Yes' 
                         else 'No'
@@ -31,7 +31,7 @@ namespace GROCERY.DAL.Managers
         }
         public DataSet getAllMiniProducts(int scID)
         {
-            string q = @"SELECT top 1000 P.PRODUCT_ID, P.NAME, P.DESCRIPTION PRODUCT_DESCRIPTION, ISNULL(P.PRICE,0) PRICE, P.OLD_PRODUCT_ID,
+            string q = @"SELECT top 1000 P.PRODUCT_ID, P.NAME, P.DESCRIPTION PRODUCT_DESCRIPTION, ISNULL((SELECT TOP 1 UNIT_PRICE FROM BARCODES B WHERE B.ITEM_CODE = P.PRODUCT_ID AND B.IsActive = 1 AND B.bDEFAULT = 1),0) PRICE, P.OLD_PRODUCT_ID,
                         case 
                         when P.HAS_IMAGE = 1 then 'Yes' 
                         else 'No'
@@ -63,7 +63,7 @@ namespace GROCERY.DAL.Managers
         }
         public DataSet GetProductsBySubCat(int scID)
         {
-            string q = @"SELECT top 1000  P.PRODUCT_ID, P.NAME, P.DESCRIPTION PRODUCT_DESCRIPTION, ISNULL(P.PRICE,0) PRICE, P.OLD_PRODUCT_ID,
+            string q = @"SELECT top 1000  P.PRODUCT_ID, P.NAME, P.DESCRIPTION PRODUCT_DESCRIPTION, ISNULL((SELECT TOP 1 UNIT_PRICE FROM BARCODES B WHERE B.ITEM_CODE = P.PRODUCT_ID AND B.IsActive = 1 AND B.bDEFAULT = 1),0) PRICE, P.OLD_PRODUCT_ID,
                         case 
                         when P.HAS_IMAGE = 1 then 'Yes' 
                         else 'No'
@@ -191,7 +191,7 @@ namespace GROCERY.DAL.Managers
             }
             string where = " where 1=1 " +filter;
 
-            string q = @"SELECT  P.PRODUCT_ID, P.NAME, P.DESCRIPTION PRODUCT_DESCRIPTION, ISNULL(P.PRICE,0) PRICE, P.OLD_PRODUCT_ID,
+            string q = @"SELECT  P.PRODUCT_ID, P.NAME, P.DESCRIPTION PRODUCT_DESCRIPTION, ISNULL((SELECT TOP 1 UNIT_PRICE FROM BARCODES B WHERE B.ITEM_CODE = P.PRODUCT_ID AND B.IsActive = 1 AND B.bDEFAULT = 1),0) PRICE, P.OLD_PRODUCT_ID,
                         case 
                         when P.HAS_IMAGE = 1 then 'Yes' 
                         else 'No'
@@ -230,7 +230,7 @@ namespace GROCERY.DAL.Managers
             //FOR MINI ITEMS
             string where = " where 1=1 AND P.OLD_PRODUCT_ID >=1000000 " + filter;
 
-            string q = @"SELECT  P.PRODUCT_ID, P.NAME, P.DESCRIPTION PRODUCT_DESCRIPTION, ISNULL(P.PRICE,0) PRICE, P.OLD_PRODUCT_ID,
+            string q = @"SELECT  P.PRODUCT_ID, P.NAME, P.DESCRIPTION PRODUCT_DESCRIPTION, ISNULL((SELECT TOP 1 UNIT_PRICE FROM BARCODES B WHERE B.ITEM_CODE = P.PRODUCT_ID AND B.IsActive = 1 AND B.bDEFAULT = 1),0) PRICE, P.OLD_PRODUCT_ID,
                         case 
                         when P.HAS_IMAGE = 1 then 'Yes' 
                         else 'No'
@@ -258,7 +258,7 @@ namespace GROCERY.DAL.Managers
         public DataSet getAllProductsForOrders(int scID, int bID)
         {
 
-            string q = @"SELECT     P.OLD_PRODUCT_ID as PRODUCT_ID, P.NAME, P.DESCRIPTION PRODUCT_DESCRIPTION, ISNULL(P.PRICE,0) PRICE, ISNULL(P.DISCOUNT,0) DISCOUNT, 
+            string q = @"SELECT     P.OLD_PRODUCT_ID as PRODUCT_ID, P.NAME, P.DESCRIPTION PRODUCT_DESCRIPTION, ISNULL((SELECT TOP 1 UNIT_PRICE FROM BARCODES B WHERE B.ITEM_CODE = P.PRODUCT_ID AND B.IsActive = 1 AND B.bDEFAULT = 1),0) PRICE, ISNULL(P.DISCOUNT,0) DISCOUNT, 
                                     FLOOR(SUM(Stk.QTY)) QUANTITY
                                     FROM      PRODUCTS P 
                                     INNER JOIN STOCK Stk on P.OLD_PRODUCT_ID = Stk.PRODUCT_ID

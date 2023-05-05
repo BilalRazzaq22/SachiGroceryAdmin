@@ -16,24 +16,51 @@ namespace GROCERY.Models
     {
         public short LOCNO { get; set; }
         public int ITEM_CODE { get; set; }
-        public Nullable<decimal> QTY { get; set; }
-        public Nullable<decimal> WH_QTY { get; set; }
-        public Nullable<decimal> T_QTY { get; set; }
+        public Nullable<double> QTY { get; set; }
+        public Nullable<double> WH_QTY { get; set; }
+        public Nullable<double> T_QTY { get; set; }
+        public Nullable<decimal> MATERIAL_COST { get; set; }
+        public Nullable<decimal> INGR_COST { get; set; }
+        public Nullable<decimal> PKG_COST { get; set; }
+        public Nullable<decimal> LAB_COST { get; set; }
+        public Nullable<decimal> OH_COST { get; set; }
+        public Nullable<decimal> OTH_COST { get; set; }
+        public Nullable<decimal> WASTAGE { get; set; }
+        public Nullable<decimal> COST_PRICE1 { get; set; }
+        public Nullable<decimal> COST_PRICE2 { get; set; }
+        public Nullable<decimal> COST_PRICE3 { get; set; }
+        public Nullable<decimal> NET_COST { get; set; }
+        public Nullable<decimal> AVG_COST { get; set; }
+        public Nullable<decimal> AVG_COST1 { get; set; }
+        public Nullable<decimal> AVG_COST2 { get; set; }
+        public Nullable<decimal> AVG_COST3 { get; set; }
+        public Nullable<decimal> F_PUR_PRICE { get; set; }
+        public Nullable<decimal> LAST_PUR_PRICE1 { get; set; }
+        public Nullable<decimal> LAST_PUR_PRICE2 { get; set; }
+        public Nullable<decimal> LAST_PUR_PRICE3 { get; set; }
+        public string LAST_SUPP { get; set; }
+        public string LAST_SUPP1 { get; set; }
+        public string LAST_SUPP2 { get; set; }
         public Nullable<byte> FLOOR_NO { get; set; }
         public Nullable<short> COUNTER { get; set; }
         public Nullable<byte> SHELF { get; set; }
-        public Nullable<decimal> SHELF_QTY { get; set; }
-        public Nullable<decimal> SHELF_FACING { get; set; }
+        public Nullable<double> SHELF_QTY { get; set; }
+        public Nullable<double> SHELF_FACING { get; set; }
         public Nullable<System.DateTime> LSDATE { get; set; }
         public Nullable<System.DateTime> LPDATE { get; set; }
         public Nullable<bool> ALLOW_NEGATIVE { get; set; }
-        public Nullable<decimal> AreaCovered { get; set; }
+        public Nullable<double> AreaCovered { get; set; }
+        public Nullable<double> MAX_QTY { get; set; }
+        public Nullable<double> MIN_QTY { get; set; }
+        public Nullable<double> OP_STOCK { get; set; }
+        public Nullable<double> OP_STOCK_VAL { get; set; }
+        public Nullable<bool> ITEM_STATUS { get; set; }
+        public Nullable<double> PHY_QTY { get; set; }
+        public Nullable<int> STATUS { get; set; }
+        public Nullable<System.DateTime> PDATE { get; set; }
         public Nullable<bool> IsActive { get; set; }
-        public Nullable<decimal> MAX_QTY { get; set; }
-        public Nullable<decimal> MIN_QTY { get; set; }
-        public Nullable<decimal> OP_STOCK { get; set; }
-        public Nullable<decimal> OP_STOCK_VAL { get; set; }
         public Nullable<bool> NeedsReplication { get; set; }
         public Nullable<bool> NeedsUpdation { get; set; }
+        public string SUPP_CODE { get; set; }
     }
 }

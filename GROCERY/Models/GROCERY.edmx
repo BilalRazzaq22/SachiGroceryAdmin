@@ -406,6 +406,7 @@ warning 6002: The table/view 'anytimea_GROCERY.dbo.ITEMINFO' does not have a pri
             <PropertyRef Name="ITEM_CODE" />
             <PropertyRef Name="HV_CODE" />
             <PropertyRef Name="ITEM_ATTRIB" />
+            <PropertyRef Name="ITEM_TYPE" />
             <PropertyRef Name="UOM" />
             <PropertyRef Name="PACKING_UNITS" />
             <PropertyRef Name="ISSUE_BY_WEIGHT" />
@@ -419,7 +420,6 @@ warning 6002: The table/view 'anytimea_GROCERY.dbo.ITEMINFO' does not have a pri
             <PropertyRef Name="BRAND_CODE" />
             <PropertyRef Name="DESIGN_CD" />
             <PropertyRef Name="CLR_CODE" />
-            <PropertyRef Name="SUPP_CODE" />
             <PropertyRef Name="MAKE_CODE" />
             <PropertyRef Name="SIZE_CODE" />
             <PropertyRef Name="AUTH_CODE" />
@@ -549,6 +549,7 @@ warning 6002: The table/view 'anytimea_GROCERY.dbo.ITEMINFO' does not have a pri
           <Property Name="ITEM_CODE" Type="int" Nullable="false" />
           <Property Name="HV_CODE" Type="varchar" MaxLength="10" Nullable="false" />
           <Property Name="ITEM_ATTRIB" Type="tinyint" Nullable="false" />
+          <Property Name="ITEM_TYPE" Type="tinyint" Nullable="false" />
           <Property Name="UOM" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="PACKING_UNITS" Type="decimal" Precision="9" Scale="3" Nullable="false" />
           <Property Name="ISSUE_BY_WEIGHT" Type="bit" Nullable="false" />
@@ -562,7 +563,6 @@ warning 6002: The table/view 'anytimea_GROCERY.dbo.ITEMINFO' does not have a pri
           <Property Name="BRAND_CODE" Type="int" Nullable="false" />
           <Property Name="DESIGN_CD" Type="int" Nullable="false" />
           <Property Name="CLR_CODE" Type="smallint" Nullable="false" />
-          <Property Name="SUPP_CODE" Type="varchar" MaxLength="10" Nullable="false" />
           <Property Name="MAKE_CODE" Type="smallint" Nullable="false" />
           <Property Name="SIZE_CODE" Type="int" Nullable="false" />
           <Property Name="AUTH_CODE" Type="int" Nullable="false" />
@@ -902,13 +902,11 @@ warning 6013: The table/view 'anytimea_GROCERY.dbo.Product_Temp_Load' does not h
           <Property Name="PRODUCT_ID" Type="int" />
           <Property Name="TYPE_NAME" Type="nvarchar(max)" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'anytimea_GROCERY.dbo.PRODUCTS' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="PRODUCTS">
           <Key>
             <PropertyRef Name="PRODUCT_ID" />
           </Key>
-          <Property Name="PRODUCT_ID" Type="int" Nullable="false" />
+          <Property Name="PRODUCT_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="OLD_PRODUCT_ID" Type="int" />
           <Property Name="NAME" Type="varchar(max)" />
           <Property Name="DESCRIPTION" Type="varchar(max)" />
@@ -981,6 +979,8 @@ warning 6002: The table/view 'anytimea_GROCERY.dbo.PRODUCTS' does not have a pri
           <Property Name="THRESHOLD" Type="int" />
           <Property Name="IS_EXEMPTED" Type="bit" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'anytimea_GROCERY.dbo.PS000' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="PS000">
           <Key>
             <PropertyRef Name="LOCNO" />
@@ -988,25 +988,52 @@ warning 6002: The table/view 'anytimea_GROCERY.dbo.PRODUCTS' does not have a pri
           </Key>
           <Property Name="LOCNO" Type="smallint" Nullable="false" />
           <Property Name="ITEM_CODE" Type="int" Nullable="false" />
-          <Property Name="QTY" Type="decimal" Precision="18" Scale="3" />
-          <Property Name="WH_QTY" Type="decimal" Precision="9" Scale="3" />
-          <Property Name="T_QTY" Type="decimal" Precision="19" Scale="3" />
+          <Property Name="QTY" Type="float" />
+          <Property Name="WH_QTY" Type="float" />
+          <Property Name="T_QTY" Type="float" />
+          <Property Name="MATERIAL_COST" Type="money" />
+          <Property Name="INGR_COST" Type="money" />
+          <Property Name="PKG_COST" Type="money" />
+          <Property Name="LAB_COST" Type="money" />
+          <Property Name="OH_COST" Type="money" />
+          <Property Name="OTH_COST" Type="money" />
+          <Property Name="WASTAGE" Type="money" />
+          <Property Name="COST_PRICE1" Type="money" />
+          <Property Name="COST_PRICE2" Type="money" />
+          <Property Name="COST_PRICE3" Type="money" />
+          <Property Name="NET_COST" Type="money" />
+          <Property Name="AVG_COST" Type="money" />
+          <Property Name="AVG_COST1" Type="money" />
+          <Property Name="AVG_COST2" Type="money" />
+          <Property Name="AVG_COST3" Type="money" />
+          <Property Name="F_PUR_PRICE" Type="money" />
+          <Property Name="LAST_PUR_PRICE1" Type="money" />
+          <Property Name="LAST_PUR_PRICE2" Type="money" />
+          <Property Name="LAST_PUR_PRICE3" Type="money" />
+          <Property Name="LAST_SUPP" Type="varchar" MaxLength="10" />
+          <Property Name="LAST_SUPP1" Type="varchar" MaxLength="10" />
+          <Property Name="LAST_SUPP2" Type="varchar" MaxLength="10" />
           <Property Name="FLOOR_NO" Type="tinyint" />
           <Property Name="COUNTER" Type="smallint" />
           <Property Name="SHELF" Type="tinyint" />
-          <Property Name="SHELF_QTY" Type="decimal" Precision="9" Scale="3" />
-          <Property Name="SHELF_FACING" Type="decimal" Precision="9" Scale="3" />
+          <Property Name="SHELF_QTY" Type="float" />
+          <Property Name="SHELF_FACING" Type="float" />
           <Property Name="LSDATE" Type="datetime" />
           <Property Name="LPDATE" Type="datetime" />
           <Property Name="ALLOW_NEGATIVE" Type="bit" />
-          <Property Name="AreaCovered" Type="decimal" Precision="9" Scale="2" />
+          <Property Name="AreaCovered" Type="float" />
+          <Property Name="MAX_QTY" Type="float" />
+          <Property Name="MIN_QTY" Type="float" />
+          <Property Name="OP_STOCK" Type="float" />
+          <Property Name="OP_STOCK_VAL" Type="float" />
+          <Property Name="ITEM_STATUS" Type="bit" />
+          <Property Name="PHY_QTY" Type="float" />
+          <Property Name="STATUS" Type="int" />
+          <Property Name="PDATE" Type="datetime" />
           <Property Name="IsActive" Type="bit" />
-          <Property Name="MAX_QTY" Type="decimal" Precision="19" Scale="3" />
-          <Property Name="MIN_QTY" Type="decimal" Precision="19" Scale="3" />
-          <Property Name="OP_STOCK" Type="decimal" Precision="19" Scale="3" />
-          <Property Name="OP_STOCK_VAL" Type="money" />
           <Property Name="NeedsReplication" Type="bit" />
           <Property Name="NeedsUpdation" Type="bit" />
+          <Property Name="SUPP_CODE" Type="varchar" MaxLength="10" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'anytimea_GROCERY.dbo.PS000Test' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -1101,10 +1128,14 @@ warning 6002: The table/view 'anytimea_GROCERY.dbo.PS000Test' does not have a pr
           <Property Name="SMS_TYPE_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="DESCRIPTION" Type="nvarchar" MaxLength="200" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'anytimea_GROCERY.dbo.STOCK' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="STOCK">
           <Key>
             <PropertyRef Name="BRANCH_ID" />
             <PropertyRef Name="PRODUCT_ID" />
+            <PropertyRef Name="QTY" />
+            <PropertyRef Name="IsActive" />
           </Key>
           <Property Name="BRANCH_ID" Type="smallint" Nullable="false" />
           <Property Name="PRODUCT_ID" Type="int" Nullable="false" />
@@ -1418,6 +1449,9 @@ warning 6013: The table/view 'anytimea_GROCERY.dbo.Transaction' does not have a 
           <Property Name="USER_ADDRESS_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="USER_ID" Type="int" />
           <Property Name="ADDRESS" Type="nvarchar(max)" />
+          <Property Name="BRANCH_ID" Type="int" />
+          <Property Name="LONGITUDE" Type="nvarchar" MaxLength="50" />
+          <Property Name="LATITUDE" Type="nvarchar" MaxLength="50" />
           <Property Name="IS_ACTIVE" Type="bit" />
           <Property Name="CREATED_BY" Type="int" />
           <Property Name="CREATED_ON" Type="datetime" />
@@ -1562,6 +1596,12 @@ warning 6013: The table/view 'anytimea_GROCERY.dbo.Transaction' does not have a 
           <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
           <Parameter Name="owner_id" Type="int" Mode="In" />
         </Function>
+        <Function Name="SP_GetAllProductsByCategories" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="PageIndex" Type="int" Mode="In" />
+          <Parameter Name="PageSize" Type="int" Mode="In" />
+          <Parameter Name="Sub_Categories_Id" Type="int" Mode="In" />
+          <Parameter Name="BranchId" Type="int" Mode="In" />
+        </Function>
         <Function Name="SP_GETRECOMMENDEDPRODUCTS" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="sp_helpdiagramdefinition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
@@ -1646,6 +1686,10 @@ warning 6013: The table/view 'anytimea_GROCERY.dbo.Transaction' does not have a 
           <Parameter Name="CategoryId" Type="nvarchar" Mode="In" />
           <Parameter Name="SubCategoryId" Type="nvarchar" Mode="In" />
           <Parameter Name="GroupId" Type="nvarchar" Mode="In" />
+          <Parameter Name="BranchId" Type="int" Mode="In" />
+          <Parameter Name="MinPrice" Type="int" Mode="In" />
+          <Parameter Name="MaxPrice" Type="int" Mode="In" />
+          <Parameter Name="UserId" Type="int" Mode="In" />
         </Function>
         <Function Name="SPGetAllRecommendedProducts" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="PageIndex" Type="int" Mode="In" />
@@ -1659,9 +1703,12 @@ warning 6013: The table/view 'anytimea_GROCERY.dbo.Transaction' does not have a 
         </Function>
         <Function Name="SpGetHomeProducts" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="CategoryId" Type="int" Mode="In" />
+          <Parameter Name="BranchId" Type="int" Mode="In" />
         </Function>
         <Function Name="SpGetProductDetailByProductNameUrl" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="ProductNameUrl" Type="varchar" Mode="In" />
+          <Parameter Name="BranchId" Type="int" Mode="In" />
+          <Parameter Name="UserId" Type="int" Mode="In" />
         </Function>
         <Function Name="SpGetProductImagesByProductId" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="ProductId" Type="int" Mode="In" />
@@ -1721,13 +1768,12 @@ warning 6013: The table/view 'anytimea_GROCERY.dbo.Transaction' does not have a 
           <EntitySet Name="PRODUCT_REVIEWS" EntityType="Self.PRODUCT_REVIEWS" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PRODUCT_TAGS" EntityType="Self.PRODUCT_TAGS" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PRODUCT_TYPES" EntityType="Self.PRODUCT_TYPES" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PRODUCTS" EntityType="Self.PRODUCTS" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ProductTest" EntityType="Self.ProductTest" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="PS000" EntityType="Self.PS000" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RECOMMENDED_PRODUCTS" EntityType="Self.RECOMMENDED_PRODUCTS" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RIDER_ORDER" EntityType="Self.RIDER_ORDER" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SMS" EntityType="Self.SMS" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SMS_TYPES" EntityType="Self.SMS_TYPES" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="STOCK" EntityType="Self.STOCK" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SUB_CATEGORIES" EntityType="Self.SUB_CATEGORIES" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SUBMENU" EntityType="Self.SUBMENU" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
@@ -1836,6 +1882,7 @@ warning 6013: The table/view 'anytimea_GROCERY.dbo.Transaction' does not have a 
     [ITEMINFO].[ITEM_CODE] AS [ITEM_CODE], 
     [ITEMINFO].[HV_CODE] AS [HV_CODE], 
     [ITEMINFO].[ITEM_ATTRIB] AS [ITEM_ATTRIB], 
+    [ITEMINFO].[ITEM_TYPE] AS [ITEM_TYPE], 
     [ITEMINFO].[UOM] AS [UOM], 
     [ITEMINFO].[PACKING_UNITS] AS [PACKING_UNITS], 
     [ITEMINFO].[ISSUE_BY_WEIGHT] AS [ISSUE_BY_WEIGHT], 
@@ -1849,7 +1896,6 @@ warning 6013: The table/view 'anytimea_GROCERY.dbo.Transaction' does not have a 
     [ITEMINFO].[BRAND_CODE] AS [BRAND_CODE], 
     [ITEMINFO].[DESIGN_CD] AS [DESIGN_CD], 
     [ITEMINFO].[CLR_CODE] AS [CLR_CODE], 
-    [ITEMINFO].[SUPP_CODE] AS [SUPP_CODE], 
     [ITEMINFO].[MAKE_CODE] AS [MAKE_CODE], 
     [ITEMINFO].[SIZE_CODE] AS [SIZE_CODE], 
     [ITEMINFO].[AUTH_CODE] AS [AUTH_CODE], 
@@ -1977,44 +2023,57 @@ warning 6013: The table/view 'anytimea_GROCERY.dbo.Transaction' does not have a 
     [ITEMINFO].[L8p3NeedsUpdation] AS [L8p3NeedsUpdation]
     FROM [dbo].[ITEMINFO] AS [ITEMINFO]</DefiningQuery>
           </EntitySet>
-          <EntitySet Name="PRODUCTS" EntityType="Self.PRODUCTS" store:Type="Tables" store:Schema="dbo">
+          <EntitySet Name="PS000" EntityType="Self.PS000" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
-    [PRODUCTS].[PRODUCT_ID] AS [PRODUCT_ID], 
-    [PRODUCTS].[OLD_PRODUCT_ID] AS [OLD_PRODUCT_ID], 
-    [PRODUCTS].[NAME] AS [NAME], 
-    [PRODUCTS].[DESCRIPTION] AS [DESCRIPTION], 
-    [PRODUCTS].[SUB_CATEGORY_ID] AS [SUB_CATEGORY_ID], 
-    [PRODUCTS].[UNIT_OF_MEASUREMENT] AS [UNIT_OF_MEASUREMENT], 
-    [PRODUCTS].[AVG_COST] AS [AVG_COST], 
-    [PRODUCTS].[PRICE] AS [PRICE], 
-    [PRODUCTS].[DISCOUNT_PERCENTAGE] AS [DISCOUNT_PERCENTAGE], 
-    [PRODUCTS].[IMPORTED] AS [IMPORTED], 
-    [PRODUCTS].[IS_ACTIVE] AS [IS_ACTIVE], 
-    [PRODUCTS].[CREATED_DATE] AS [CREATED_DATE], 
-    [PRODUCTS].[CREATED_BY] AS [CREATED_BY], 
-    [PRODUCTS].[MODIFIED_DATE] AS [MODIFIED_DATE], 
-    [PRODUCTS].[MODIFIED_BY] AS [MODIFIED_BY], 
-    [PRODUCTS].[COLOR] AS [COLOR], 
-    [PRODUCTS].[BRAND] AS [BRAND], 
-    [PRODUCTS].[FLAVOR] AS [FLAVOR], 
-    [PRODUCTS].[PACKING] AS [PACKING], 
-    [PRODUCTS].[TAG] AS [TAG], 
-    [PRODUCTS].[TYPES] AS [TYPES], 
-    [PRODUCTS].[DISCOUNT] AS [DISCOUNT], 
-    [PRODUCTS].[SEC_SUB_CATEGORY_A] AS [SEC_SUB_CATEGORY_A], 
-    [PRODUCTS].[SEC_SUB_CATEGORY_B] AS [SEC_SUB_CATEGORY_B], 
-    [PRODUCTS].[PRICE2] AS [PRICE2], 
-    [PRODUCTS].[HAS_IMAGE] AS [HAS_IMAGE], 
-    [PRODUCTS].[HAS_THUMBNAIL_IMAGE] AS [HAS_THUMBNAIL_IMAGE], 
-    [PRODUCTS].[VENDOR_ID] AS [VENDOR_ID], 
-    [PRODUCTS].[CATEGORY_ID] AS [CATEGORY_ID], 
-    [PRODUCTS].[IS_FEATURED] AS [IS_FEATURED], 
-    [PRODUCTS].[THRESHOLD] AS [THRESHOLD], 
-    [PRODUCTS].[IS_EXEMPTED] AS [IS_EXEMPTED], 
-    [PRODUCTS].[PRODUCT_NAME_URL] AS [PRODUCT_NAME_URL], 
-    [PRODUCTS].[DEVICE_TYPE] AS [DEVICE_TYPE], 
-    [PRODUCTS].[IS_FAVOURITE] AS [IS_FAVOURITE]
-    FROM [dbo].[PRODUCTS] AS [PRODUCTS]</DefiningQuery>
+    [PS000].[LOCNO] AS [LOCNO], 
+    [PS000].[ITEM_CODE] AS [ITEM_CODE], 
+    [PS000].[QTY] AS [QTY], 
+    [PS000].[WH_QTY] AS [WH_QTY], 
+    [PS000].[T_QTY] AS [T_QTY], 
+    [PS000].[MATERIAL_COST] AS [MATERIAL_COST], 
+    [PS000].[INGR_COST] AS [INGR_COST], 
+    [PS000].[PKG_COST] AS [PKG_COST], 
+    [PS000].[LAB_COST] AS [LAB_COST], 
+    [PS000].[OH_COST] AS [OH_COST], 
+    [PS000].[OTH_COST] AS [OTH_COST], 
+    [PS000].[WASTAGE] AS [WASTAGE], 
+    [PS000].[COST_PRICE1] AS [COST_PRICE1], 
+    [PS000].[COST_PRICE2] AS [COST_PRICE2], 
+    [PS000].[COST_PRICE3] AS [COST_PRICE3], 
+    [PS000].[NET_COST] AS [NET_COST], 
+    [PS000].[AVG_COST] AS [AVG_COST], 
+    [PS000].[AVG_COST1] AS [AVG_COST1], 
+    [PS000].[AVG_COST2] AS [AVG_COST2], 
+    [PS000].[AVG_COST3] AS [AVG_COST3], 
+    [PS000].[F_PUR_PRICE] AS [F_PUR_PRICE], 
+    [PS000].[LAST_PUR_PRICE1] AS [LAST_PUR_PRICE1], 
+    [PS000].[LAST_PUR_PRICE2] AS [LAST_PUR_PRICE2], 
+    [PS000].[LAST_PUR_PRICE3] AS [LAST_PUR_PRICE3], 
+    [PS000].[LAST_SUPP] AS [LAST_SUPP], 
+    [PS000].[LAST_SUPP1] AS [LAST_SUPP1], 
+    [PS000].[LAST_SUPP2] AS [LAST_SUPP2], 
+    [PS000].[FLOOR_NO] AS [FLOOR_NO], 
+    [PS000].[COUNTER] AS [COUNTER], 
+    [PS000].[SHELF] AS [SHELF], 
+    [PS000].[SHELF_QTY] AS [SHELF_QTY], 
+    [PS000].[SHELF_FACING] AS [SHELF_FACING], 
+    [PS000].[LSDATE] AS [LSDATE], 
+    [PS000].[LPDATE] AS [LPDATE], 
+    [PS000].[ALLOW_NEGATIVE] AS [ALLOW_NEGATIVE], 
+    [PS000].[AreaCovered] AS [AreaCovered], 
+    [PS000].[MAX_QTY] AS [MAX_QTY], 
+    [PS000].[MIN_QTY] AS [MIN_QTY], 
+    [PS000].[OP_STOCK] AS [OP_STOCK], 
+    [PS000].[OP_STOCK_VAL] AS [OP_STOCK_VAL], 
+    [PS000].[ITEM_STATUS] AS [ITEM_STATUS], 
+    [PS000].[PHY_QTY] AS [PHY_QTY], 
+    [PS000].[STATUS] AS [STATUS], 
+    [PS000].[PDATE] AS [PDATE], 
+    [PS000].[IsActive] AS [IsActive], 
+    [PS000].[NeedsReplication] AS [NeedsReplication], 
+    [PS000].[NeedsUpdation] AS [NeedsUpdation], 
+    [PS000].[SUPP_CODE] AS [SUPP_CODE]
+    FROM [dbo].[PS000] AS [PS000]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="PS000Test" EntityType="Self.PS000Test" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -2040,6 +2099,14 @@ warning 6013: The table/view 'anytimea_GROCERY.dbo.Transaction' does not have a 
     [PS000Test].[NeedsReplication] AS [NeedsReplication], 
     [PS000Test].[NeedsUpdation] AS [NeedsUpdation]
     FROM [dbo].[PS000Test] AS [PS000Test]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="STOCK" EntityType="Self.STOCK" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [STOCK].[BRANCH_ID] AS [BRANCH_ID], 
+    [STOCK].[PRODUCT_ID] AS [PRODUCT_ID], 
+    [STOCK].[QTY] AS [QTY], 
+    [STOCK].[IsActive] AS [IsActive]
+    FROM [dbo].[STOCK] AS [STOCK]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="TERMINFO" EntityType="Self.TERMINFO" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -2609,6 +2676,46 @@ warning 6013: The table/view 'anytimea_GROCERY.dbo.Transaction' does not have a 
           <Property Name="PRODUCT_ID" Type="Int32" />
           <Property Name="TYPE_NAME" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
+        <EntityType Name="PRODUCT">
+          <Key>
+            <PropertyRef Name="PRODUCT_ID" />
+          </Key>
+          <Property Name="PRODUCT_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OLD_PRODUCT_ID" Type="Int32" />
+          <Property Name="NAME" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="DESCRIPTION" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="SUB_CATEGORY_ID" Type="Int32" />
+          <Property Name="UNIT_OF_MEASUREMENT" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="AVG_COST" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="PRICE" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="DISCOUNT_PERCENTAGE" Type="Int32" />
+          <Property Name="IMPORTED" Type="Boolean" />
+          <Property Name="IS_ACTIVE" Type="Boolean" />
+          <Property Name="CREATED_DATE" Type="DateTime" Precision="3" />
+          <Property Name="CREATED_BY" Type="Int32" />
+          <Property Name="MODIFIED_DATE" Type="DateTime" Precision="3" />
+          <Property Name="MODIFIED_BY" Type="Int32" />
+          <Property Name="COLOR" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="BRAND" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="FLAVOR" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="PACKING" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="TAG" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="TYPES" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="DISCOUNT" Type="Double" />
+          <Property Name="SEC_SUB_CATEGORY_A" Type="Int32" />
+          <Property Name="SEC_SUB_CATEGORY_B" Type="Int32" />
+          <Property Name="PRICE2" Type="Int32" />
+          <Property Name="HAS_IMAGE" Type="Boolean" />
+          <Property Name="HAS_THUMBNAIL_IMAGE" Type="Boolean" />
+          <Property Name="VENDOR_ID" Type="Int32" />
+          <Property Name="CATEGORY_ID" Type="Int32" />
+          <Property Name="IS_FEATURED" Type="Boolean" />
+          <Property Name="THRESHOLD" Type="Int32" />
+          <Property Name="IS_EXEMPTED" Type="Boolean" />
+          <Property Name="PRODUCT_NAME_URL" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="DEVICE_TYPE" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="IS_FAVOURITE" Type="Boolean" />
+        </EntityType>
         <EntityType Name="ProductTest">
           <Key>
             <PropertyRef Name="PRODUCT_ID" />
@@ -2645,33 +2752,6 @@ warning 6013: The table/view 'anytimea_GROCERY.dbo.Transaction' does not have a 
           <Property Name="IS_FEATURED" Type="Boolean" />
           <Property Name="THRESHOLD" Type="Int32" />
           <Property Name="IS_EXEMPTED" Type="Boolean" />
-        </EntityType>
-        <EntityType Name="PS000">
-          <Key>
-            <PropertyRef Name="LOCNO" />
-            <PropertyRef Name="ITEM_CODE" />
-          </Key>
-          <Property Name="LOCNO" Type="Int16" Nullable="false" />
-          <Property Name="ITEM_CODE" Type="Int32" Nullable="false" />
-          <Property Name="QTY" Type="Decimal" Precision="18" Scale="3" />
-          <Property Name="WH_QTY" Type="Decimal" Precision="9" Scale="3" />
-          <Property Name="T_QTY" Type="Decimal" Precision="19" Scale="3" />
-          <Property Name="FLOOR_NO" Type="Byte" />
-          <Property Name="COUNTER" Type="Int16" />
-          <Property Name="SHELF" Type="Byte" />
-          <Property Name="SHELF_QTY" Type="Decimal" Precision="9" Scale="3" />
-          <Property Name="SHELF_FACING" Type="Decimal" Precision="9" Scale="3" />
-          <Property Name="LSDATE" Type="DateTime" Precision="3" />
-          <Property Name="LPDATE" Type="DateTime" Precision="3" />
-          <Property Name="ALLOW_NEGATIVE" Type="Boolean" />
-          <Property Name="AreaCovered" Type="Decimal" Precision="9" Scale="2" />
-          <Property Name="IsActive" Type="Boolean" />
-          <Property Name="MAX_QTY" Type="Decimal" Precision="19" Scale="3" />
-          <Property Name="MIN_QTY" Type="Decimal" Precision="19" Scale="3" />
-          <Property Name="OP_STOCK" Type="Decimal" Precision="19" Scale="3" />
-          <Property Name="OP_STOCK_VAL" Type="Decimal" Precision="19" Scale="4" />
-          <Property Name="NeedsReplication" Type="Boolean" />
-          <Property Name="NeedsUpdation" Type="Boolean" />
         </EntityType>
         <EntityType Name="RECOMMENDED_PRODUCTS">
           <Key>
@@ -2717,16 +2797,6 @@ warning 6013: The table/view 'anytimea_GROCERY.dbo.Transaction' does not have a 
           </Key>
           <Property Name="SMS_TYPE_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="DESCRIPTION" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="STOCK">
-          <Key>
-            <PropertyRef Name="BRANCH_ID" />
-            <PropertyRef Name="PRODUCT_ID" />
-          </Key>
-          <Property Name="BRANCH_ID" Type="Int16" Nullable="false" />
-          <Property Name="PRODUCT_ID" Type="Int32" Nullable="false" />
-          <Property Name="QTY" Type="Decimal" Precision="18" Scale="3" Nullable="false" />
-          <Property Name="IsActive" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="SUB_CATEGORIES">
           <Key>
@@ -2780,6 +2850,9 @@ warning 6013: The table/view 'anytimea_GROCERY.dbo.Transaction' does not have a 
           <Property Name="USER_ADDRESS_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="USER_ID" Type="Int32" />
           <Property Name="ADDRESS" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="BRANCH_ID" Type="Int32" />
+          <Property Name="LONGITUDE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LATITUDE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="IS_ACTIVE" Type="Boolean" />
           <Property Name="CREATED_BY" Type="Int32" />
           <Property Name="CREATED_ON" Type="DateTime" Precision="3" />
@@ -3054,6 +3127,7 @@ warning 6013: The table/view 'anytimea_GROCERY.dbo.Transaction' does not have a 
             <PropertyRef Name="ITEM_CODE" />
             <PropertyRef Name="HV_CODE" />
             <PropertyRef Name="ITEM_ATTRIB" />
+            <PropertyRef Name="ITEM_TYPE" />
             <PropertyRef Name="UOM" />
             <PropertyRef Name="PACKING_UNITS" />
             <PropertyRef Name="ISSUE_BY_WEIGHT" />
@@ -3067,7 +3141,6 @@ warning 6013: The table/view 'anytimea_GROCERY.dbo.Transaction' does not have a 
             <PropertyRef Name="BRAND_CODE" />
             <PropertyRef Name="DESIGN_CD" />
             <PropertyRef Name="CLR_CODE" />
-            <PropertyRef Name="SUPP_CODE" />
             <PropertyRef Name="MAKE_CODE" />
             <PropertyRef Name="SIZE_CODE" />
             <PropertyRef Name="AUTH_CODE" />
@@ -3197,6 +3270,7 @@ warning 6013: The table/view 'anytimea_GROCERY.dbo.Transaction' does not have a 
           <Property Name="ITEM_CODE" Type="Int32" Nullable="false" />
           <Property Name="HV_CODE" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="ITEM_ATTRIB" Type="Byte" Nullable="false" />
+          <Property Name="ITEM_TYPE" Type="Byte" Nullable="false" />
           <Property Name="UOM" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="PACKING_UNITS" Type="Decimal" Precision="9" Scale="3" Nullable="false" />
           <Property Name="ISSUE_BY_WEIGHT" Type="Boolean" Nullable="false" />
@@ -3210,7 +3284,6 @@ warning 6013: The table/view 'anytimea_GROCERY.dbo.Transaction' does not have a 
           <Property Name="BRAND_CODE" Type="Int32" Nullable="false" />
           <Property Name="DESIGN_CD" Type="Int32" Nullable="false" />
           <Property Name="CLR_CODE" Type="Int16" Nullable="false" />
-          <Property Name="SUPP_CODE" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="MAKE_CODE" Type="Int16" Nullable="false" />
           <Property Name="SIZE_CODE" Type="Int32" Nullable="false" />
           <Property Name="AUTH_CODE" Type="Int32" Nullable="false" />
@@ -3337,45 +3410,59 @@ warning 6013: The table/view 'anytimea_GROCERY.dbo.Transaction' does not have a 
           <Property Name="L8P2NeedsUpdation" Type="Boolean" Nullable="false" />
           <Property Name="L8p3NeedsUpdation" Type="Boolean" Nullable="false" />
         </EntityType>
-        <EntityType Name="PRODUCT">
+        <EntityType Name="PS000">
           <Key>
-            <PropertyRef Name="PRODUCT_ID" />
+            <PropertyRef Name="LOCNO" />
+            <PropertyRef Name="ITEM_CODE" />
           </Key>
-          <Property Name="PRODUCT_ID" Type="Int32" Nullable="false" />
-          <Property Name="OLD_PRODUCT_ID" Type="Int32" />
-          <Property Name="NAME" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="DESCRIPTION" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="SUB_CATEGORY_ID" Type="Int32" />
-          <Property Name="UNIT_OF_MEASUREMENT" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="LOCNO" Type="Int16" Nullable="false" />
+          <Property Name="ITEM_CODE" Type="Int32" Nullable="false" />
+          <Property Name="QTY" Type="Double" />
+          <Property Name="WH_QTY" Type="Double" />
+          <Property Name="T_QTY" Type="Double" />
+          <Property Name="MATERIAL_COST" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="INGR_COST" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="PKG_COST" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="LAB_COST" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="OH_COST" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="OTH_COST" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="WASTAGE" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="COST_PRICE1" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="COST_PRICE2" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="COST_PRICE3" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="NET_COST" Type="Decimal" Precision="19" Scale="4" />
           <Property Name="AVG_COST" Type="Decimal" Precision="19" Scale="4" />
-          <Property Name="PRICE" Type="Decimal" Precision="19" Scale="4" />
-          <Property Name="DISCOUNT_PERCENTAGE" Type="Int32" />
-          <Property Name="IMPORTED" Type="Boolean" />
-          <Property Name="IS_ACTIVE" Type="Boolean" />
-          <Property Name="CREATED_DATE" Type="DateTime" Precision="3" />
-          <Property Name="CREATED_BY" Type="Int32" />
-          <Property Name="MODIFIED_DATE" Type="DateTime" Precision="3" />
-          <Property Name="MODIFIED_BY" Type="Int32" />
-          <Property Name="COLOR" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="BRAND" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="FLAVOR" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="PACKING" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="TAG" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="TYPES" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="DISCOUNT" Type="Double" />
-          <Property Name="SEC_SUB_CATEGORY_A" Type="Int32" />
-          <Property Name="SEC_SUB_CATEGORY_B" Type="Int32" />
-          <Property Name="PRICE2" Type="Int32" />
-          <Property Name="HAS_IMAGE" Type="Boolean" />
-          <Property Name="HAS_THUMBNAIL_IMAGE" Type="Boolean" />
-          <Property Name="VENDOR_ID" Type="Int32" />
-          <Property Name="CATEGORY_ID" Type="Int32" />
-          <Property Name="IS_FEATURED" Type="Boolean" />
-          <Property Name="THRESHOLD" Type="Int32" />
-          <Property Name="IS_EXEMPTED" Type="Boolean" />
-          <Property Name="PRODUCT_NAME_URL" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="DEVICE_TYPE" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="IS_FAVOURITE" Type="Boolean" />
+          <Property Name="AVG_COST1" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="AVG_COST2" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="AVG_COST3" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="F_PUR_PRICE" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="LAST_PUR_PRICE1" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="LAST_PUR_PRICE2" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="LAST_PUR_PRICE3" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="LAST_SUPP" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="LAST_SUPP1" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="LAST_SUPP2" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="FLOOR_NO" Type="Byte" />
+          <Property Name="COUNTER" Type="Int16" />
+          <Property Name="SHELF" Type="Byte" />
+          <Property Name="SHELF_QTY" Type="Double" />
+          <Property Name="SHELF_FACING" Type="Double" />
+          <Property Name="LSDATE" Type="DateTime" Precision="3" />
+          <Property Name="LPDATE" Type="DateTime" Precision="3" />
+          <Property Name="ALLOW_NEGATIVE" Type="Boolean" />
+          <Property Name="AreaCovered" Type="Double" />
+          <Property Name="MAX_QTY" Type="Double" />
+          <Property Name="MIN_QTY" Type="Double" />
+          <Property Name="OP_STOCK" Type="Double" />
+          <Property Name="OP_STOCK_VAL" Type="Double" />
+          <Property Name="ITEM_STATUS" Type="Boolean" />
+          <Property Name="PHY_QTY" Type="Double" />
+          <Property Name="STATUS" Type="Int32" />
+          <Property Name="PDATE" Type="DateTime" Precision="3" />
+          <Property Name="IsActive" Type="Boolean" />
+          <Property Name="NeedsReplication" Type="Boolean" />
+          <Property Name="NeedsUpdation" Type="Boolean" />
+          <Property Name="SUPP_CODE" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="PS000Test">
           <Key>
@@ -3422,6 +3509,18 @@ warning 6013: The table/view 'anytimea_GROCERY.dbo.Transaction' does not have a 
           <Property Name="OP_STOCK_VAL" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
           <Property Name="NeedsReplication" Type="Boolean" Nullable="false" />
           <Property Name="NeedsUpdation" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="STOCK">
+          <Key>
+            <PropertyRef Name="BRANCH_ID" />
+            <PropertyRef Name="PRODUCT_ID" />
+            <PropertyRef Name="QTY" />
+            <PropertyRef Name="IsActive" />
+          </Key>
+          <Property Name="BRANCH_ID" Type="Int16" Nullable="false" />
+          <Property Name="PRODUCT_ID" Type="Int32" Nullable="false" />
+          <Property Name="QTY" Type="Decimal" Precision="18" Scale="3" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="TERMINFO">
           <Key>
@@ -3694,13 +3793,12 @@ warning 6013: The table/view 'anytimea_GROCERY.dbo.Transaction' does not have a 
           <EntitySet Name="PRODUCT_REVIEWS" EntityType="Self.PRODUCT_REVIEWS" />
           <EntitySet Name="PRODUCT_TAGS" EntityType="Self.PRODUCT_TAGS" />
           <EntitySet Name="PRODUCT_TYPES" EntityType="Self.PRODUCT_TYPES" />
+          <EntitySet Name="PRODUCTS" EntityType="Self.PRODUCT" />
           <EntitySet Name="ProductTests" EntityType="Self.ProductTest" />
-          <EntitySet Name="PS000" EntityType="Self.PS000" />
           <EntitySet Name="RECOMMENDED_PRODUCTS" EntityType="Self.RECOMMENDED_PRODUCTS" />
           <EntitySet Name="RIDER_ORDER" EntityType="Self.RIDER_ORDER" />
           <EntitySet Name="SMS" EntityType="Self.SM" />
           <EntitySet Name="SMS_TYPES" EntityType="Self.SMS_TYPES" />
-          <EntitySet Name="STOCKs" EntityType="Self.STOCK" />
           <EntitySet Name="SUB_CATEGORIES" EntityType="Self.SUB_CATEGORIES" />
           <EntitySet Name="SUBMENUs" EntityType="Self.SUBMENU" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
@@ -3717,8 +3815,9 @@ warning 6013: The table/view 'anytimea_GROCERY.dbo.Transaction' does not have a 
           <EntitySet Name="BarcodeNewTests" EntityType="Self.BarcodeNewTest" />
           <EntitySet Name="BARCODES" EntityType="Self.BARCODE" />
           <EntitySet Name="ITEMINFOes" EntityType="Self.ITEMINFO" />
-          <EntitySet Name="PRODUCTS" EntityType="Self.PRODUCT" />
+          <EntitySet Name="PS000" EntityType="Self.PS000" />
           <EntitySet Name="PS000Test" EntityType="Self.PS000Test" />
+          <EntitySet Name="STOCKs" EntityType="Self.STOCK" />
           <EntitySet Name="TERMINFOes" EntityType="Self.TERMINFO" />
           <EntitySet Name="TESTs" EntityType="Self.TEST" />
           <FunctionImport Name="sp_alterdiagram">
@@ -3736,6 +3835,12 @@ warning 6013: The table/view 'anytimea_GROCERY.dbo.Transaction' does not have a 
           <FunctionImport Name="sp_dropdiagram">
             <Parameter Name="diagramname" Mode="In" Type="String" />
             <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="SP_GetAllProductsByCategories" ReturnType="Collection(GROCERY.SP_GetAllProductsByCategories_Result)">
+            <Parameter Name="PageIndex" Mode="In" Type="Int32" />
+            <Parameter Name="PageSize" Mode="In" Type="Int32" />
+            <Parameter Name="Sub_Categories_Id" Mode="In" Type="Int32" />
+            <Parameter Name="BranchId" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SP_GETRECOMMENDEDPRODUCTS" />
           <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(GROCERY.sp_helpdiagramdefinition_Result)">
@@ -3821,6 +3926,10 @@ warning 6013: The table/view 'anytimea_GROCERY.dbo.Transaction' does not have a 
             <Parameter Name="CategoryId" Mode="In" Type="String" />
             <Parameter Name="SubCategoryId" Mode="In" Type="String" />
             <Parameter Name="GroupId" Mode="In" Type="String" />
+            <Parameter Name="BranchId" Mode="In" Type="Int32" />
+            <Parameter Name="MinPrice" Mode="In" Type="Int32" />
+            <Parameter Name="MaxPrice" Mode="In" Type="Int32" />
+            <Parameter Name="UserId" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SPGetAllRecommendedProducts" ReturnType="Collection(GROCERY.SPGetAllRecommendedProducts_Result)">
             <Parameter Name="PageIndex" Mode="In" Type="Int32" />
@@ -3834,9 +3943,12 @@ warning 6013: The table/view 'anytimea_GROCERY.dbo.Transaction' does not have a 
           </FunctionImport>
           <FunctionImport Name="SpGetHomeProducts" ReturnType="Collection(GROCERY.SpGetHomeProducts_Result)">
             <Parameter Name="CategoryId" Mode="In" Type="Int32" />
+            <Parameter Name="BranchId" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SpGetProductDetailByProductNameUrl" ReturnType="Collection(GROCERY.SpGetProductDetailByProductNameUrl_Result)">
             <Parameter Name="ProductNameUrl" Mode="In" Type="String" />
+            <Parameter Name="BranchId" Mode="In" Type="Int32" />
+            <Parameter Name="UserId" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SpGetProductImagesByProductId" ReturnType="Collection(GROCERY.SpGetProductImagesByProductId_Result)">
             <Parameter Name="ProductId" Mode="In" Type="Int32" />
@@ -3864,6 +3976,33 @@ warning 6013: The table/view 'anytimea_GROCERY.dbo.Transaction' does not have a 
             <Parameter Name="USER_ID" Mode="In" Type="Int32" />
           </FunctionImport>
         </EntityContainer>
+        <ComplexType Name="SP_GetAllProductsByCategories_Result">
+          <Property Type="Int32" Name="PRODUCT_ID" Nullable="false" />
+          <Property Type="String" Name="NAME" Nullable="true" />
+          <Property Type="String" Name="DESCRIPTION" Nullable="true" />
+          <Property Type="Decimal" Name="PRICE1" Nullable="true" Precision="19" />
+          <Property Type="Decimal" Name="PRICE" Nullable="true" Precision="19" />
+          <Property Type="String" Name="BARCODE" Nullable="true" MaxLength="20" />
+          <Property Type="Int32" Name="PRICE2" Nullable="true" />
+          <Property Type="String" Name="COLOR" Nullable="true" />
+          <Property Type="String" Name="BRAND" Nullable="true" />
+          <Property Type="String" Name="FLAVOR" Nullable="true" />
+          <Property Type="String" Name="PACKING" Nullable="true" />
+          <Property Type="String" Name="TAG" Nullable="true" />
+          <Property Type="DateTime" Name="CREATED_DATE" Nullable="true" Precision="23" />
+          <Property Type="String" Name="PRODUCT_NAME_URL" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="CategoryName" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="IMAGE_THUMBNAIL_PATH" Nullable="true" />
+          <Property Type="Int32" Name="GroupID" Nullable="true" />
+          <Property Type="Int32" Name="VENDOR_ID" Nullable="true" />
+          <Property Type="Int32" Name="CATEGORY_ID" Nullable="true" />
+          <Property Type="Int32" Name="SUB_CATEGORY_ID" Nullable="true" />
+          <Property Type="Int64" Name="RowIndex" Nullable="true" />
+          <Property Type="Int32" Name="TotalRecords" Nullable="true" />
+          <Property Type="Decimal" Name="TotalPages" Nullable="true" Precision="37" Scale="0" />
+          <Property Type="Int32" Name="Start" Nullable="true" />
+          <Property Type="Int32" Name="End" Nullable="true" />
+        </ComplexType>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
           <Property Type="Binary" Name="definition" Nullable="true" />
@@ -4003,7 +4142,9 @@ warning 6013: The table/view 'anytimea_GROCERY.dbo.Transaction' does not have a 
           <Property Type="Int32" Name="PRODUCT_ID" Nullable="false" />
           <Property Type="String" Name="NAME" Nullable="true" />
           <Property Type="String" Name="DESCRIPTION" Nullable="true" />
+          <Property Type="Decimal" Name="PRICE1" Nullable="true" Precision="19" />
           <Property Type="Decimal" Name="PRICE" Nullable="true" Precision="19" />
+          <Property Type="String" Name="BARCODE" Nullable="true" MaxLength="20" />
           <Property Type="Int32" Name="PRICE2" Nullable="true" />
           <Property Type="String" Name="COLOR" Nullable="true" />
           <Property Type="String" Name="BRAND" Nullable="true" />
@@ -4012,12 +4153,13 @@ warning 6013: The table/view 'anytimea_GROCERY.dbo.Transaction' does not have a 
           <Property Type="String" Name="TAG" Nullable="true" />
           <Property Type="DateTime" Name="CREATED_DATE" Nullable="true" Precision="23" />
           <Property Type="String" Name="PRODUCT_NAME_URL" Nullable="true" MaxLength="255" />
-          <Property Type="String" Name="CategoryName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="CategoryName" Nullable="false" MaxLength="50" />
           <Property Type="String" Name="IMAGE_THUMBNAIL_PATH" Nullable="true" />
           <Property Type="Int32" Name="GroupID" Nullable="true" />
           <Property Type="Int32" Name="VENDOR_ID" Nullable="true" />
           <Property Type="Int32" Name="CATEGORY_ID" Nullable="true" />
           <Property Type="Int32" Name="SUB_CATEGORY_ID" Nullable="true" />
+          <Property Type="Int32" Name="FavouriteProduct" Nullable="true" />
           <Property Type="Int64" Name="RowIndex" Nullable="true" />
           <Property Type="Int32" Name="TotalRecords" Nullable="true" />
           <Property Type="Decimal" Name="TotalPages" Nullable="true" Precision="37" Scale="0" />
@@ -4120,8 +4262,9 @@ warning 6013: The table/view 'anytimea_GROCERY.dbo.Transaction' does not have a 
           <Property Type="Int32" Name="PRODUCT_ID" Nullable="false" />
           <Property Type="String" Name="NAME" Nullable="true" />
           <Property Type="String" Name="DESCRIPTION" Nullable="true" />
-          <Property Type="Decimal" Name="PRICE" Nullable="true" Precision="19" />
-          <Property Type="Int32" Name="PRICE2" Nullable="true" />
+          <Property Type="Decimal" Name="PRICE1" Nullable="false" Precision="19" />
+          <Property Type="Int32" Name="PRICE2" Nullable="false" />
+          <Property Type="Decimal" Name="PRICE" Nullable="false" Precision="19" />
           <Property Type="String" Name="COLOR" Nullable="true" />
           <Property Type="String" Name="BRAND" Nullable="true" />
           <Property Type="String" Name="FLAVOR" Nullable="true" />
@@ -4138,8 +4281,9 @@ warning 6013: The table/view 'anytimea_GROCERY.dbo.Transaction' does not have a 
           <Property Type="Int32" Name="PRODUCT_ID" Nullable="false" />
           <Property Type="String" Name="NAME" Nullable="true" />
           <Property Type="String" Name="DESCRIPTION" Nullable="true" />
-          <Property Type="Decimal" Name="PRICE" Nullable="true" Precision="19" />
+          <Property Type="Decimal" Name="PRICE1" Nullable="true" Precision="19" />
           <Property Type="Int32" Name="PRICE2" Nullable="true" />
+          <Property Type="Decimal" Name="PRICE" Nullable="false" Precision="19" />
           <Property Type="String" Name="COLOR" Nullable="true" />
           <Property Type="String" Name="BRAND" Nullable="true" />
           <Property Type="String" Name="FLAVOR" Nullable="true" />
@@ -4152,6 +4296,7 @@ warning 6013: The table/view 'anytimea_GROCERY.dbo.Transaction' does not have a 
           <Property Type="Int32" Name="VENDOR_ID" Nullable="true" />
           <Property Type="Int32" Name="CATEGORY_ID" Nullable="true" />
           <Property Type="Int32" Name="SUB_CATEGORY_ID" Nullable="true" />
+          <Property Type="Int32" Name="FavouriteProduct" Nullable="true" />
         </ComplexType>
         <ComplexType Name="SpGetProductImagesByProductId_Result">
           <Property Type="Int32" Name="PRODUCT_IMAGE_ID" Nullable="false" />
@@ -4756,6 +4901,47 @@ warning 6013: The table/view 'anytimea_GROCERY.dbo.Transaction' does not have a 
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="PRODUCTS">
+            <EntityTypeMapping TypeName="GROCERY.PRODUCT">
+              <MappingFragment StoreEntitySet="PRODUCTS">
+                <ScalarProperty Name="PRODUCT_ID" ColumnName="PRODUCT_ID" />
+                <ScalarProperty Name="OLD_PRODUCT_ID" ColumnName="OLD_PRODUCT_ID" />
+                <ScalarProperty Name="NAME" ColumnName="NAME" />
+                <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
+                <ScalarProperty Name="SUB_CATEGORY_ID" ColumnName="SUB_CATEGORY_ID" />
+                <ScalarProperty Name="UNIT_OF_MEASUREMENT" ColumnName="UNIT_OF_MEASUREMENT" />
+                <ScalarProperty Name="AVG_COST" ColumnName="AVG_COST" />
+                <ScalarProperty Name="PRICE" ColumnName="PRICE" />
+                <ScalarProperty Name="DISCOUNT_PERCENTAGE" ColumnName="DISCOUNT_PERCENTAGE" />
+                <ScalarProperty Name="IMPORTED" ColumnName="IMPORTED" />
+                <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
+                <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="MODIFIED_DATE" ColumnName="MODIFIED_DATE" />
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="COLOR" ColumnName="COLOR" />
+                <ScalarProperty Name="BRAND" ColumnName="BRAND" />
+                <ScalarProperty Name="FLAVOR" ColumnName="FLAVOR" />
+                <ScalarProperty Name="PACKING" ColumnName="PACKING" />
+                <ScalarProperty Name="TAG" ColumnName="TAG" />
+                <ScalarProperty Name="TYPES" ColumnName="TYPES" />
+                <ScalarProperty Name="DISCOUNT" ColumnName="DISCOUNT" />
+                <ScalarProperty Name="SEC_SUB_CATEGORY_A" ColumnName="SEC_SUB_CATEGORY_A" />
+                <ScalarProperty Name="SEC_SUB_CATEGORY_B" ColumnName="SEC_SUB_CATEGORY_B" />
+                <ScalarProperty Name="PRICE2" ColumnName="PRICE2" />
+                <ScalarProperty Name="HAS_IMAGE" ColumnName="HAS_IMAGE" />
+                <ScalarProperty Name="HAS_THUMBNAIL_IMAGE" ColumnName="HAS_THUMBNAIL_IMAGE" />
+                <ScalarProperty Name="VENDOR_ID" ColumnName="VENDOR_ID" />
+                <ScalarProperty Name="CATEGORY_ID" ColumnName="CATEGORY_ID" />
+                <ScalarProperty Name="IS_FEATURED" ColumnName="IS_FEATURED" />
+                <ScalarProperty Name="THRESHOLD" ColumnName="THRESHOLD" />
+                <ScalarProperty Name="IS_EXEMPTED" ColumnName="IS_EXEMPTED" />
+                <ScalarProperty Name="PRODUCT_NAME_URL" ColumnName="PRODUCT_NAME_URL" />
+                <ScalarProperty Name="DEVICE_TYPE" ColumnName="DEVICE_TYPE" />
+                <ScalarProperty Name="IS_FAVOURITE" ColumnName="IS_FAVOURITE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="ProductTests">
             <EntityTypeMapping TypeName="GROCERY.ProductTest">
               <MappingFragment StoreEntitySet="ProductTest">
@@ -4791,33 +4977,6 @@ warning 6013: The table/view 'anytimea_GROCERY.dbo.Transaction' does not have a 
                 <ScalarProperty Name="IS_FEATURED" ColumnName="IS_FEATURED" />
                 <ScalarProperty Name="THRESHOLD" ColumnName="THRESHOLD" />
                 <ScalarProperty Name="IS_EXEMPTED" ColumnName="IS_EXEMPTED" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="PS000">
-            <EntityTypeMapping TypeName="GROCERY.PS000">
-              <MappingFragment StoreEntitySet="PS000">
-                <ScalarProperty Name="LOCNO" ColumnName="LOCNO" />
-                <ScalarProperty Name="ITEM_CODE" ColumnName="ITEM_CODE" />
-                <ScalarProperty Name="QTY" ColumnName="QTY" />
-                <ScalarProperty Name="WH_QTY" ColumnName="WH_QTY" />
-                <ScalarProperty Name="T_QTY" ColumnName="T_QTY" />
-                <ScalarProperty Name="FLOOR_NO" ColumnName="FLOOR_NO" />
-                <ScalarProperty Name="COUNTER" ColumnName="COUNTER" />
-                <ScalarProperty Name="SHELF" ColumnName="SHELF" />
-                <ScalarProperty Name="SHELF_QTY" ColumnName="SHELF_QTY" />
-                <ScalarProperty Name="SHELF_FACING" ColumnName="SHELF_FACING" />
-                <ScalarProperty Name="LSDATE" ColumnName="LSDATE" />
-                <ScalarProperty Name="LPDATE" ColumnName="LPDATE" />
-                <ScalarProperty Name="ALLOW_NEGATIVE" ColumnName="ALLOW_NEGATIVE" />
-                <ScalarProperty Name="AreaCovered" ColumnName="AreaCovered" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="MAX_QTY" ColumnName="MAX_QTY" />
-                <ScalarProperty Name="MIN_QTY" ColumnName="MIN_QTY" />
-                <ScalarProperty Name="OP_STOCK" ColumnName="OP_STOCK" />
-                <ScalarProperty Name="OP_STOCK_VAL" ColumnName="OP_STOCK_VAL" />
-                <ScalarProperty Name="NeedsReplication" ColumnName="NeedsReplication" />
-                <ScalarProperty Name="NeedsUpdation" ColumnName="NeedsUpdation" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -4867,16 +5026,6 @@ warning 6013: The table/view 'anytimea_GROCERY.dbo.Transaction' does not have a 
               <MappingFragment StoreEntitySet="SMS_TYPES">
                 <ScalarProperty Name="SMS_TYPE_ID" ColumnName="SMS_TYPE_ID" />
                 <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="STOCKs">
-            <EntityTypeMapping TypeName="GROCERY.STOCK">
-              <MappingFragment StoreEntitySet="STOCK">
-                <ScalarProperty Name="BRANCH_ID" ColumnName="BRANCH_ID" />
-                <ScalarProperty Name="PRODUCT_ID" ColumnName="PRODUCT_ID" />
-                <ScalarProperty Name="QTY" ColumnName="QTY" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -4935,6 +5084,9 @@ warning 6013: The table/view 'anytimea_GROCERY.dbo.Transaction' does not have a 
                 <ScalarProperty Name="USER_ADDRESS_ID" ColumnName="USER_ADDRESS_ID" />
                 <ScalarProperty Name="USER_ID" ColumnName="USER_ID" />
                 <ScalarProperty Name="ADDRESS" ColumnName="ADDRESS" />
+                <ScalarProperty Name="BRANCH_ID" ColumnName="BRANCH_ID" />
+                <ScalarProperty Name="LONGITUDE" ColumnName="LONGITUDE" />
+                <ScalarProperty Name="LATITUDE" ColumnName="LATITUDE" />
                 <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
                 <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
                 <ScalarProperty Name="CREATED_ON" ColumnName="CREATED_ON" />
@@ -5172,6 +5324,7 @@ warning 6013: The table/view 'anytimea_GROCERY.dbo.Transaction' does not have a 
                 <ScalarProperty Name="ITEM_CODE" ColumnName="ITEM_CODE" />
                 <ScalarProperty Name="HV_CODE" ColumnName="HV_CODE" />
                 <ScalarProperty Name="ITEM_ATTRIB" ColumnName="ITEM_ATTRIB" />
+                <ScalarProperty Name="ITEM_TYPE" ColumnName="ITEM_TYPE" />
                 <ScalarProperty Name="UOM" ColumnName="UOM" />
                 <ScalarProperty Name="PACKING_UNITS" ColumnName="PACKING_UNITS" />
                 <ScalarProperty Name="ISSUE_BY_WEIGHT" ColumnName="ISSUE_BY_WEIGHT" />
@@ -5185,7 +5338,6 @@ warning 6013: The table/view 'anytimea_GROCERY.dbo.Transaction' does not have a 
                 <ScalarProperty Name="BRAND_CODE" ColumnName="BRAND_CODE" />
                 <ScalarProperty Name="DESIGN_CD" ColumnName="DESIGN_CD" />
                 <ScalarProperty Name="CLR_CODE" ColumnName="CLR_CODE" />
-                <ScalarProperty Name="SUPP_CODE" ColumnName="SUPP_CODE" />
                 <ScalarProperty Name="MAKE_CODE" ColumnName="MAKE_CODE" />
                 <ScalarProperty Name="SIZE_CODE" ColumnName="SIZE_CODE" />
                 <ScalarProperty Name="AUTH_CODE" ColumnName="AUTH_CODE" />
@@ -5314,44 +5466,57 @@ warning 6013: The table/view 'anytimea_GROCERY.dbo.Transaction' does not have a 
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="PRODUCTS">
-            <EntityTypeMapping TypeName="GROCERY.PRODUCT">
-              <MappingFragment StoreEntitySet="PRODUCTS">
-                <ScalarProperty Name="PRODUCT_ID" ColumnName="PRODUCT_ID" />
-                <ScalarProperty Name="OLD_PRODUCT_ID" ColumnName="OLD_PRODUCT_ID" />
-                <ScalarProperty Name="NAME" ColumnName="NAME" />
-                <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
-                <ScalarProperty Name="SUB_CATEGORY_ID" ColumnName="SUB_CATEGORY_ID" />
-                <ScalarProperty Name="UNIT_OF_MEASUREMENT" ColumnName="UNIT_OF_MEASUREMENT" />
+          <EntitySetMapping Name="PS000">
+            <EntityTypeMapping TypeName="GROCERY.PS000">
+              <MappingFragment StoreEntitySet="PS000">
+                <ScalarProperty Name="LOCNO" ColumnName="LOCNO" />
+                <ScalarProperty Name="ITEM_CODE" ColumnName="ITEM_CODE" />
+                <ScalarProperty Name="QTY" ColumnName="QTY" />
+                <ScalarProperty Name="WH_QTY" ColumnName="WH_QTY" />
+                <ScalarProperty Name="T_QTY" ColumnName="T_QTY" />
+                <ScalarProperty Name="MATERIAL_COST" ColumnName="MATERIAL_COST" />
+                <ScalarProperty Name="INGR_COST" ColumnName="INGR_COST" />
+                <ScalarProperty Name="PKG_COST" ColumnName="PKG_COST" />
+                <ScalarProperty Name="LAB_COST" ColumnName="LAB_COST" />
+                <ScalarProperty Name="OH_COST" ColumnName="OH_COST" />
+                <ScalarProperty Name="OTH_COST" ColumnName="OTH_COST" />
+                <ScalarProperty Name="WASTAGE" ColumnName="WASTAGE" />
+                <ScalarProperty Name="COST_PRICE1" ColumnName="COST_PRICE1" />
+                <ScalarProperty Name="COST_PRICE2" ColumnName="COST_PRICE2" />
+                <ScalarProperty Name="COST_PRICE3" ColumnName="COST_PRICE3" />
+                <ScalarProperty Name="NET_COST" ColumnName="NET_COST" />
                 <ScalarProperty Name="AVG_COST" ColumnName="AVG_COST" />
-                <ScalarProperty Name="PRICE" ColumnName="PRICE" />
-                <ScalarProperty Name="DISCOUNT_PERCENTAGE" ColumnName="DISCOUNT_PERCENTAGE" />
-                <ScalarProperty Name="IMPORTED" ColumnName="IMPORTED" />
-                <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
-                <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
-                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
-                <ScalarProperty Name="MODIFIED_DATE" ColumnName="MODIFIED_DATE" />
-                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
-                <ScalarProperty Name="COLOR" ColumnName="COLOR" />
-                <ScalarProperty Name="BRAND" ColumnName="BRAND" />
-                <ScalarProperty Name="FLAVOR" ColumnName="FLAVOR" />
-                <ScalarProperty Name="PACKING" ColumnName="PACKING" />
-                <ScalarProperty Name="TAG" ColumnName="TAG" />
-                <ScalarProperty Name="TYPES" ColumnName="TYPES" />
-                <ScalarProperty Name="DISCOUNT" ColumnName="DISCOUNT" />
-                <ScalarProperty Name="SEC_SUB_CATEGORY_A" ColumnName="SEC_SUB_CATEGORY_A" />
-                <ScalarProperty Name="SEC_SUB_CATEGORY_B" ColumnName="SEC_SUB_CATEGORY_B" />
-                <ScalarProperty Name="PRICE2" ColumnName="PRICE2" />
-                <ScalarProperty Name="HAS_IMAGE" ColumnName="HAS_IMAGE" />
-                <ScalarProperty Name="HAS_THUMBNAIL_IMAGE" ColumnName="HAS_THUMBNAIL_IMAGE" />
-                <ScalarProperty Name="VENDOR_ID" ColumnName="VENDOR_ID" />
-                <ScalarProperty Name="CATEGORY_ID" ColumnName="CATEGORY_ID" />
-                <ScalarProperty Name="IS_FEATURED" ColumnName="IS_FEATURED" />
-                <ScalarProperty Name="THRESHOLD" ColumnName="THRESHOLD" />
-                <ScalarProperty Name="IS_EXEMPTED" ColumnName="IS_EXEMPTED" />
-                <ScalarProperty Name="PRODUCT_NAME_URL" ColumnName="PRODUCT_NAME_URL" />
-                <ScalarProperty Name="DEVICE_TYPE" ColumnName="DEVICE_TYPE" />
-                <ScalarProperty Name="IS_FAVOURITE" ColumnName="IS_FAVOURITE" />
+                <ScalarProperty Name="AVG_COST1" ColumnName="AVG_COST1" />
+                <ScalarProperty Name="AVG_COST2" ColumnName="AVG_COST2" />
+                <ScalarProperty Name="AVG_COST3" ColumnName="AVG_COST3" />
+                <ScalarProperty Name="F_PUR_PRICE" ColumnName="F_PUR_PRICE" />
+                <ScalarProperty Name="LAST_PUR_PRICE1" ColumnName="LAST_PUR_PRICE1" />
+                <ScalarProperty Name="LAST_PUR_PRICE2" ColumnName="LAST_PUR_PRICE2" />
+                <ScalarProperty Name="LAST_PUR_PRICE3" ColumnName="LAST_PUR_PRICE3" />
+                <ScalarProperty Name="LAST_SUPP" ColumnName="LAST_SUPP" />
+                <ScalarProperty Name="LAST_SUPP1" ColumnName="LAST_SUPP1" />
+                <ScalarProperty Name="LAST_SUPP2" ColumnName="LAST_SUPP2" />
+                <ScalarProperty Name="FLOOR_NO" ColumnName="FLOOR_NO" />
+                <ScalarProperty Name="COUNTER" ColumnName="COUNTER" />
+                <ScalarProperty Name="SHELF" ColumnName="SHELF" />
+                <ScalarProperty Name="SHELF_QTY" ColumnName="SHELF_QTY" />
+                <ScalarProperty Name="SHELF_FACING" ColumnName="SHELF_FACING" />
+                <ScalarProperty Name="LSDATE" ColumnName="LSDATE" />
+                <ScalarProperty Name="LPDATE" ColumnName="LPDATE" />
+                <ScalarProperty Name="ALLOW_NEGATIVE" ColumnName="ALLOW_NEGATIVE" />
+                <ScalarProperty Name="AreaCovered" ColumnName="AreaCovered" />
+                <ScalarProperty Name="MAX_QTY" ColumnName="MAX_QTY" />
+                <ScalarProperty Name="MIN_QTY" ColumnName="MIN_QTY" />
+                <ScalarProperty Name="OP_STOCK" ColumnName="OP_STOCK" />
+                <ScalarProperty Name="OP_STOCK_VAL" ColumnName="OP_STOCK_VAL" />
+                <ScalarProperty Name="ITEM_STATUS" ColumnName="ITEM_STATUS" />
+                <ScalarProperty Name="PHY_QTY" ColumnName="PHY_QTY" />
+                <ScalarProperty Name="STATUS" ColumnName="STATUS" />
+                <ScalarProperty Name="PDATE" ColumnName="PDATE" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="NeedsReplication" ColumnName="NeedsReplication" />
+                <ScalarProperty Name="NeedsUpdation" ColumnName="NeedsUpdation" />
+                <ScalarProperty Name="SUPP_CODE" ColumnName="SUPP_CODE" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -5379,6 +5544,16 @@ warning 6013: The table/view 'anytimea_GROCERY.dbo.Transaction' does not have a 
                 <ScalarProperty Name="OP_STOCK_VAL" ColumnName="OP_STOCK_VAL" />
                 <ScalarProperty Name="NeedsReplication" ColumnName="NeedsReplication" />
                 <ScalarProperty Name="NeedsUpdation" ColumnName="NeedsUpdation" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="STOCKs">
+            <EntityTypeMapping TypeName="GROCERY.STOCK">
+              <MappingFragment StoreEntitySet="STOCK">
+                <ScalarProperty Name="BRANCH_ID" ColumnName="BRANCH_ID" />
+                <ScalarProperty Name="PRODUCT_ID" ColumnName="PRODUCT_ID" />
+                <ScalarProperty Name="QTY" ColumnName="QTY" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -5512,6 +5687,37 @@ warning 6013: The table/view 'anytimea_GROCERY.dbo.Transaction' does not have a 
           <FunctionImportMapping FunctionImportName="sp_alterdiagram" FunctionName="GROCERY.Store.sp_alterdiagram" />
           <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="GROCERY.Store.sp_creatediagram" />
           <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="GROCERY.Store.sp_dropdiagram" />
+          <FunctionImportMapping FunctionImportName="SP_GetAllProductsByCategories" FunctionName="GROCERY.Store.SP_GetAllProductsByCategories">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="GROCERY.SP_GetAllProductsByCategories_Result">
+                <ScalarProperty Name="PRODUCT_ID" ColumnName="PRODUCT_ID" />
+                <ScalarProperty Name="NAME" ColumnName="NAME" />
+                <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
+                <ScalarProperty Name="PRICE1" ColumnName="PRICE1" />
+                <ScalarProperty Name="PRICE" ColumnName="PRICE" />
+                <ScalarProperty Name="BARCODE" ColumnName="BARCODE" />
+                <ScalarProperty Name="PRICE2" ColumnName="PRICE2" />
+                <ScalarProperty Name="COLOR" ColumnName="COLOR" />
+                <ScalarProperty Name="BRAND" ColumnName="BRAND" />
+                <ScalarProperty Name="FLAVOR" ColumnName="FLAVOR" />
+                <ScalarProperty Name="PACKING" ColumnName="PACKING" />
+                <ScalarProperty Name="TAG" ColumnName="TAG" />
+                <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="PRODUCT_NAME_URL" ColumnName="PRODUCT_NAME_URL" />
+                <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
+                <ScalarProperty Name="IMAGE_THUMBNAIL_PATH" ColumnName="IMAGE_THUMBNAIL_PATH" />
+                <ScalarProperty Name="GroupID" ColumnName="GroupID" />
+                <ScalarProperty Name="VENDOR_ID" ColumnName="VENDOR_ID" />
+                <ScalarProperty Name="CATEGORY_ID" ColumnName="CATEGORY_ID" />
+                <ScalarProperty Name="SUB_CATEGORY_ID" ColumnName="SUB_CATEGORY_ID" />
+                <ScalarProperty Name="RowIndex" ColumnName="RowIndex" />
+                <ScalarProperty Name="TotalRecords" ColumnName="TotalRecords" />
+                <ScalarProperty Name="TotalPages" ColumnName="TotalPages" />
+                <ScalarProperty Name="Start" ColumnName="Start" />
+                <ScalarProperty Name="End" ColumnName="End" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="SP_GETRECOMMENDEDPRODUCTS" FunctionName="GROCERY.Store.SP_GETRECOMMENDEDPRODUCTS" />
           <FunctionImportMapping FunctionImportName="sp_helpdiagramdefinition" FunctionName="GROCERY.Store.sp_helpdiagramdefinition">
             <ResultMapping>
@@ -5702,7 +5908,9 @@ warning 6013: The table/view 'anytimea_GROCERY.dbo.Transaction' does not have a 
                 <ScalarProperty Name="PRODUCT_ID" ColumnName="PRODUCT_ID" />
                 <ScalarProperty Name="NAME" ColumnName="NAME" />
                 <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
+                <ScalarProperty Name="PRICE1" ColumnName="PRICE1" />
                 <ScalarProperty Name="PRICE" ColumnName="PRICE" />
+                <ScalarProperty Name="BARCODE" ColumnName="BARCODE" />
                 <ScalarProperty Name="PRICE2" ColumnName="PRICE2" />
                 <ScalarProperty Name="COLOR" ColumnName="COLOR" />
                 <ScalarProperty Name="BRAND" ColumnName="BRAND" />
@@ -5717,6 +5925,7 @@ warning 6013: The table/view 'anytimea_GROCERY.dbo.Transaction' does not have a 
                 <ScalarProperty Name="VENDOR_ID" ColumnName="VENDOR_ID" />
                 <ScalarProperty Name="CATEGORY_ID" ColumnName="CATEGORY_ID" />
                 <ScalarProperty Name="SUB_CATEGORY_ID" ColumnName="SUB_CATEGORY_ID" />
+                <ScalarProperty Name="FavouriteProduct" ColumnName="FavouriteProduct" />
                 <ScalarProperty Name="RowIndex" ColumnName="RowIndex" />
                 <ScalarProperty Name="TotalRecords" ColumnName="TotalRecords" />
                 <ScalarProperty Name="TotalPages" ColumnName="TotalPages" />
@@ -5835,8 +6044,9 @@ warning 6013: The table/view 'anytimea_GROCERY.dbo.Transaction' does not have a 
                 <ScalarProperty Name="PRODUCT_ID" ColumnName="PRODUCT_ID" />
                 <ScalarProperty Name="NAME" ColumnName="NAME" />
                 <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
-                <ScalarProperty Name="PRICE" ColumnName="PRICE" />
+                <ScalarProperty Name="PRICE1" ColumnName="PRICE1" />
                 <ScalarProperty Name="PRICE2" ColumnName="PRICE2" />
+                <ScalarProperty Name="PRICE" ColumnName="PRICE" />
                 <ScalarProperty Name="COLOR" ColumnName="COLOR" />
                 <ScalarProperty Name="BRAND" ColumnName="BRAND" />
                 <ScalarProperty Name="FLAVOR" ColumnName="FLAVOR" />
@@ -5857,8 +6067,9 @@ warning 6013: The table/view 'anytimea_GROCERY.dbo.Transaction' does not have a 
                 <ScalarProperty Name="PRODUCT_ID" ColumnName="PRODUCT_ID" />
                 <ScalarProperty Name="NAME" ColumnName="NAME" />
                 <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
-                <ScalarProperty Name="PRICE" ColumnName="PRICE" />
+                <ScalarProperty Name="PRICE1" ColumnName="PRICE1" />
                 <ScalarProperty Name="PRICE2" ColumnName="PRICE2" />
+                <ScalarProperty Name="PRICE" ColumnName="PRICE" />
                 <ScalarProperty Name="COLOR" ColumnName="COLOR" />
                 <ScalarProperty Name="BRAND" ColumnName="BRAND" />
                 <ScalarProperty Name="FLAVOR" ColumnName="FLAVOR" />
@@ -5871,6 +6082,7 @@ warning 6013: The table/view 'anytimea_GROCERY.dbo.Transaction' does not have a 
                 <ScalarProperty Name="VENDOR_ID" ColumnName="VENDOR_ID" />
                 <ScalarProperty Name="CATEGORY_ID" ColumnName="CATEGORY_ID" />
                 <ScalarProperty Name="SUB_CATEGORY_ID" ColumnName="SUB_CATEGORY_ID" />
+                <ScalarProperty Name="FavouriteProduct" ColumnName="FavouriteProduct" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

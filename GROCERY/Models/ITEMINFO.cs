@@ -17,6 +17,7 @@ namespace GROCERY.Models
         public int ITEM_CODE { get; set; }
         public string HV_CODE { get; set; }
         public byte ITEM_ATTRIB { get; set; }
+        public byte ITEM_TYPE { get; set; }
         public string UOM { get; set; }
         public decimal PACKING_UNITS { get; set; }
         public bool ISSUE_BY_WEIGHT { get; set; }
@@ -30,7 +31,6 @@ namespace GROCERY.Models
         public int BRAND_CODE { get; set; }
         public int DESIGN_CD { get; set; }
         public short CLR_CODE { get; set; }
-        public string SUPP_CODE { get; set; }
         public short MAKE_CODE { get; set; }
         public int SIZE_CODE { get; set; }
         public int AUTH_CODE { get; set; }

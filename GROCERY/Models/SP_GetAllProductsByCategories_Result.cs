@@ -11,14 +11,15 @@ namespace GROCERY.Models
 {
     using System;
     
-    public partial class SpGetHomeProducts_Result
+    public partial class SP_GetAllProductsByCategories_Result
     {
         public int PRODUCT_ID { get; set; }
         public string NAME { get; set; }
         public string DESCRIPTION { get; set; }
-        public decimal PRICE1 { get; set; }
-        public int PRICE2 { get; set; }
-        public decimal PRICE { get; set; }
+        public Nullable<decimal> PRICE1 { get; set; }
+        public Nullable<decimal> PRICE { get; set; }
+        public string BARCODE { get; set; }
+        public Nullable<int> PRICE2 { get; set; }
         public string COLOR { get; set; }
         public string BRAND { get; set; }
         public string FLAVOR { get; set; }
@@ -28,7 +29,14 @@ namespace GROCERY.Models
         public string PRODUCT_NAME_URL { get; set; }
         public string CategoryName { get; set; }
         public string IMAGE_THUMBNAIL_PATH { get; set; }
+        public Nullable<int> GroupID { get; set; }
+        public Nullable<int> VENDOR_ID { get; set; }
         public Nullable<int> CATEGORY_ID { get; set; }
         public Nullable<int> SUB_CATEGORY_ID { get; set; }
+        public Nullable<long> RowIndex { get; set; }
+        public Nullable<int> TotalRecords { get; set; }
+        public Nullable<decimal> TotalPages { get; set; }
+        public Nullable<int> Start { get; set; }
+        public Nullable<int> End { get; set; }
     }
 }

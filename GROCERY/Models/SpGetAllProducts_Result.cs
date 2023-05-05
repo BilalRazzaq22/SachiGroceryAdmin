@@ -16,7 +16,9 @@ namespace GROCERY.Models
         public int PRODUCT_ID { get; set; }
         public string NAME { get; set; }
         public string DESCRIPTION { get; set; }
+        public Nullable<decimal> PRICE1 { get; set; }
         public Nullable<decimal> PRICE { get; set; }
+        public string BARCODE { get; set; }
         public Nullable<int> PRICE2 { get; set; }
         public string COLOR { get; set; }
         public string BRAND { get; set; }
@@ -31,6 +33,7 @@ namespace GROCERY.Models
         public Nullable<int> VENDOR_ID { get; set; }
         public Nullable<int> CATEGORY_ID { get; set; }
         public Nullable<int> SUB_CATEGORY_ID { get; set; }
+        public Nullable<int> FavouriteProduct { get; set; }
         public Nullable<long> RowIndex { get; set; }
         public Nullable<int> TotalRecords { get; set; }
         public Nullable<decimal> TotalPages { get; set; }

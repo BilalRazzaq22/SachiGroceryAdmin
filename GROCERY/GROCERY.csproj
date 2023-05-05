@@ -527,6 +527,9 @@
     <Compile Include="Models\SpGetWishList_Result.cs">
       <DependentUpon>GROCERY.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\SP_GetAllProductsByCategories_Result.cs">
+      <DependentUpon>GROCERY.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\sp_helpdiagramdefinition_Result.cs">
       <DependentUpon>GROCERY.tt</DependentUpon>
     </Compile>
