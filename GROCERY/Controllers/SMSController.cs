@@ -30,7 +30,7 @@ namespace GROCERY.Controllers
             //start sending SMS on request
             if (msg != string.Empty)
             {
-                msgCount=GenerateSMSAlert(masking, destinationnum, msg, username, pass);
+                msgCount = GenerateSMSAlert(masking, destinationnum, msg, username, pass);
             }
 
             //end sending SMS on request
@@ -53,11 +53,11 @@ namespace GROCERY.Controllers
                 foreach (DataRow rowContact in cnt.Rows)
                 {
                     toNumber = rowContact["MOBILE_NO"].ToString();
-                    if(toNumber.Length ==12 && toNumber.Substring(0,2).Equals("92"))
+                    if (toNumber.Length == 12 && toNumber.Substring(0, 2).Equals("92"))
                     {
                         count++;
-                        SendSMS(Masking, toNumber, MessageText, MyUsername, MyPassword);
                     }
+                    SendSMS(Masking, toNumber, MessageText, MyUsername, MyPassword);
                     //DataRow r = sms.NewRow();
                     //r[Entities.SMS.HOSPITAL_CONTACT_ID] = rowContact[Entities.HOSPITAL_CONTACTS.HOSPITAL_CONTACT_ID];
                     //r[Entities.SMS.SENDER] = SessionManager.GetUserSession();
@@ -71,7 +71,7 @@ namespace GROCERY.Controllers
                 }
             }
             return count;
- //           int smsSaved = bridge.saveSMS(sms);
+            //           int smsSaved = bridge.saveSMS(sms);
 
         }
         #endregion
@@ -80,13 +80,28 @@ namespace GROCERY.Controllers
 
         public static string SendSMS(string Masking, string toNumber, string MessageText, string MyUsername, string MyPassword)
         {
-            string URI = @"http://api.bizsms.pk/api-send-branded-sms.aspx?username=" + MyUsername  +"&pass="+ MyPassword+
-                "&text="+ MessageText+"&masking="+Masking+"&destinationnum="+toNumber+"&language=English";
-            
-            WebRequest req = WebRequest.Create(URI);
-            WebResponse resp = req.GetResponse();
-            var sr = new System.IO.StreamReader(resp.GetResponseStream());
-            return sr.ReadToEnd().Trim();
+            //string URI = @"http://api.bizsms.pk/api-send-branded-sms.aspx?username=" + MyUsername + "&pass=" + MyPassword +
+            //    "&text=" + MessageText + "&masking=" + Masking + "&destinationnum=" + toNumber + "&language=English";
+
+            //WebRequest req = WebRequest.Create(URI);
+            //WebResponse resp = req.GetResponse();
+            //var sr = new System.IO.StreamReader(resp.GetResponseStream());
+            //return sr.ReadToEnd().Trim();
+
+            SmsApiService.QuickSMSResquest quickSMSResquest = new SmsApiService.QuickSMSResquest()
+            {
+                loginId = MyUsername,
+                loginPassword = MyPassword,
+                Destination = toNumber,
+                Mask = Masking,
+                Message = MessageText,
+                ShortCodePrefered = "n",
+                UniCode = "0"
+            };
+
+            SmsApiService.BasicHttpBinding_ICorporateCBS client = new SmsApiService.BasicHttpBinding_ICorporateCBS();
+            string message = client.QuickSMS(quickSMSResquest);
+            return message;
 
         }
         #endregion

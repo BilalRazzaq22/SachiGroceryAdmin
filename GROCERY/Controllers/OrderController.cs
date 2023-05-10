@@ -265,8 +265,8 @@ namespace GROCERY.Controllers
             if (toNumber.Length == 12 && toNumber.Substring(0, 2).Equals("92"))
             {
                 count++;
-                SendSMS(Masking, toNumber, MessageText, MyUsername, MyPassword);
             }
+            SendSMS(Masking, toNumber, MessageText, MyUsername, MyPassword);
             return count;
         }
         #endregion

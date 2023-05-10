@@ -11,6 +11,7 @@ namespace GROCERY.SyncService
     public class DataSyncService
     {
         readonly string charsuDb = "data source=192.185.10.110;initial catalog=sachiery_GroceryApps;user id=sachiery_admin;password=bkY000o$3;MultipleActiveResultSets=True;App=EntityFramework&quot;";
+        //readonly string charsuDb = "data source=68.66.211.65;initial catalog=anytimea_GROCERY;user id=sa;password=:gRqlrv3wsR1lw;MultipleActiveResultSets=True;App=EntityFramework&quot;";
         readonly string sachiChakkiDb = "data source=sachichakkiwh.mine.nu;initial catalog=BIZPRO_WH;user id=sa;password=golden@3864;MultipleActiveResultSets=True;App=EntityFramework&quot;";
         readonly SqlConnection charsuConnection = null;
         readonly SqlConnection sachiChakkiConnection = null;
@@ -413,7 +414,7 @@ namespace GROCERY.SyncService
             ItemInfoTable.Columns.Add("BRAND_CODE", typeof(int));
             ItemInfoTable.Columns.Add("DESIGN_CD", typeof(int));
             ItemInfoTable.Columns.Add("CLR_CODE", typeof(int));
-            ItemInfoTable.Columns.Add("SUPP_CODE", typeof(string));
+            //ItemInfoTable.Columns.Add("SUPP_CODE", typeof(string));
             ItemInfoTable.Columns.Add("MAKE_CODE", typeof(int));
             ItemInfoTable.Columns.Add("SIZE_CODE", typeof(int));
             ItemInfoTable.Columns.Add("AUTH_CODE", typeof(int));
@@ -423,19 +424,19 @@ namespace GROCERY.SyncService
             ItemInfoTable.Columns.Add("ISBN", typeof(string));
             ItemInfoTable.Columns.Add("ITEM_DESC", typeof(string));
             ItemInfoTable.Columns.Add("ITEM_DESC_LONG", typeof(string));
-            ItemInfoTable.Columns.Add("COST_MARGIN", typeof(decimal));
+            //ItemInfoTable.Columns.Add("COST_MARGIN", typeof(decimal));
             ItemInfoTable.Columns.Add("SEX", typeof(string));
             ItemInfoTable.Columns.Add("SEASON", typeof(string));
             ItemInfoTable.Columns.Add("AGE", typeof(string));
             ItemInfoTable.Columns.Add("FABRIC", typeof(string));
-            ItemInfoTable.Columns.Add("SPEED", typeof(string));
-            ItemInfoTable.Columns.Add("PLY", typeof(string));
-            ItemInfoTable.Columns.Add("PCD", typeof(string));
-            ItemInfoTable.Columns.Add("HOLES", typeof(string));
-            ItemInfoTable.Columns.Add("SPH", typeof(string));
-            ItemInfoTable.Columns.Add("CYL", typeof(string));
-            ItemInfoTable.Columns.Add("AXIS", typeof(string));
-            ItemInfoTable.Columns.Add("ADDS", typeof(string));
+            //ItemInfoTable.Columns.Add("SPEED", typeof(string));
+            //ItemInfoTable.Columns.Add("PLY", typeof(string));
+            //ItemInfoTable.Columns.Add("PCD", typeof(string));
+            //ItemInfoTable.Columns.Add("HOLES", typeof(string));
+            //ItemInfoTable.Columns.Add("SPH", typeof(string));
+            //ItemInfoTable.Columns.Add("CYL", typeof(string));
+            //ItemInfoTable.Columns.Add("AXIS", typeof(string));
+            //ItemInfoTable.Columns.Add("ADDS", typeof(string));
             ItemInfoTable.Columns.Add("COMMENT", typeof(string));
             ItemInfoTable.Columns.Add("EXEMPT", typeof(bool));
             ItemInfoTable.Columns.Add("VAT", typeof(decimal));
@@ -443,30 +444,30 @@ namespace GROCERY.SyncService
             ItemInfoTable.Columns.Add("OPEN_PRICE", typeof(bool));
             ItemInfoTable.Columns.Add("FRACTIONAL", typeof(bool));
             ItemInfoTable.Columns.Add("ALLOWQTY", typeof(bool));
-            ItemInfoTable.Columns.Add("MATERIAL_COST", typeof(decimal));
-            ItemInfoTable.Columns.Add("INGR_COST", typeof(decimal));
-            ItemInfoTable.Columns.Add("PKG_COST", typeof(decimal));
-            ItemInfoTable.Columns.Add("LAB_COST", typeof(decimal));
-            ItemInfoTable.Columns.Add("OH_COST", typeof(decimal));
-            ItemInfoTable.Columns.Add("OTH_COST", typeof(decimal));
-            ItemInfoTable.Columns.Add("WASTAGE", typeof(decimal));
-            ItemInfoTable.Columns.Add("COST_PRICE1", typeof(decimal));
-            ItemInfoTable.Columns.Add("COST_PRICE2", typeof(decimal));
-            ItemInfoTable.Columns.Add("COST_PRICE3", typeof(decimal));
-            ItemInfoTable.Columns.Add("NET_COST", typeof(decimal));
-            ItemInfoTable.Columns.Add("AVG_COST", typeof(decimal));
-            ItemInfoTable.Columns.Add("AVG_COST1", typeof(decimal));
-            ItemInfoTable.Columns.Add("AVG_COST2", typeof(decimal));
-            ItemInfoTable.Columns.Add("AVG_COST3", typeof(decimal));
-            ItemInfoTable.Columns.Add("F_PUR_PRICE", typeof(decimal));
-            ItemInfoTable.Columns.Add("LAST_PUR_PRICE1", typeof(decimal));
-            ItemInfoTable.Columns.Add("LAST_PUR_PRICE2", typeof(decimal));
-            ItemInfoTable.Columns.Add("LAST_PUR_PRICE3", typeof(decimal));
-            ItemInfoTable.Columns.Add("LAST_SUPP", typeof(string));
-            ItemInfoTable.Columns.Add("LAST_SUPP1", typeof(string));
-            ItemInfoTable.Columns.Add("LAST_SUPP2", typeof(string));
-            ItemInfoTable.Columns.Add("FREE_QTY", typeof(decimal));
-            ItemInfoTable.Columns.Add("FREE_QTY_AVG_COST", typeof(decimal));
+            //ItemInfoTable.Columns.Add("MATERIAL_COST", typeof(decimal));
+            //ItemInfoTable.Columns.Add("INGR_COST", typeof(decimal));
+            //ItemInfoTable.Columns.Add("PKG_COST", typeof(decimal));
+            //ItemInfoTable.Columns.Add("LAB_COST", typeof(decimal));
+            //ItemInfoTable.Columns.Add("OH_COST", typeof(decimal));
+            //ItemInfoTable.Columns.Add("OTH_COST", typeof(decimal));
+            //ItemInfoTable.Columns.Add("WASTAGE", typeof(decimal));
+            //ItemInfoTable.Columns.Add("COST_PRICE1", typeof(decimal));
+            //ItemInfoTable.Columns.Add("COST_PRICE2", typeof(decimal));
+            //ItemInfoTable.Columns.Add("COST_PRICE3", typeof(decimal));
+            //ItemInfoTable.Columns.Add("NET_COST", typeof(decimal));
+            //ItemInfoTable.Columns.Add("AVG_COST", typeof(decimal));
+            //ItemInfoTable.Columns.Add("AVG_COST1", typeof(decimal));
+            //ItemInfoTable.Columns.Add("AVG_COST2", typeof(decimal));
+            //ItemInfoTable.Columns.Add("AVG_COST3", typeof(decimal));
+            //ItemInfoTable.Columns.Add("F_PUR_PRICE", typeof(decimal));
+            //ItemInfoTable.Columns.Add("LAST_PUR_PRICE1", typeof(decimal));
+            //ItemInfoTable.Columns.Add("LAST_PUR_PRICE2", typeof(decimal));
+            //ItemInfoTable.Columns.Add("LAST_PUR_PRICE3", typeof(decimal));
+            //ItemInfoTable.Columns.Add("LAST_SUPP", typeof(string));
+            //ItemInfoTable.Columns.Add("LAST_SUPP1", typeof(string));
+            //ItemInfoTable.Columns.Add("LAST_SUPP2", typeof(string));
+            //ItemInfoTable.Columns.Add("FREE_QTY", typeof(decimal));
+            //ItemInfoTable.Columns.Add("FREE_QTY_AVG_COST", typeof(decimal));
             ItemInfoTable.Columns.Add("ITEM_DISC", typeof(decimal));
             ItemInfoTable.Columns.Add("bDISCOUNTED", typeof(bool));
             ItemInfoTable.Columns.Add("DISC_QTY", typeof(decimal));
@@ -475,7 +476,7 @@ namespace GROCERY.SyncService
             ItemInfoTable.Columns.Add("CUSER", typeof(int));
             ItemInfoTable.Columns.Add("MDATE", typeof(DateTime));
             ItemInfoTable.Columns.Add("MUSER", typeof(int));
-            ItemInfoTable.Columns.Add("EMPTY", typeof(bool));
+            //ItemInfoTable.Columns.Add("EMPTY", typeof(bool));
             ItemInfoTable.Columns.Add("bNEW", typeof(bool));
             ItemInfoTable.Columns.Add("NeedsReplication", typeof(bool));
 
@@ -494,7 +495,7 @@ namespace GROCERY.SyncService
                 }
 
                 SqlCommand cmd = new SqlCommand(@"select ITEM_CODE,HV_CODE,ITEM_ATTRIB,IsRECIPE,SERIALIZED,EXPIRY_ITEM,FEATURED,UOM,BATCH_QTY,DEPT_CODE,GRCODE,SUBGRCODE,CATCODE,BRAND_CODE,DESIGN_CD,CLR_CODE,
-                                                  SUPP_CODE,MAKE_CODE,SIZE_CODE,AUTH_CODE,PUB_CODE,EDITION,CLASS,ISBN,ITEM_DESC,ITEM_DESC_LONG,SEX,SEASON,AGE,FABRIC,COMMENT,EXEMPT,VAT,GST,OPEN_PRICE,FRACTIONAL,
+                                                  MAKE_CODE,SIZE_CODE,AUTH_CODE,PUB_CODE,EDITION,CLASS,ISBN,ITEM_DESC,ITEM_DESC_LONG,SEX,SEASON,AGE,FABRIC,COMMENT,EXEMPT,VAT,GST,OPEN_PRICE,FRACTIONAL,
                                                   ALLOWQTY,ITEM_DISC,bDISCOUNTED,DISC_QTY,SALE_DISC,CDATE,CUSER,MDATE,MUSER,bNEW,NeedsReplication from ITEMINFO", sachiChakkiConnection);
                 using (SqlDataReader dr = cmd.ExecuteReader())
                 {
@@ -535,8 +536,8 @@ namespace GROCERY.SyncService
                                 ItemInfoRow["DESIGN_CD"] = dr["DESIGN_CD"];
                             if (dr["CLR_CODE"] != null)
                                 ItemInfoRow["CLR_CODE"] = dr["CLR_CODE"];
-                            if (dr["SUPP_CODE"] != null)
-                                ItemInfoRow["SUPP_CODE"] = dr["SUPP_CODE"];
+                            //if (dr["SUPP_CODE"] != null)
+                            //    ItemInfoRow["SUPP_CODE"] = dr["SUPP_CODE"];
                             if (dr["MAKE_CODE"] != null)
                                 ItemInfoRow["MAKE_CODE"] = dr["MAKE_CODE"];
                             if (dr["SIZE_CODE"] != null)
