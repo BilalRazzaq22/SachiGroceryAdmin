@@ -145,7 +145,7 @@
     var tempAmount = 1;
     var categoriesList = {};
     var subCategoriesList = {};
-
+    var smstest = "";
     var products = {};
     var branches = {};
 
@@ -162,7 +162,7 @@
         } else {
             $("#testOrder").hide();
         }
-        
+
         $("#txtCouponDisc").val(0);
         $("#myInput").keypress(function (e) {
             if (e.which == 13) {
@@ -785,12 +785,18 @@
             data: JSON.stringify({ custOrd: callOrders_new }),
             success: function (response) {
                 debugger;
-                if (response == "False" && $("#IsTestOrder_Value option:selected").text() == "Yes") {
+
+                var d = JSON.parse(response);
+
+                if (d.Status == false && $("#IsTestOrder_Value option:selected").text() == "Yes") {
                     alert("Test order not saved in the system");
                 }
-                else if (response == "True") {
-                    alert("Order created successfully.");
+                else if (d.Status == true) {
                     $("#form-orders").submit();
+                    debugger;
+                    
+
+                    alert("Order created successfully." + '\n' + d.Message);
 
                     $.ajax({
                         url: "@Url.Action("SaveTransactionNumber", "Order")",

@@ -17,6 +17,7 @@ using ClosedXML.Excel;
 using System.IO;
 using System.Web.Http.Results;
 using System.Runtime.InteropServices.ComTypes;
+using System.Web.Script.Serialization;
 
 namespace GROCERY.Controllers
 {
@@ -93,13 +94,22 @@ namespace GROCERY.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
 
-        public bool ProcessOrder(CustomerOrderBO custOrd)
+        public class OrderResponse
         {
+            public bool Status { get; set; }
+            public string Message { get; set; }
+        }
+
+
+        public string ProcessOrder(CustomerOrderBO custOrd)
+        {
+            OrderResponse response = new OrderResponse();
             try
             {
                 if (custOrd.isTestOrder)
                 {
-                    return false;
+                    response.Status = false;
+                    return new JavaScriptSerializer().Serialize(response);
                 }
 
                 int uID = -1;
@@ -119,7 +129,10 @@ namespace GROCERY.Controllers
                     });
 
                     if (uID < 1)
-                        return false;
+                    {
+                        response.Status = false;
+                        return new JavaScriptSerializer().Serialize(response);
+                    }
 
 
                 }
@@ -139,7 +152,10 @@ namespace GROCERY.Controllers
                             BRANCH_ID = custOrd.BranchID,
                             USER_TYPE = 4
                         }) < 1)
-                            return false;
+                        {
+                            response.Status = false;
+                            return new JavaScriptSerializer().Serialize(response);
+                        }
                     }
 
                 }
@@ -150,12 +166,13 @@ namespace GROCERY.Controllers
 
                 if (coupon == null)
                     coupon = new COUPON();
-                else
-                    if (custOrd.totalAmount < coupon.UNLOCK_AMOUNT)
+                else if (custOrd.totalAmount < coupon.UNLOCK_AMOUNT)
                     coupon = new COUPON();
-                else
-                        if (!cRepo.updateCouponStatus(coupon.COUPON_ID))
-                    return false;
+                else if (!cRepo.updateCouponStatus(coupon.COUPON_ID))
+                {
+                    response.Status = false;
+                    return new JavaScriptSerializer().Serialize(response);
+                }
 
 
                 int orderID = 0;
@@ -205,7 +222,7 @@ namespace GROCERY.Controllers
                         IsTestOrder = custOrd.isTestOrder
                     });
                 }
-                sendOrderSms("Your order (" + orderID + " ) has been placed ", custOrd.MobileNumber);
+                response.Message = sendOrderSms("Your order (" + orderID + " ) has been placed ", custOrd.MobileNumber);
                 DataSet managers_fcm_token = controller.managerFCMToken(custOrd.BranchID.ToString());
                 FCMPushNotification notification = new FCMPushNotification();
                 foreach (DataRow r in managers_fcm_token.Tables[0].Rows)
@@ -214,16 +231,19 @@ namespace GROCERY.Controllers
                 }
                 if ((repo.generateProductOrders(custOrd.cOrders, orderID)))
                 {
-                    return true;
+                    response.Status = true;
+                    return new JavaScriptSerializer().Serialize(response);
                 }
                 else
                 {
-                    return false;
+                    response.Status = false;
+                    return new JavaScriptSerializer().Serialize(response);
                 }
             }
             catch (System.Exception e)
             {
-                return false;
+                response.Status = false;
+                return new JavaScriptSerializer().Serialize(response);
             }
         }
 
@@ -240,7 +260,7 @@ namespace GROCERY.Controllers
             }
         }
 
-        public void sendOrderSms(string msg, string num)
+        public string sendOrderSms(string msg, string num)
         {
             string username = "923183183341";
             string pass = "Zong@123";
@@ -252,14 +272,14 @@ namespace GROCERY.Controllers
             //start sending SMS on request
             if (msg != string.Empty)
             {
-                GenerateSMSAlert(masking, destinationnum, msg, username, pass);
+               return GenerateSMSAlert(masking, destinationnum, msg, username, pass);
             }
-
+            return "";
             //end sending SMS on request
         }
         #region Generate SMS
 
-        public int GenerateSMSAlert(string Masking, string toNumber, string MessageText, string MyUsername, string MyPassword)
+        public string GenerateSMSAlert(string Masking, string toNumber, string MessageText, string MyUsername, string MyPassword)
         {
             int count = 0;
 
@@ -272,14 +292,14 @@ namespace GROCERY.Controllers
             {
                 count++;
             }
-            SendSMS(Masking, toNumber, MessageText, MyUsername, MyPassword);
-            return count;
+            return SendSMS(Masking, toNumber, MessageText, MyUsername, MyPassword);
+            //return count;
         }
         #endregion
 
         #region Send SMS
 
-        public static string SendSMS(string Masking, string toNumber, string MessageText, string MyUsername, string MyPassword)
+        public string SendSMS(string Masking, string toNumber, string MessageText, string MyUsername, string MyPassword)
         {
             // OLD IMPLEMENTATION
             //string URI = @"http://api.bizsms.pk/api-send-branded-sms.aspx?username=" + MyUsername + "&pass=" + MyPassword +
@@ -290,20 +310,27 @@ namespace GROCERY.Controllers
             //var sr = new System.IO.StreamReader(resp.GetResponseStream());
             //return sr.ReadToEnd().Trim();
 
-            SmsApiService.QuickSMSResquest quickSMSResquest = new SmsApiService.QuickSMSResquest()
+            try
             {
-                loginId = MyUsername,
-                loginPassword = MyPassword,
-                Destination = toNumber,
-                Mask = Masking,
-                Message = MessageText,
-                ShortCodePrefered = "n",
-                UniCode = "0"
-            };
+                SmsApiService.QuickSMSResquest quickSMSResquest = new SmsApiService.QuickSMSResquest()
+                {
+                    loginId = MyUsername,
+                    loginPassword = MyPassword,
+                    Destination = toNumber,
+                    Mask = Masking,
+                    Message = MessageText,
+                    ShortCodePrefered = "n",
+                    UniCode = "0"
+                };
 
-            SmsApiService.BasicHttpBinding_ICorporateCBS client = new SmsApiService.BasicHttpBinding_ICorporateCBS();
-            string message = client.QuickSMS(quickSMSResquest);
-            return message;
+                SmsApiService.BasicHttpBinding_ICorporateCBS client = new SmsApiService.BasicHttpBinding_ICorporateCBS();
+                string message = client.QuickSMS(quickSMSResquest);
+                return message;
+            }
+            catch (Exception ex)
+            {
+                return $"Note: Due to some issue, we are unable to send sms to {toNumber}";
+            }
         }
         #endregion
         public bool UpdateOrder(CustomerOrderBO custOrd)
