@@ -14,6 +14,7 @@ namespace GROCERY.Models
     
     public partial class PRODUCT
     {
+        public int PARENT_ID { get; set; }
         public int PRODUCT_ID { get; set; }
         public Nullable<int> OLD_PRODUCT_ID { get; set; }
         public string NAME { get; set; }

@@ -194,7 +194,9 @@ namespace GROCERY.Controllers
                         COUPON_DISCOUNT = coupon.VALUE,
                         IS_PACKAGE = custOrd.Package,
                         DELIVERY_TIME = DateTime.Parse(custOrd.DeliveryTime),
-                        IsTestOrder = custOrd.isTestOrder
+                        IsTestOrder = custOrd.isTestOrder,
+                        DeliveryFee = custOrd.DeliveryFee,
+                        EntryType = "ADMIN"
                     });
                 }
                 else
@@ -219,7 +221,9 @@ namespace GROCERY.Controllers
                         COUPON_DISCOUNT = coupon.VALUE,
                         IS_PACKAGE = custOrd.Package,
                         DELIVERY_TIME = currentdate,
-                        IsTestOrder = custOrd.isTestOrder
+                        IsTestOrder = custOrd.isTestOrder,
+                        DeliveryFee = custOrd.DeliveryFee,
+                        EntryType = "ADMIN"
                     });
                 }
                 response.Message = sendOrderSms("Your order (" + orderID + " ) has been placed ", custOrd.MobileNumber);
@@ -272,7 +276,7 @@ namespace GROCERY.Controllers
             //start sending SMS on request
             if (msg != string.Empty)
             {
-               return GenerateSMSAlert(masking, destinationnum, msg, username, pass);
+                return GenerateSMSAlert(masking, destinationnum, msg, username, pass);
             }
             return "";
             //end sending SMS on request
@@ -391,6 +395,8 @@ namespace GROCERY.Controllers
                         COUPON_ID = coupon.COUPON_ID,
                         IsTestOrder = custOrd.isTestOrder,
                         COUPON_DISCOUNT = coupon.VALUE,
+                        DeliveryFee = custOrd.DeliveryFee,
+                        EntryType = "ADMIN"
                     }, custOrd.cOrders, custOrd.coupon, custOrd.totalAmount);
                 }
                 else
@@ -411,6 +417,8 @@ namespace GROCERY.Controllers
                         COUPON_ID = coupon.COUPON_ID,
                         COUPON_DISCOUNT = coupon.VALUE,
                         IsTestOrder = custOrd.isTestOrder,
+                        DeliveryFee = custOrd.DeliveryFee,
+                        EntryType = "ADMIN"
                         //DELIVERY_TIME = custOrd.DeliveryTime,
                     }, custOrd.cOrders, custOrd.coupon, custOrd.totalAmount);
                 }

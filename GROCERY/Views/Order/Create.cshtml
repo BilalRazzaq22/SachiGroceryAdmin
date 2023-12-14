@@ -188,7 +188,7 @@
                 sum = sum + oItm.total;
             }
 
-            ele.value = sum - $(".txtManualDiscount").val() - $("#txtCouponDisc").val();
+            ele.value = (sum - $(".txtManualDiscount").val() - $("#txtCouponDisc").val()) + parseInt($("#txtDeliveryFee").val());
 
         });
 
@@ -217,7 +217,7 @@
                             sum = sum + oItm.total;
                         }
 
-                        ele.value = sum - $(".txtManualDiscount").val() - $("#txtCouponDisc").val();
+                        ele.value = (sum - $(".txtManualDiscount").val() - $("#txtCouponDisc").val()) + parseInt($("#txtDeliveryFee").val());
 
                     }
                     else
@@ -236,7 +236,7 @@
                             sum = sum + oItm.total;
                         }
 
-                        ele.value = sum - $(".txtManualDiscount").val() - $("#txtCouponDisc").val();
+                        ele.value = (sum - $(".txtManualDiscount").val() - $("#txtCouponDisc").val()) + parseInt($("#txtDeliveryFee").val());
                     }
 
                 },
@@ -599,8 +599,7 @@
                             oItm.barcode + ' onblur=addToListUpdated(this.value,' + oItm.product_id + oItm.barcode + ') min=0 /></td><td>' + oItm.price + '</td><td>' +
                             oItm.discount + '</td><td>' + oItm.total + '</td><td><button type="button" class="btn btn-small btn-red" onClick=removeFromList(' + oItm.barcode + ') >Remove</button></td></tr>';
                     }
-
-                    ele.value = sum - $(".txtManualDiscount").val() - $("#txtCouponDisc").val();
+                    ele.value = (sum - $(".txtManualDiscount").val() - $("#txtCouponDisc").val()) + parseInt($("#txtDeliveryFee").val());
                     $("#ordersCart").html(ordRows);
                 }
             }
@@ -691,7 +690,7 @@
                     '</td><td>' + oItm.total + '</td><td><button type="button" class="btn btn-small btn-red" onClick=removeFromList(' + oItm.barcode + ') >Remove</button></td></tr>';
             }
             debugger;
-            ele.value = sum1 - $(".txtManualDiscount").val() - $("#txtCouponDisc").val();
+            ele.value = (sum1 - $(".txtManualDiscount").val() - $("#txtCouponDisc").val()) + parseInt($("#txtDeliveryFee").val());
             $("#ordersCart").html(ordRows);
         }
     }
@@ -776,6 +775,7 @@
             couponDisc: $("#txtCouponDisc").val(),
             totalAmount: $("#txtTotalSum").val(),
             isTestOrder: ($("#IsTestOrder_Value option:selected").text() == "Yes") ? true : false,
+            deliveryFee: $("#txtDeliveryFee").val(),
             cOrders: orders.items
         };
         $.ajax({
@@ -925,7 +925,7 @@
                     oItm.discount + '</td><td>' + oItm.total + '</td><td><button type="button" class="btn btn-small btn-red" onClick=removeFromList(' + oItm.barcode + ') >Remove</button></td></tr>';
             }
 
-            ele.value = sum - $(".txtManualDiscount").val() -$("#txtCouponDisc").val();
+            ele.value = (sum - $(".txtManualDiscount").val() - $("#txtCouponDisc").val()) + parseInt($("#txtDeliveryFee").val());
             $("#ordersCart").html(ordRows);
         }
     }
@@ -1297,16 +1297,14 @@
                             <div class="form-group">
                                 <label for="user_status" class="control-label">Total Bill</label>
                                 <input type="text" id="txtTotalSum" class="form-control" value="0" readonly />
-
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label for="user_status" class="control-label">Delivery Message</label>
-                                @Html.TextAreaFor(model => model.DELIVERY_DESCRIPTION, new { @class = "form-control", placeholder = "Delivery Message" })
+                                <label for="user_status" class="control-label">Delivery Fee</label>
+                                <input type="number" id="txtDeliveryFee" class="form-control" value="100" />
                             </div>
                         </div>
-
                         <div id="testOrder" class="col-md-4">
                             <div class="form-group">
 
@@ -1334,7 +1332,12 @@
                                 @Html.DropDownListFor(model => model.IsTestOrder.Value, listActive, null, new { @class = "form-control" })
                             </div>
                         </div>
-
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="user_status" class="control-label">Delivery Message</label>
+                                @Html.TextAreaFor(model => model.DELIVERY_DESCRIPTION, new { @class = "form-control", placeholder = "Delivery Message" })
+                            </div>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-info" id="btnGenerateOrder">Generate</button>

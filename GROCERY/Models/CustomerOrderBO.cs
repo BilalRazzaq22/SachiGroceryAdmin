@@ -24,5 +24,6 @@ namespace GROCERY.Models
         public string DeliveryTime { get; set; }
         public int Package { get; set; }
         public decimal totalAmount { get; set; }
+        public decimal DeliveryFee { get; set; }
     }
 }

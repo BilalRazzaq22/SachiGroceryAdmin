@@ -19,6 +19,8 @@
     var orders = {
         items: []
     };
+    var originalTotalPrice;
+
     jQuery(window).load(function () {
         //    alert('page is loaded');
         orders.items = @Html.Raw(Json.Encode(ViewBag.oDetails));
@@ -35,8 +37,9 @@
                 oItm.barcode + ' onblur=addToListUpdated(this.value,' + oItm.product_id + oItm.barcode + ') min=0 /></td><td>' + oItm.price + '</td><td>' +
                 oItm.disc + '</td><td>' + oItm.total + '</td><td><button type="button" class="btn btn-small btn-red" onClick=removeFromList(' + oItm.barcode + ') >Remove</button></td></tr>';
         }
-        ele.value = sum - $(".txtManualDiscount").val() - $("#txtCouponDisc").val();
+        ele.value = (sum - $(".txtManualDiscount").val() - $("#txtCouponDisc").val()) + parseInt($("#txtDeliveryFee").val());
         $("#tbl-ord").html(ordRows);
+        originalTotalPrice = sum;
     });
 
     $(document).ready(function () {
@@ -69,8 +72,8 @@
                             sum = sum + oItm.total;
                         }
 
-                        ele.value = sum - $(".txtManualDiscount").val() - $("#txtCouponDisc").val();
-
+                        ele.value = (sum - $(".txtManualDiscount").val() - $("#txtCouponDisc").val()) + parseInt($("#txtDeliveryFee").val());
+                        originalTotalPrice = sum;
                     }
                     else
                     {
@@ -88,7 +91,8 @@
                             sum = sum + oItm.total;
                         }
 
-                        ele.value = sum - $(".txtManualDiscount").val() - $("#txtCouponDisc").val();
+                        ele.value = (sum - $(".txtManualDiscount").val() - $("#txtCouponDisc").val()) + parseInt($("#txtDeliveryFee").val());
+                        originalTotalPrice = sum;
                     }
 
                 },
@@ -111,8 +115,8 @@
                 sum = sum + oItm.total;
             }
 
-            ele.value = sum - $(".txtManualDiscount").val()- $("#txtCouponDisc").val();
-
+            ele.value = (sum - $(".txtManualDiscount").val() - $("#txtCouponDisc").val()) + parseInt($("#txtDeliveryFee").val());
+            originalTotalPrice = sum;
         });
 
         initializeProductsList(-1, @ViewBag.BranchId);
@@ -410,7 +414,8 @@
                             oItm.barcode + ' onblur=addToListUpdated(this.value,' + oItm.product_id + oItm.barcode + ') min=0 /></td><td>' + oItm.price + '</td><td>' +
                             oItm.disc + '</td><td>' + oItm.total + '</td><td><button type="button" class="btn btn-small btn-red" onClick=removeFromList(' + oItm.barcode + ') >Remove</button></td></tr>';
                     }
-                    ele.value = sum - $(".txtManualDiscount").val() - $("#txtCouponDisc").val();
+                    ele.value = (sum - $(".txtManualDiscount").val() - $("#txtCouponDisc").val()) + parseInt($("#txtDeliveryFee").val());
+                    originalTotalPrice = sum;
                     $("#tbl-ord").html(ordRows);
                 }
             }
@@ -447,7 +452,8 @@
                     ' onblur=addToListUpdated(this.value,' + oItm.product_id + '' + oItm.barcode + ') min = 0/></td><td>' + oItm.price + '</td><td>' + oItm.disc +
                     '</td><td>' + oItm.total + '</td><td><button type="button" class="btn btn-small btn-red" onClick=removeFromList(' + oItm.barcode + ') >Remove</button></td></tr>';
             }
-            ele.value = sum - $(".txtManualDiscount").val()- $("#txtCouponDisc").val();
+            ele.value = (sum - $(".txtManualDiscount").val() - $("#txtCouponDisc").val()) + parseInt($("#txtDeliveryFee").val());
+            originalTotalPrice = sum;
             $("#tbl-ord").html(ordRows);
         }
     }
@@ -561,7 +567,8 @@
                     oItm.disc + '</td><td>' + oItm.total + '</td><td><button type="button" class="btn btn-small btn-red" onClick=removeFromList(' + oItm.barcode + ') >Remove</button></td></tr>';
             }
 
-            ele.value = sum - $(".txtManualDiscount").val()- $("#txtCouponDisc").val();
+            ele.value = (sum - $(".txtManualDiscount").val() - $("#txtCouponDisc").val()) + parseInt($("#txtDeliveryFee").val());
+            originalTotalPrice = sum;
             $("#tbl-ord").html(ordRows);
         }
     }
@@ -585,6 +592,7 @@
             couponDisc : $("#txtCouponDisc").val(),
             totalAmount: $("#txtTotalSum").val(),
             DeliveryTime: $("#txtDeliveryTime").val(),
+            deliveryFee: $("#txtDeliveryFee").val(),
             cOrders: orders.items
         };
 
@@ -639,6 +647,14 @@
         });
 
     }
+
+    $(document).on("keypress", "#txtDeliveryFee", function (e) {
+        if (e.keyCode == 13 || e.which == '13') {
+            //Do your work
+            var val = originalTotalPrice + parseInt($("#txtDeliveryFee").val());
+            $("#txtTotalSum").val(val);
+        }
+    });
 
 </script>
 
@@ -739,7 +755,7 @@
                                 </div>
                             </div>
                         </div>
-                        <input type="button" value="Load" id="addOrderBtn" class="btn btn-info pull-left" />
+                        <input type="button" value="Load Products" id="addOrderBtn" class="btn btn-info pull-right" />
                         <br />
 
                         <div class="row" id="divProducts" style="margin-top:20px;">
@@ -936,9 +952,9 @@
                                     <div class="form-group">
                                         <label class="control-label col-md-4">Reject?</label>
                                         @*<select class="form-control" name="rejectionStatus">
-                                                <option value="0" selected>Yes</option>
-                                                <option value="1">No</option>
-                                            </select>*@
+                        <option value="0" selected>Yes</option>
+                        <option value="1">No</option>
+                    </select>*@
                                         @{
                                             if (Model.IS_ACTIVE == 0)
                                             {
@@ -1005,15 +1021,16 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label for="user_status" class="control-label">Delivery Message</label>
-                                    @Html.TextAreaFor(model => model.DELIVERY_DESCRIPTION, new { @class = "form-control", placeholder = "Delivery Message", id = "DELIVERY_DESCRIPTION" })
+                                    <label for="user_status" class="control-label">Total Bill</label>
+                                    <input type="text" id="txtTotalSum" class="form-control" value="0" readonly />
+
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label for="user_status" class="control-label">Total Bill</label>
-                                    <input type="text" id="txtTotalSum" class="form-control" value="0" readonly />
-
+                                    <label for="user_status" class="control-label">Delivery Fee</label>
+                                    <input type="text" id="txtDeliveryFee" class="form-control" value="@Model.DeliveryFee"/>
+                                    @*@Html.TextBoxFor(model => model.DeliveryFee, new { @class = "form-control", placeholder = "Delivery Fee", type = "Number", id = "txtDeliveryFee" })*@
                                 </div>
                             </div>
                             <div class="col-md-4">
@@ -1024,8 +1041,10 @@
                                 </div>
                             </div>
                             <div class="col-md-4">
-
-
+                                <div class="form-group">
+                                    <label for="user_status" class="control-label">Delivery Message</label>
+                                    @Html.TextAreaFor(model => model.DELIVERY_DESCRIPTION, new { @class = "form-control", placeholder = "Delivery Message", id = "DELIVERY_DESCRIPTION" })
+                                </div>
                             </div>
                         </div>
                         <div class="modal-footer">

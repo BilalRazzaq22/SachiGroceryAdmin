@@ -94,7 +94,7 @@ namespace GROCERY.DAL.Core
                     orderObj.PAYMENT_MODE_ID = order.PAYMENT_MODE_ID;
                     orderObj.IS_PACKAGE = order.IS_PACKAGE;
                     orderObj.DELIVERY_TIME = order.DELIVERY_TIME;
-
+                    orderObj.DeliveryFee = order.DeliveryFee;
                     orderObj.UPDATED_BY = order.UPDATED_BY;
 
                     int result = gEnt.SaveChanges();

@@ -186,12 +186,15 @@
             if (item.ADDED_BY && item.ADDED_BY == 2) {
                 bgclass = "orderByCustomer";
             }
+
+            var totalAmount = item.TOTAL_AMOUNT + item.DeliveryFee;
+
             rows = rows + '<tr class=' + bgclass + '><td>' + item.ORDER_ID + '</td><td>' + item.CUSTOMER_ID + '</td><td>' + item.NAME + '</td><td>'
                 + item.MOBILE + '</td><td>' + item.ADDRESS + '</td><td>'
                 + item.DELIVERY_DESCRIPTION + '</td><td id="times' + allordercount + '">' + item.DELIVERY_TIME + '</td><td>'
                 + item.MANUAL_DISCOUNT + '</td><td>' + item.COUPON_DISCOUNT + '</td><td>'
                 + item.IS_PACKAGE + '</td><td>'
-                + item.TOTAL_ITEMS + '</td><td>' + item.TOTAL_AMOUNT + '</td><td>' + item.STATUS_DESCRIPTION + '</td>'
+                + item.TOTAL_ITEMS + '</td><td>' + totalAmount + '</td><td>' + item.STATUS_DESCRIPTION + '</td>'
                 + '<td><a style="color:green" target="_blank" href = "View?oID=' + item.ORDER_ID + '">View</a></td></tr>';
 
             if (allordercount == 1) {
@@ -249,13 +252,14 @@
         var rows = '';
         for (i = 0; i < orders.length; i++) {
             var item = orders[i];
+            var totalAmount = item.TOTAL_AMOUNT + item.DeliveryFee;
             populateordercount = populateordercount + 1;
             rows = rows + '<tr><td>' + item.ORDER_ID + '</td><td>' + item.CUSTOMER_ID + '</td><td>' + item.NAME + '</td><td>'
                 + item.MOBILE + '</td><td>' + item.ADDRESS + '</td><td>'
                 + item.DELIVERY_DESCRIPTION + '</td><td>' + item.DELIVERY_TIME + '</td><td>'
                 + item.MANUAL_DISCOUNT + '</td><td>' + item.COUPON_DISCOUNT + '</td><td>'
                 + item.IS_PACKAGE + '</td><td>'
-                + item.TOTAL_ITEMS + '</td><td>' + item.TOTAL_AMOUNT + '</td>'
+                + item.TOTAL_ITEMS + '</td><td>' + totalAmount + '</td>'
                 //+ '<td><a style="color:green" href="javascript:void(0);" onclick = "completeOrder(' + item.ORDER_ID + ')">Tracking</a></td>'
                 + '<td><a style="color:green" target="_blank" href = "View?oID=' + item.ORDER_ID + '">View</a></td>'
                 + '<td><button type="button" class="btn btn-xs btn-warning" onclick= javascript:allocateOrderByID(' + item.ORDER_ID + ') id="check-box-' + item.ORDER_ID + '" >Allocate</button></div></td>'
@@ -279,10 +283,11 @@
         var rows = '';
         for (i = 0; i < orders.length; i++) {
             var item = orders[i];
+            var totalAmount = item.TOTAL_AMOUNT + item.DeliveryFee;
             allocationordercount = allocationordercount + 1;
             rows = rows + '<tr><td>' + item.ORDER_ID + '</td><td>' + item.CUSTOMER_ID + '</td><td>' + item.NAME + '</td><td>'
                 + item.MOBILE + '</td><td>' + item.ADDRESS + '</td><td>'
-                + item.TOTAL_ITEMS + '</td><td>' + item.TOTAL_AMOUNT + '</td>'
+                + item.TOTAL_ITEMS + '</td><td>' + totalAmount + '</td>'
                 + '<td>' + item.USERNAME + '</td>'
                 //                        + '<td><input type="checkbox" onchange=         javascript:dispatchOrderByID(' + item.ORDER_ID + ') id="check-box-' + item.ORDER_ID + '"></input></div></td>'
                 //                      + '</tr>';
@@ -306,10 +311,11 @@
         var rows = '';
         for (i = 0; i < orders.length; i++) {
             var item = orders[i];
+            var totalAmount = item.TOTAL_AMOUNT + item.DeliveryFee;
             dispatchordercount = dispatchordercount + 1;
             rows = rows + '<tr><td>' + item.ORDER_ID + '</td><td>' + item.CUSTOMER_ID + '</td><td>' + item.NAME + '</td><td>'
                 + item.MOBILE + '</td><td>' + item.ADDRESS + '</td><td>'
-                + item.TOTAL_ITEMS + '</td><td>' + item.TOTAL_AMOUNT + '</td>'
+                + item.TOTAL_ITEMS + '</td><td>' + totalAmount + '</td>'
                 + '</tr>';
 
             if (dispatchordercount == 1) {
@@ -331,10 +337,11 @@
         var rows = '';
         for (i = 0; i < orders.length; i++) {
             var item = orders[i];
+            var totalAmount = item.TOTAL_AMOUNT + item.DeliveryFee;
             shippedordercount = shippedordercount + 1;
             rows = rows + '<tr><td>' + item.ORDER_ID + '</td><td>' + item.CUSTOMER_ID + '</td><td>' + item.NAME + '</td><td>'
                 + item.MOBILE + '</td><td>' + item.ADDRESS + '</td><td>'
-                + item.TOTAL_ITEMS + '</td><td>' + item.TOTAL_AMOUNT + '</td>'
+                + item.TOTAL_ITEMS + '</td><td>' + totalAmount + '</td>'
                 + '<td><a style="color:green" target="_blank" href = "View?oID=' + item.ORDER_ID + '">View</a></td></tr>';
 
             if (shippedordercount == 1) {

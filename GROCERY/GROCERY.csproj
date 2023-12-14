@@ -329,12 +329,6 @@
     <Compile Include="Models\BARCODE.cs">
       <DependentUpon>GROCERY.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\BarcodeNewTest.cs">
-      <DependentUpon>GROCERY.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\BARCODESTest.cs">
-      <DependentUpon>GROCERY.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\Blog.cs">
       <DependentUpon>GROCERY.tt</DependentUpon>
     </Compile>
@@ -421,9 +415,6 @@
       <DependentUpon>GROCERY.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ProductQuantity.cs" />
-    <Compile Include="Models\ProductTest.cs">
-      <DependentUpon>GROCERY.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\PRODUCT_BRANDS.cs">
       <DependentUpon>GROCERY.tt</DependentUpon>
     </Compile>
@@ -452,9 +443,6 @@
       <DependentUpon>GROCERY.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\PS000.cs">
-      <DependentUpon>GROCERY.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\PS000Test.cs">
       <DependentUpon>GROCERY.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\RECOMMENDED_PRODUCTS.cs">
@@ -546,16 +534,7 @@
     <Compile Include="Models\SUB_CATEGORIES.cs">
       <DependentUpon>GROCERY.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\sysdiagram.cs">
-      <DependentUpon>GROCERY.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\TEMP_CUSTOMERS.cs">
-      <DependentUpon>GROCERY.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\TERMINFO.cs">
-      <DependentUpon>GROCERY.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\TEST.cs">
       <DependentUpon>GROCERY.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\USER.cs">

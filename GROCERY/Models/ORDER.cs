@@ -43,5 +43,7 @@ namespace GROCERY.Models
         public Nullable<int> IS_PACKAGE { get; set; }
         public Nullable<byte> ADDED_BY { get; set; }
         public Nullable<bool> IsTestOrder { get; set; }
+        public Nullable<decimal> DeliveryFee { get; set; }
+        public string EntryType { get; set; }
     }
 }

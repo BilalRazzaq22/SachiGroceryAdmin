@@ -28,6 +28,7 @@ namespace GROCERY.Models
         public Nullable<int> TOTAL_ITEMS { get; set; }
         public Nullable<decimal> TOTAL_AMOUNT { get; set; }
         public string USERNAME { get; set; }
+        public Nullable<decimal> DeliveryFee { get; set; }
         public Nullable<long> RowIndex { get; set; }
         public Nullable<int> TotalRecords { get; set; }
         public Nullable<decimal> TotalPages { get; set; }

@@ -27,11 +27,19 @@ namespace GROCERY.Models
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<BANNER> BANNERS { get; set; }
+        public virtual DbSet<ORDER_PRODUCTS> ORDER_PRODUCTS { get; set; }
+        public virtual DbSet<PRODUCT_IMAGES> PRODUCT_IMAGES { get; set; }
+        public virtual DbSet<PRODUCT> PRODUCTS { get; set; }
+        public virtual DbSet<RECOMMENDED_PRODUCTS> RECOMMENDED_PRODUCTS { get; set; }
+        public virtual DbSet<USER_ADDRESSES> USER_ADDRESSES { get; set; }
+        public virtual DbSet<USER_DEVICES> USER_DEVICES { get; set; }
+        public virtual DbSet<USER_FAVOURITES> USER_FAVOURITES { get; set; }
+        public virtual DbSet<USER> USERS { get; set; }
         public virtual DbSet<AD> ADS { get; set; }
         public virtual DbSet<AREA> AREAS { get; set; }
         public virtual DbSet<BANNER_IMAGES> BANNER_IMAGES { get; set; }
-        public virtual DbSet<BANNER> BANNERS { get; set; }
-        public virtual DbSet<BARCODESTest> BARCODESTests { get; set; }
+        public virtual DbSet<BARCODE> BARCODES { get; set; }
         public virtual DbSet<Blog> Blogs { get; set; }
         public virtual DbSet<BRANCH> BRANCHES { get; set; }
         public virtual DbSet<BRAND> BRANDS { get; set; }
@@ -41,51 +49,36 @@ namespace GROCERY.Models
         public virtual DbSet<ContactU> ContactUs { get; set; }
         public virtual DbSet<COUPON> COUPONS { get; set; }
         public virtual DbSet<GROUP> GROUPS { get; set; }
+        public virtual DbSet<ITEMINFO> ITEMINFOes { get; set; }
         public virtual DbSet<MAINMENU> MAINMENUs { get; set; }
         public virtual DbSet<OFFER_MANAGEMENT> OFFER_MANAGEMENT { get; set; }
         public virtual DbSet<ONLINE_TRANSACTION> ONLINE_TRANSACTION { get; set; }
-        public virtual DbSet<ORDER_PRODUCTS> ORDER_PRODUCTS { get; set; }
         public virtual DbSet<ORDER_STATUSES> ORDER_STATUSES { get; set; }
-        public virtual DbSet<ORDER> ORDERS { get; set; }
         public virtual DbSet<PACKAGE_PRODUCTS> PACKAGE_PRODUCTS { get; set; }
         public virtual DbSet<PACKAGE> PACKAGES { get; set; }
         public virtual DbSet<PAYMENT_MODES> PAYMENT_MODES { get; set; }
         public virtual DbSet<PRODUCT_BRANDS> PRODUCT_BRANDS { get; set; }
         public virtual DbSet<PRODUCT_COLORS> PRODUCT_COLORS { get; set; }
         public virtual DbSet<PRODUCT_FLAVORS> PRODUCT_FLAVORS { get; set; }
-        public virtual DbSet<PRODUCT_IMAGES> PRODUCT_IMAGES { get; set; }
         public virtual DbSet<PRODUCT_LEVELS> PRODUCT_LEVELS { get; set; }
         public virtual DbSet<PRODUCT_PACKINGS> PRODUCT_PACKINGS { get; set; }
         public virtual DbSet<PRODUCT_REVIEWS> PRODUCT_REVIEWS { get; set; }
         public virtual DbSet<PRODUCT_TAGS> PRODUCT_TAGS { get; set; }
         public virtual DbSet<PRODUCT_TYPES> PRODUCT_TYPES { get; set; }
-        public virtual DbSet<PRODUCT> PRODUCTS { get; set; }
-        public virtual DbSet<ProductTest> ProductTests { get; set; }
-        public virtual DbSet<RECOMMENDED_PRODUCTS> RECOMMENDED_PRODUCTS { get; set; }
+        public virtual DbSet<PS000> PS000 { get; set; }
         public virtual DbSet<RIDER_ORDER> RIDER_ORDER { get; set; }
         public virtual DbSet<SM> SMS { get; set; }
         public virtual DbSet<SMS_TYPES> SMS_TYPES { get; set; }
+        public virtual DbSet<STOCK> STOCKs { get; set; }
         public virtual DbSet<SUB_CATEGORIES> SUB_CATEGORIES { get; set; }
         public virtual DbSet<SUBMENU> SUBMENUs { get; set; }
-        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
-        public virtual DbSet<TEMP_CUSTOMERS> TEMP_CUSTOMERS { get; set; }
-        public virtual DbSet<USER_ADDRESSES> USER_ADDRESSES { get; set; }
-        public virtual DbSet<USER_DEVICES> USER_DEVICES { get; set; }
-        public virtual DbSet<USER_FAVOURITES> USER_FAVOURITES { get; set; }
+        public virtual DbSet<TERMINFO> TERMINFOes { get; set; }
         public virtual DbSet<USER_TYPES> USER_TYPES { get; set; }
-        public virtual DbSet<USER> USERS { get; set; }
         public virtual DbSet<VENDOR_BRANCHES> VENDOR_BRANCHES { get; set; }
         public virtual DbSet<VENDOR> VENDORS { get; set; }
         public virtual DbSet<WebsitePage> WebsitePages { get; set; }
         public virtual DbSet<WISHES_PRODUCT> WISHES_PRODUCT { get; set; }
-        public virtual DbSet<BarcodeNewTest> BarcodeNewTests { get; set; }
-        public virtual DbSet<BARCODE> BARCODES { get; set; }
-        public virtual DbSet<ITEMINFO> ITEMINFOes { get; set; }
-        public virtual DbSet<PS000> PS000 { get; set; }
-        public virtual DbSet<PS000Test> PS000Test { get; set; }
-        public virtual DbSet<STOCK> STOCKs { get; set; }
-        public virtual DbSet<TERMINFO> TERMINFOes { get; set; }
-        public virtual DbSet<TEST> TESTs { get; set; }
+        public virtual DbSet<ORDER> ORDERS { get; set; }
     
         public virtual int sp_alterdiagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
         {
@@ -332,43 +325,6 @@ namespace GROCERY.Models
                 new ObjectParameter("UserId", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SpGetAllCartItemsByUserId_Result>("SpGetAllCartItemsByUserId", pageIndexParameter, pageSizeParameter, sortColumnParameter, sortOrderParameter, searchTextParameter, userIdParameter);
-        }
-    
-        public virtual ObjectResult<SpGetAllOrders_Result> SpGetAllOrders(Nullable<int> pageIndex, Nullable<int> pageSize, string sortColumn, string sortOrder, string searchText, Nullable<int> oStID, string oDateFrom, string oDateTo)
-        {
-            var pageIndexParameter = pageIndex.HasValue ?
-                new ObjectParameter("PageIndex", pageIndex) :
-                new ObjectParameter("PageIndex", typeof(int));
-    
-            var pageSizeParameter = pageSize.HasValue ?
-                new ObjectParameter("PageSize", pageSize) :
-                new ObjectParameter("PageSize", typeof(int));
-    
-            var sortColumnParameter = sortColumn != null ?
-                new ObjectParameter("SortColumn", sortColumn) :
-                new ObjectParameter("SortColumn", typeof(string));
-    
-            var sortOrderParameter = sortOrder != null ?
-                new ObjectParameter("SortOrder", sortOrder) :
-                new ObjectParameter("SortOrder", typeof(string));
-    
-            var searchTextParameter = searchText != null ?
-                new ObjectParameter("SearchText", searchText) :
-                new ObjectParameter("SearchText", typeof(string));
-    
-            var oStIDParameter = oStID.HasValue ?
-                new ObjectParameter("oStID", oStID) :
-                new ObjectParameter("oStID", typeof(int));
-    
-            var oDateFromParameter = oDateFrom != null ?
-                new ObjectParameter("oDateFrom", oDateFrom) :
-                new ObjectParameter("oDateFrom", typeof(string));
-    
-            var oDateToParameter = oDateTo != null ?
-                new ObjectParameter("oDateTo", oDateTo) :
-                new ObjectParameter("oDateTo", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SpGetAllOrders_Result>("SpGetAllOrders", pageIndexParameter, pageSizeParameter, sortColumnParameter, sortOrderParameter, searchTextParameter, oStIDParameter, oDateFromParameter, oDateToParameter);
         }
     
         public virtual ObjectResult<SpGetAllOrdersByCustomerId_Result> SpGetAllOrdersByCustomerId(Nullable<int> pageIndex, Nullable<int> pageSize, string sortColumn, string sortOrder, string searchText, Nullable<int> oStID, Nullable<int> customerId)
@@ -635,6 +591,43 @@ namespace GROCERY.Models
                 new ObjectParameter("USER_ID", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SpGetWishList_Result>("SpGetWishList", pageIndexParameter, pageSizeParameter, sortColumnParameter, sortOrderParameter, searchTextParameter, uSER_IDParameter);
+        }
+    
+        public virtual ObjectResult<SpGetAllOrders_Result> SpGetAllOrders(Nullable<int> pageIndex, Nullable<int> pageSize, string sortColumn, string sortOrder, string searchText, Nullable<int> oStID, string oDateFrom, string oDateTo)
+        {
+            var pageIndexParameter = pageIndex.HasValue ?
+                new ObjectParameter("PageIndex", pageIndex) :
+                new ObjectParameter("PageIndex", typeof(int));
+    
+            var pageSizeParameter = pageSize.HasValue ?
+                new ObjectParameter("PageSize", pageSize) :
+                new ObjectParameter("PageSize", typeof(int));
+    
+            var sortColumnParameter = sortColumn != null ?
+                new ObjectParameter("SortColumn", sortColumn) :
+                new ObjectParameter("SortColumn", typeof(string));
+    
+            var sortOrderParameter = sortOrder != null ?
+                new ObjectParameter("SortOrder", sortOrder) :
+                new ObjectParameter("SortOrder", typeof(string));
+    
+            var searchTextParameter = searchText != null ?
+                new ObjectParameter("SearchText", searchText) :
+                new ObjectParameter("SearchText", typeof(string));
+    
+            var oStIDParameter = oStID.HasValue ?
+                new ObjectParameter("oStID", oStID) :
+                new ObjectParameter("oStID", typeof(int));
+    
+            var oDateFromParameter = oDateFrom != null ?
+                new ObjectParameter("oDateFrom", oDateFrom) :
+                new ObjectParameter("oDateFrom", typeof(string));
+    
+            var oDateToParameter = oDateTo != null ?
+                new ObjectParameter("oDateTo", oDateTo) :
+                new ObjectParameter("oDateTo", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SpGetAllOrders_Result>("SpGetAllOrders", pageIndexParameter, pageSizeParameter, sortColumnParameter, sortOrderParameter, searchTextParameter, oStIDParameter, oDateFromParameter, oDateToParameter);
         }
     }
 }
