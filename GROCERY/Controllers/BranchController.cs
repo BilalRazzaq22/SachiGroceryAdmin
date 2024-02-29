@@ -14,7 +14,7 @@ namespace GROCERY.Controllers
     {
         GROCERYEntities GROCERYEntities = new GROCERYEntities();
         BranchRepo branchRepo = new BranchRepo();
-        readonly string sachiChakkiDb = "data source=sachichakkiwh.mine.nu;initial catalog=PWPOS_SC;user id=sa;password=golden@3864;MultipleActiveResultSets=True;App=EntityFramework&quot;";
+        readonly string sachiChakkiDb = "data source=192.185.10.110;initial catalog=sachiery_GroceryApps;user id=sachiery_admin;password=bkY000o$3;MultipleActiveResultSets=True;App=EntityFramework&quot;";
         List<BRANCH> list = new List<BRANCH>();
         public BranchController()
         {
@@ -45,20 +45,20 @@ namespace GROCERY.Controllers
         {
             try
             {
-                BRANCH obj = null;
-                BRANCH getBranch = branchRepo.getBranchById(branch.BRANCH_ID);
-                obj = GROCERYEntities.BRANCHES.Where(x => x.BRANCH_ID == branch.BRANCH_ID).FirstOrDefault();
-                if (obj != null)
-                {
-                    ViewBag.Message = "Branch Is Already Exist";
-                    return View();
-                }
-                else
-                {
-                    obj = list.Where(x => x.BRANCH_ID == branch.BRANCH_ID).FirstOrDefault();
-                    if (obj != null)
-                        branch.BRANCH_NAME = obj.BRANCH_NAME;
-                }
+                //BRANCH obj = null;
+                //BRANCH getBranch = branchRepo.getBranchById(branch.BRANCH_ID);
+                ////obj = GROCERYEntities.BRANCHES.Where(x => x.BRANCH_ID == branch.BRANCH_ID).FirstOrDefault();
+                //if (getBranch != null)
+                //{
+                //    ViewBag.Message = "Branch Is Already Exist";
+                //    return View();
+                //}
+                //else
+                //{
+                //    obj = list.Where(x => x.BRANCH_ID == branch.BRANCH_ID).FirstOrDefault();
+                //    if (obj != null)
+                //        branch.BRANCH_NAME = obj.BRANCH_NAME;
+                //}
 
                 BRANCH br = new BRANCH();
                 br.BRANCH_ID = branch.BRANCH_ID;
@@ -86,7 +86,7 @@ namespace GROCERY.Controllers
                 BRANCH branch = branchRepo.getBranchById(id);
                 //string BRANCH_NAME = list.Where(x => x.BRANCH_ID == id).FirstOrDefault().BRANCH_NAME;
                 //branch.BRANCH_NAME = BRANCH_NAME;
-                ViewBag.BranchList = new SelectList(GROCERYEntities.BRANCHES, "BRANCH_ID", "BRANCH_NAME", id);
+                //ViewBag.BranchList = new SelectList(GROCERYEntities.BRANCHES, "BRANCH_ID", "BRANCH_NAME", id);
                 if (branch == null)
                 {
                     return HttpNotFound();
@@ -111,12 +111,14 @@ namespace GROCERY.Controllers
                 //    ViewBag.Message = "Branch Is Already Exist";
                 //    return View();
                 //}
-                BRANCH obj = GROCERYEntities.BRANCHES.Where(x => x.BRANCH_ID == branch.BRANCH_ID).FirstOrDefault();
-                if (obj != null)
-                {
-                    string BRANCH_NAME = obj.BRANCH_NAME;
-                    branch.BRANCH_NAME = BRANCH_NAME;
-                }
+                //BRANCH obj = GROCERYEntities.BRANCHES.Where(x => x.BRANCH_ID == branch.BRANCH_ID).FirstOrDefault();
+                //if (obj != null)
+                //{
+                //    string BRANCH_NAME = obj.BRANCH_NAME;
+                //    branch.BRANCH_NAME = BRANCH_NAME;
+
+
+                //}
                 branchRepo.UpdateBranch(branch);
                 return Redirect("/Branch/List");
             }
@@ -141,22 +143,22 @@ namespace GROCERY.Controllers
 
         private void GetBranchList()
         {
-            SqlConnection _con = new SqlConnection(sachiChakkiDb);
-            _con.Open();
-            SqlCommand cmd = new SqlCommand("Select * From LOC_CON", _con);
-            using (SqlDataReader dr = cmd.ExecuteReader())
-            {
-                while (dr.Read())
-                {
-                    list.Add(new BRANCH
-                    {
-                        BRANCH_ID = Convert.ToInt32(dr["CO1"]),
-                        BRANCH_NAME = dr["CO4"].ToString()
-                    });
-                }
+            //SqlConnection _con = new SqlConnection(sachiChakkiDb);
+            //_con.Open();
+            //SqlCommand cmd = new SqlCommand("Select * From BRANCHES", _con);
+            //using (SqlDataReader dr = cmd.ExecuteReader())
+            //{
+            //    while (dr.Read())
+            //    {
+            //        list.Add(new BRANCH
+            //        {
+            //            BRANCH_ID = Convert.ToInt32(dr["BRANCH_ID"]),
+            //            BRANCH_NAME = dr["BRANCH_NAME"].ToString()
+            //        });
+            //    }
 
-                ViewBag.BranchList = new SelectList(list, "BRANCH_ID", "BRANCH_NAME");
-            }
+            //    ViewBag.BranchList = new SelectList(list, "BRANCH_ID", "BRANCH_NAME");
+            //}
         }
     }
 }

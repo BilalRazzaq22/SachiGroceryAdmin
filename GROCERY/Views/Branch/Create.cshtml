@@ -42,7 +42,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="product_desc" class="control-label">Branch</label>
-                                @Html.DropDownListFor(model => model.BRANCH_ID, ViewBag.BranchList as SelectList, new { @class = "form-control" })
+                                @Html.TextBoxFor(model => model.BRANCH_NAME, new { @class = "form-control", placeholder = "BRANCH NAME" })
                             </div>
                         </div>
                         <div class="col-md-6">

@@ -122,7 +122,7 @@ namespace GROCERY.DAL.Managers
         public DataSet getAllProductsForBranchBarCodes(int scID, int bID)
         {
             string q = @"select top 1000 P.OLD_PRODUCT_ID AS PRODUCT_ID, P.DESCRIPTION PRODUCT_DESCRIPTION,
-                        b.UNIT_PRICE as PRICE,b.DISC as DISCOUNT,b.UNIT,b.BAR_CODE,ISNULL((select case when QTY > P.THRESHOLD THEN 'YES' ELSE 'NO' END
+                        b.UNIT_PRICE as PRICE,b.DISC as DISCOUNT,b.UNIT,b.BAR_CODE,ISNULL((select top 1 case when QTY > P.THRESHOLD THEN 'YES' ELSE 'NO' END
                         from STOCK where BRANCH_ID = " + bID + @" and PRODUCT_ID = P.PRODUCT_ID),'NO') AS AVAILABLE,P.IS_EXEMPTED
                         from BARCODES  b
                         inner join PRODUCTS p on b.ITEM_CODE =p.OLD_PRODUCT_ID
@@ -162,7 +162,7 @@ namespace GROCERY.DAL.Managers
             }
 
             string q = @"select  P.OLD_PRODUCT_ID AS PRODUCT_ID, P.DESCRIPTION PRODUCT_DESCRIPTION,
-                        b.UNIT_PRICE as PRICE,b.DISC as DISCOUNT,b.UNIT,b.BAR_CODE,ISNULL((select case when QTY > P.THRESHOLD THEN 'YES' ELSE 'NO' END
+                        b.UNIT_PRICE as PRICE,b.DISC as DISCOUNT,b.UNIT,b.BAR_CODE,ISNULL((select top 1 case when QTY > P.THRESHOLD THEN 'YES' ELSE 'NO' END
                         from STOCK where BRANCH_ID = " + bID + @" and PRODUCT_ID = P.PRODUCT_ID),'NO') AS AVAILABLE,P.IS_EXEMPTED
                         from BARCODES b
                         inner join PRODUCTS p on b.ITEM_CODE =p.OLD_PRODUCT_ID

@@ -156,7 +156,14 @@ namespace GROCERY.DAL.Core
         {
             try
             {
-                PRODUCT obj = gEnt.PRODUCTS.Find(productID);
+                PRODUCT obj = gEnt.PRODUCTS.FirstOrDefault(x => x.PRODUCT_ID == productID);
+
+
+                var barcode = gEnt.BARCODES.FirstOrDefault(x => x.ITEM_CODE == productID && x.bDEFAULT == true && x.IsActive == true);
+                if (barcode != null)
+                {
+                    obj.PRICE = barcode.UNIT_PRICE;
+                }
                 return obj;
             }
             catch (Exception)

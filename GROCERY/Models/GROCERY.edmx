@@ -135,15 +135,12 @@ warning 6002: The table/view 'sachiery_GroceryApps.dbo.Blogs' does not have a pr
           <Property Name="ModifiedDate" Type="smalldatetime" />
           <Property Name="RecordStatus" Type="varchar" MaxLength="20" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'sachiery_GroceryApps.dbo.BRANCHES' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="BRANCHES">
           <Key>
             <PropertyRef Name="BRANCH_ID" />
-            <PropertyRef Name="BRANCH_NAME" />
           </Key>
-          <Property Name="BRANCH_ID" Type="int" Nullable="false" />
-          <Property Name="BRANCH_NAME" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="BRANCH_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BRANCH_NAME" Type="varchar" MaxLength="50" />
           <Property Name="LATITUDE" Type="float" />
           <Property Name="LONGITUDE" Type="float" />
           <Property Name="ADDRESS" Type="nvarchar(max)" />
@@ -1382,6 +1379,7 @@ warning 6002: The table/view 'sachiery_GroceryApps.dbo.WISHES_PRODUCT' does not 
         </Function>
         <EntityContainer Name="GROCERYStoreContainer">
           <EntitySet Name="BANNERS" EntityType="Self.BANNERS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BRANCHES" EntityType="Self.BRANCHES" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ORDER_PRODUCTS" EntityType="Self.ORDER_PRODUCTS" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ORDERS" EntityType="Self.ORDERS" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PRODUCT_IMAGES" EntityType="Self.PRODUCT_IMAGES" Schema="dbo" store:Type="Tables" />
@@ -1463,17 +1461,6 @@ warning 6002: The table/view 'sachiery_GroceryApps.dbo.WISHES_PRODUCT' does not 
     [Blogs].[ModifiedDate] AS [ModifiedDate], 
     [Blogs].[RecordStatus] AS [RecordStatus]
     FROM [dbo].[Blogs] AS [Blogs]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="BRANCHES" EntityType="Self.BRANCHES" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [BRANCHES].[BRANCH_ID] AS [BRANCH_ID], 
-    [BRANCHES].[BRANCH_NAME] AS [BRANCH_NAME], 
-    [BRANCHES].[LATITUDE] AS [LATITUDE], 
-    [BRANCHES].[LONGITUDE] AS [LONGITUDE], 
-    [BRANCHES].[ADDRESS] AS [ADDRESS], 
-    [BRANCHES].[PHONE] AS [PHONE], 
-    [BRANCHES].[IS_ACTIVE] AS [IS_ACTIVE]
-    FROM [dbo].[BRANCHES] AS [BRANCHES]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="BRANDS" EntityType="Self.BRANDS" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -2300,7 +2287,6 @@ warning 6002: The table/view 'sachiery_GroceryApps.dbo.WISHES_PRODUCT' does not 
           <EntitySet Name="BANNER_IMAGES" EntityType="GROCERY.BANNER_IMAGES" />
           <EntitySet Name="BARCODES" EntityType="GROCERY.BARCODE" />
           <EntitySet Name="Blogs" EntityType="GROCERY.Blog" />
-          <EntitySet Name="BRANCHES" EntityType="GROCERY.BRANCH" />
           <EntitySet Name="BRANDS" EntityType="GROCERY.BRAND" />
           <EntitySet Name="CARTs" EntityType="GROCERY.CART" />
           <EntitySet Name="CATEGORIES" EntityType="GROCERY.CATEGORy" />
@@ -2348,6 +2334,7 @@ warning 6002: The table/view 'sachiery_GroceryApps.dbo.WISHES_PRODUCT' does not 
             <Parameter Name="oDateTo" Mode="In" Type="String" />
           </FunctionImport>
           <EntitySet Name="ORDERS" EntityType="GROCERY.ORDER" />
+          <EntitySet Name="BRANCHES" EntityType="GROCERY.BRANCH" />
         </EntityContainer>
         <ComplexType Name="SP_GetAllProductsByCategories_Result">
           <Property Type="Int32" Name="PRODUCT_ID" Nullable="false" />
@@ -3040,19 +3027,6 @@ warning 6002: The table/view 'sachiery_GroceryApps.dbo.WISHES_PRODUCT' does not 
           <Property Name="CreatedDate" Type="DateTime" Precision="0" />
           <Property Name="ModifiedDate" Type="DateTime" Precision="0" />
           <Property Name="RecordStatus" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-        </EntityType>
-        <EntityType Name="BRANCH">
-          <Key>
-            <PropertyRef Name="BRANCH_ID" />
-            <PropertyRef Name="BRANCH_NAME" />
-          </Key>
-          <Property Name="BRANCH_ID" Type="Int32" Nullable="false" />
-          <Property Name="BRANCH_NAME" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="LATITUDE" Type="Double" />
-          <Property Name="LONGITUDE" Type="Double" />
-          <Property Name="ADDRESS" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="PHONE" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="IS_ACTIVE" Type="Boolean" />
         </EntityType>
         <EntityType Name="BRAND">
           <Key>
@@ -3966,6 +3940,18 @@ warning 6002: The table/view 'sachiery_GroceryApps.dbo.WISHES_PRODUCT' does not 
           <Property Name="DeliveryFee" Type="Decimal" Precision="18" Scale="0" />
           <Property Name="EntryType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
+        <EntityType Name="BRANCH">
+          <Key>
+            <PropertyRef Name="BRANCH_ID" />
+          </Key>
+          <Property Name="BRANCH_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BRANCH_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="LATITUDE" Type="Double" />
+          <Property Name="LONGITUDE" Type="Double" />
+          <Property Name="ADDRESS" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PHONE" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IS_ACTIVE" Type="Boolean" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -4722,19 +4708,6 @@ warning 6002: The table/view 'sachiery_GroceryApps.dbo.WISHES_PRODUCT' does not 
                 <ScalarProperty Name="BlogImageUrl" ColumnName="BlogImageUrl" />
                 <ScalarProperty Name="BlogTitle" ColumnName="BlogTitle" />
                 <ScalarProperty Name="BlogId" ColumnName="BlogId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="BRANCHES">
-            <EntityTypeMapping TypeName="GROCERY.BRANCH">
-              <MappingFragment StoreEntitySet="BRANCHES">
-                <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
-                <ScalarProperty Name="PHONE" ColumnName="PHONE" />
-                <ScalarProperty Name="ADDRESS" ColumnName="ADDRESS" />
-                <ScalarProperty Name="LONGITUDE" ColumnName="LONGITUDE" />
-                <ScalarProperty Name="LATITUDE" ColumnName="LATITUDE" />
-                <ScalarProperty Name="BRANCH_NAME" ColumnName="BRANCH_NAME" />
-                <ScalarProperty Name="BRANCH_ID" ColumnName="BRANCH_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -5531,6 +5504,19 @@ warning 6002: The table/view 'sachiery_GroceryApps.dbo.WISHES_PRODUCT' does not 
                 <ScalarProperty Name="NAME" ColumnName="NAME" />
                 <ScalarProperty Name="CUSTOMER_ID" ColumnName="CUSTOMER_ID" />
                 <ScalarProperty Name="ORDER_ID" ColumnName="ORDER_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BRANCHES">
+            <EntityTypeMapping TypeName="GROCERY.BRANCH">
+              <MappingFragment StoreEntitySet="BRANCHES">
+                <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
+                <ScalarProperty Name="PHONE" ColumnName="PHONE" />
+                <ScalarProperty Name="ADDRESS" ColumnName="ADDRESS" />
+                <ScalarProperty Name="LONGITUDE" ColumnName="LONGITUDE" />
+                <ScalarProperty Name="LATITUDE" ColumnName="LATITUDE" />
+                <ScalarProperty Name="BRANCH_NAME" ColumnName="BRANCH_NAME" />
+                <ScalarProperty Name="BRANCH_ID" ColumnName="BRANCH_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

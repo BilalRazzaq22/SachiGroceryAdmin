@@ -41,7 +41,6 @@ namespace GROCERY.Models
         public virtual DbSet<BANNER_IMAGES> BANNER_IMAGES { get; set; }
         public virtual DbSet<BARCODE> BARCODES { get; set; }
         public virtual DbSet<Blog> Blogs { get; set; }
-        public virtual DbSet<BRANCH> BRANCHES { get; set; }
         public virtual DbSet<BRAND> BRANDS { get; set; }
         public virtual DbSet<CART> CARTs { get; set; }
         public virtual DbSet<CATEGORy> CATEGORIES { get; set; }
@@ -79,6 +78,7 @@ namespace GROCERY.Models
         public virtual DbSet<WebsitePage> WebsitePages { get; set; }
         public virtual DbSet<WISHES_PRODUCT> WISHES_PRODUCT { get; set; }
         public virtual DbSet<ORDER> ORDERS { get; set; }
+        public virtual DbSet<BRANCH> BRANCHES { get; set; }
     
         public virtual int sp_alterdiagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
         {
