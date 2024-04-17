@@ -316,7 +316,6 @@
             //    alert('Mobile number must start with 92');
             //    return;
             //}
-
             var CustomerName = $("#NAME").val();
             var MobileNumber = $("#MOBILE").val();
             var Address = $("#ADDRESS").val();
@@ -337,7 +336,7 @@
                     if (Address == "")
                         alert("Customer Address is required.");
                     else
-                        if (BranchID == -1)
+                        if (BranchID == -1 || BranchID == null)
                             alert("Branch is required.");
                         else
                             if (orders.items.length <= 0)
@@ -996,10 +995,6 @@
                                 <select name="BRANCH_ID" id="userBranch" class="form-control"></select>
                             </div>
                         </div>
-
-
-
-
                     </div>
 
                     <div class="row">

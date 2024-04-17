@@ -194,7 +194,7 @@
                 + item.DELIVERY_DESCRIPTION + '</td><td id="times' + allordercount + '">' + item.DELIVERY_TIME + '</td><td>'
                 + item.MANUAL_DISCOUNT + '</td><td>' + item.COUPON_DISCOUNT + '</td><td>'
                 + item.IS_PACKAGE + '</td><td>'
-                + item.TOTAL_ITEMS + '</td><td>' + totalAmount + '</td><td>' + item.STATUS_DESCRIPTION + '</td>'
+                + item.TOTAL_ITEMS + '</td><td>' + totalAmount + '</td><td>' + item.USERNAME + '</td><td>' + item.STATUS_DESCRIPTION + '</td>'
                 + '<td><a style="color:green" target="_blank" href = "View?oID=' + item.ORDER_ID + '">View</a></td></tr>';
 
             if (allordercount == 1) {
@@ -218,6 +218,7 @@
                 $("#load").css("display", "none");
                 //console.log("data: " + result);
                 orders = jQuery.parseJSON(result);
+                console.log(orders);
                 if (oStID == 1)
                     populateOrdersTable();
                 else if (oStID == 2) {
@@ -259,7 +260,7 @@
                 + item.DELIVERY_DESCRIPTION + '</td><td>' + item.DELIVERY_TIME + '</td><td>'
                 + item.MANUAL_DISCOUNT + '</td><td>' + item.COUPON_DISCOUNT + '</td><td>'
                 + item.IS_PACKAGE + '</td><td>'
-                + item.TOTAL_ITEMS + '</td><td>' + totalAmount + '</td>'
+                + item.TOTAL_ITEMS + '</td><td>' + totalAmount + '</td><td>' + item.USERNAME + '</td>'
                 //+ '<td><a style="color:green" href="javascript:void(0);" onclick = "completeOrder(' + item.ORDER_ID + ')">Tracking</a></td>'
                 + '<td><a style="color:green" target="_blank" href = "View?oID=' + item.ORDER_ID + '">View</a></td>'
                 + '<td><button type="button" class="btn btn-xs btn-warning" onclick= javascript:allocateOrderByID(' + item.ORDER_ID + ') id="check-box-' + item.ORDER_ID + '" >Allocate</button></div></td>'
@@ -315,7 +316,7 @@
             dispatchordercount = dispatchordercount + 1;
             rows = rows + '<tr><td>' + item.ORDER_ID + '</td><td>' + item.CUSTOMER_ID + '</td><td>' + item.NAME + '</td><td>'
                 + item.MOBILE + '</td><td>' + item.ADDRESS + '</td><td>'
-                + item.TOTAL_ITEMS + '</td><td>' + totalAmount + '</td>'
+                + item.TOTAL_ITEMS + '</td><td>' + totalAmount + '</td><td>' + item.USERNAME + '</td>'
                 + '</tr>';
 
             if (dispatchordercount == 1) {
@@ -341,7 +342,7 @@
             shippedordercount = shippedordercount + 1;
             rows = rows + '<tr><td>' + item.ORDER_ID + '</td><td>' + item.CUSTOMER_ID + '</td><td>' + item.NAME + '</td><td>'
                 + item.MOBILE + '</td><td>' + item.ADDRESS + '</td><td>'
-                + item.TOTAL_ITEMS + '</td><td>' + totalAmount + '</td>'
+                + item.TOTAL_ITEMS + '</td><td>' + totalAmount + '</td><td>' + item.USERNAME + '</td>'
                 + '<td><a style="color:green" target="_blank" href = "View?oID=' + item.ORDER_ID + '">View</a></td></tr>';
 
             if (shippedordercount == 1) {
@@ -798,6 +799,7 @@
                             <th style="width: 3%; word-wrap: break-word">Package</th>
                             <th style="width: 4%; word-wrap: break-word">Items</th>
                             <th style="width: 5%; word-wrap: break-word">Amount</th>
+                            <th style="width: 5%; word-wrap: break-word">Created By</th>
                             <th style="width: 5%; word-wrap: break-word">Status</th>
                             <th style="width: 10%; word-wrap: break-word">Action</th>
 
@@ -851,6 +853,7 @@
                             <th>Package</th>
                             <th>Items</th>
                             <th>Amount</th>
+                            <th>Created By</th>
                             <th>Action</th>
                             <th>Allocate</th>
                         </tr>
@@ -894,6 +897,7 @@
                             <th>Address</th>
                             <th>Items</th>
                             <th>Amount</th>
+                            <th>Created By</th>
                             <th>Rider</th>
                             <th>Dispatch</th>
                             <th>Action</th>
@@ -930,6 +934,7 @@
                             <th>Address</th>
                             <th>Items</th>
                             <th>Amount</th>
+                            <th>Created By</th>
                         </tr>
                     </thead>
                     <tbody id="ordersTable3"></tbody>
@@ -961,6 +966,7 @@
                             <th>Address</th>
                             <th>Items</th>
                             <th>Amount</th>
+                            <th>Created By</th>
                             <th>Action</th>
 
                         </tr>

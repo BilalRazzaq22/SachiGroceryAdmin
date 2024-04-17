@@ -40,7 +40,7 @@ namespace GROCERY.DAL.Core
             try
             {
                 order.IS_ACTIVE = 1; //not rejected
-                order.CREATED_BY = 1;
+                //order.CREATED_BY = 1;
                 order.CREATED_ON = currentdate;
                 ORDER obj = gEnt.ORDERS.Add(order);
                 int result = gEnt.SaveChanges();

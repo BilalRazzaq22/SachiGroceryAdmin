@@ -26,6 +26,7 @@ namespace GROCERY.Controllers
         private OrdersRepo repo = new OrdersRepo();
         private UsersRepo uRepo = new UsersRepo();
         private CouponsRepo cRepo = new CouponsRepo();
+        private BranchRepo brepo = new BranchRepo();
         GROCERYEntities db = new GROCERYEntities();
         BusinessController controller = new BusinessController();
         private USER user = null;
@@ -104,6 +105,11 @@ namespace GROCERY.Controllers
         public string ProcessOrder(CustomerOrderBO custOrd)
         {
             OrderResponse response = new OrderResponse();
+            user = (USER)Session["UserLoggedIn"];
+            if (user == null)
+            {
+                return "";
+            }
             try
             {
                 if (custOrd.isTestOrder)
@@ -196,7 +202,8 @@ namespace GROCERY.Controllers
                         DELIVERY_TIME = DateTime.Parse(custOrd.DeliveryTime),
                         IsTestOrder = custOrd.isTestOrder,
                         DeliveryFee = custOrd.DeliveryFee,
-                        EntryType = "ADMIN"
+                        EntryType = "ADMIN",
+                        CREATED_BY = user.USER_ID
                     });
                 }
                 else
@@ -223,7 +230,8 @@ namespace GROCERY.Controllers
                         DELIVERY_TIME = currentdate,
                         IsTestOrder = custOrd.isTestOrder,
                         DeliveryFee = custOrd.DeliveryFee,
-                        EntryType = "ADMIN"
+                        EntryType = "ADMIN",
+                        CREATED_BY = user.USER_ID
                     });
                 }
                 response.Message = sendOrderSms("Your order (" + orderID + " ) has been placed ", custOrd.MobileNumber);
@@ -525,37 +533,50 @@ namespace GROCERY.Controllers
                 {
                     ViewBag.Time = Convert.ToDateTime(o.DELIVERY_TIME).ToString("yyyy-MM-ddTH:mm");
                 }
-                switch (o.BRANCH_ID)
+
+                var branch = brepo.getBranchById(Convert.ToInt32(o.BRANCH_ID));
+                if (branch != null)
                 {
-                    case 1:
-                        ViewBag.Branch = "Karim Market";
-                        ViewBag.BranchId = 1;
-                        break;
-                    case 2:
-                        ViewBag.Branch = "Asif Block";
-                        ViewBag.BranchId = 2;
-                        break;
-                    case 3:
-                        ViewBag.Branch = "Wapda Town";
-                        ViewBag.BranchId = 3;
-                        break;
-                    case 5:
-                        ViewBag.Branch = "Johar Town";
-                        ViewBag.BranchId = 5;
-                        break;
-                    case 6:
-                        ViewBag.Branch = "Behria Town";
-                        ViewBag.BranchId = 6;
-                        break;
-                    case 7:
-                        ViewBag.Branch = "Eme Society";
-                        ViewBag.BranchId = 7;
-                        break;
-                    default:
-                        ViewBag.Branch = "";
-                        ViewBag.BranchId = -1;
-                        break;
+                    ViewBag.Branch = branch.BRANCH_NAME;
+                    ViewBag.BranchId = branch.BRANCH_ID;
                 }
+                else
+                {
+                    ViewBag.Branch = "No Branch Found";
+                    ViewBag.BranchId = 0;
+                }
+
+                //switch (o.BRANCH_ID)
+                //{
+                //    case 1:
+                //        ViewBag.Branch = "Karim Market";
+                //        ViewBag.BranchId = 1;
+                //        break;
+                //    case 2:
+                //        ViewBag.Branch = "Asif Block";
+                //        ViewBag.BranchId = 2;
+                //        break;
+                //    case 3:
+                //        ViewBag.Branch = "Wapda Town";
+                //        ViewBag.BranchId = 3;
+                //        break;
+                //    case 5:
+                //        ViewBag.Branch = "Johar Town";
+                //        ViewBag.BranchId = 5;
+                //        break;
+                //    case 6:
+                //        ViewBag.Branch = "Behria Town";
+                //        ViewBag.BranchId = 6;
+                //        break;
+                //    case 7:
+                //        ViewBag.Branch = "Eme Society";
+                //        ViewBag.BranchId = 7;
+                //        break;
+                //    default:
+                //        ViewBag.Branch = "";
+                //        ViewBag.BranchId = -1;
+                //        break;
+                //}
                 switch (o.STATUS)
                 {
 
