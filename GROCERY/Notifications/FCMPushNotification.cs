@@ -41,6 +41,10 @@ namespace GROCERY.Notifications
         public FCMPushNotification SendNotification(string title, string message, string topic, string senderId, string deviceId)
         {
             FCMPushNotification result = new FCMPushNotification();
+            if (string.IsNullOrEmpty(deviceId)) 
+            {
+                return result;
+            }
             try
             {
                 result.Successful = true;

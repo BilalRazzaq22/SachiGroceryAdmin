@@ -123,11 +123,11 @@ namespace GROCERY.DAL.Managers
         {
             string q = @"select top 1000 P.OLD_PRODUCT_ID AS PRODUCT_ID, P.DESCRIPTION PRODUCT_DESCRIPTION,
                         b.UNIT_PRICE as PRICE,b.DISC as DISCOUNT,b.UNIT,b.BAR_CODE,ISNULL((select top 1 case when QTY > P.THRESHOLD THEN 'YES' ELSE 'NO' END
-                        from STOCK where BRANCH_ID = " + bID + @" and PRODUCT_ID = P.PRODUCT_ID),'NO') AS AVAILABLE,P.IS_EXEMPTED
+                        from STOCK where BRANCH_ID = " + bID + @" and PRODUCT_ID = P.PRODUCT_ID),'NO') AS AVAILABLE,P.IS_EXEMPTED,P.IS_ACTIVE
                         from BARCODES  b
                         inner join PRODUCTS p on b.ITEM_CODE =p.OLD_PRODUCT_ID
                         {0} 
-                        GROUP	 BY  P.PRODUCT_ID,P.OLD_PRODUCT_ID, P.DESCRIPTION,b.UNIT_PRICE, b.DISC,b.UNIT,b.BAR_CODE,P.THRESHOLD,P.IS_EXEMPTED";
+                        GROUP	 BY  P.PRODUCT_ID,P.OLD_PRODUCT_ID, P.DESCRIPTION,b.UNIT_PRICE, b.DISC,b.UNIT,b.BAR_CODE,P.THRESHOLD,P.IS_EXEMPTED,P.IS_ACTIVE";
             if (scID == -1 && bID == -1)
                 return ExecuteDataSet(string.Format(q, " where 1=1 and and b.bDEFAULT =1 and b.IsActive = 1 "));
             else
@@ -163,11 +163,11 @@ namespace GROCERY.DAL.Managers
 
             string q = @"select  P.OLD_PRODUCT_ID AS PRODUCT_ID, P.DESCRIPTION PRODUCT_DESCRIPTION,
                         b.UNIT_PRICE as PRICE,b.DISC as DISCOUNT,b.UNIT,b.BAR_CODE,ISNULL((select top 1 case when QTY > P.THRESHOLD THEN 'YES' ELSE 'NO' END
-                        from STOCK where BRANCH_ID = " + bID + @" and PRODUCT_ID = P.PRODUCT_ID),'NO') AS AVAILABLE,P.IS_EXEMPTED
+                        from STOCK where BRANCH_ID = " + bID + @" and PRODUCT_ID = P.PRODUCT_ID),'NO') AS AVAILABLE,P.IS_EXEMPTED,P.IS_ACTIVE
                         from BARCODES b
                         inner join PRODUCTS p on b.ITEM_CODE =p.OLD_PRODUCT_ID
                         {0} {1}
-                        GROUP BY  P.OLD_PRODUCT_ID,P.PRODUCT_ID, P.DESCRIPTION,b.UNIT_PRICE, b.DISC,b.UNIT,b.BAR_CODE,P.THRESHOLD,P.IS_EXEMPTED";
+                        GROUP BY  P.OLD_PRODUCT_ID,P.PRODUCT_ID, P.DESCRIPTION,b.UNIT_PRICE, b.DISC,b.UNIT,b.BAR_CODE,P.THRESHOLD,P.IS_EXEMPTED,P.IS_ACTIVE";
             if (scID == -1 && bID == -1)
                 return ExecuteDataSet(string.Format(q, " where 1=1 and b.bDEFAULT =1 and b.IsActive = 1 ", filter));
             else

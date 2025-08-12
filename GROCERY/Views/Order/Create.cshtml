@@ -511,26 +511,19 @@
         //id="rid_' + item.BAR_CODE + '"
         for (i = 0; i < products.Table.length; i++) {
             var item = products.Table[i];
-            if(item.AVAILABLE == "NO" && item.IS_EXEMPTED == 0)
-            {
-                rows = rows + '<tr style="background-color : darkgrey"><td>' + item.PRODUCT_ID + '-' + item.BAR_CODE + '</td><td>' + item.PRODUCT_DESCRIPTION + '</td><td>'
+            var style = "";
+            if (item.AVAILABLE == "NO") {
+                style = 'style="background-color : yellow"';
+            } else if (item.IS_ACTIVE == false) {
+                style = 'style="background-color : darkgrey"';
+            }
 
+            rows = rows + '<tr ' + style + '><td>' + item.PRODUCT_ID + '-' + item.BAR_CODE + '</td><td>' + item.PRODUCT_DESCRIPTION + '</td><td>'
                 + item.PRICE + '</td><td>'
                 + item.DISCOUNT + '</td><td>'
                 + '<input type=number placeholder="Qty Order" name="oAmtInp" value = 1 min= 1 id = "orderAmount-' + item.PRODUCT_ID + item.BAR_CODE + '" onblur=myfunction(this.value) /></td><td>'
                 + '<button type="button" class="btn btn-green" onclick=addToList(' + item.PRODUCT_ID + item.BAR_CODE + ')>Add</button></td><td>'
                 + '<button type="button" class="btn btn-white" onclick=showDetails(' + item.PRODUCT_ID + ')>Details</button></td></tr>';
-            }
-            else
-            {
-                rows = rows + '<tr ><td>' + item.PRODUCT_ID + '-' + item.BAR_CODE + '</td><td>' + item.PRODUCT_DESCRIPTION + '</td><td>'
-
-                + item.PRICE + '</td><td>'
-                + item.DISCOUNT + '</td><td>'
-                + '<input type=number placeholder="Qty Order" name="oAmtInp" value = 1 min= 1 id = "orderAmount-' + item.PRODUCT_ID + item.BAR_CODE + '" onblur=myfunction(this.value) /></td><td>'
-                + '<button type="button" class="btn btn-green" onclick=addToList(' + item.PRODUCT_ID + item.BAR_CODE + ')>Add</button></td><td>'
-                + '<button type="button" class="btn btn-white" onclick=showDetails(' + item.PRODUCT_ID + ')>Details</button></td></tr>';
-            }
         }
 
         $("#productsTable").html(rows);
@@ -793,7 +786,7 @@
                 else if (d.Status == true) {
                     $("#form-orders").submit();
                     debugger;
-                    
+
 
                     alert("Order created successfully." + '\n' + d.Message);
 
@@ -1416,7 +1409,7 @@
             </div>
             <form action="#" method="post">
                 <div class="modal-body">
-                    
+
 
                     <div class="row">
                         <div class="col-md-4">
@@ -1460,7 +1453,7 @@
                         </div>
                         <div class="col-md-8">
                             <div class="form-group">
-                                
+
                                 <input class="form-control"
                                        id="txtCouponMsg"
                                        name="txtCouponMsg"

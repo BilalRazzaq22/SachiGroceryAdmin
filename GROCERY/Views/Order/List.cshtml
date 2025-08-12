@@ -99,7 +99,7 @@
         //page click action
         $('#allorderpagination').on("page", function (event, num) {
             //show / hide content or pull via ajax etc
-            initializeOrdersList(num, 0, null, null, 'CREATED_DATE', 'desc', null);
+            initializeOrdersList(num, 0, null, null, 'CREATED_DATE', 'desc', $("#searchOrder").val());
             //$("#content").html("Page " + num);
         });
     }
@@ -116,7 +116,7 @@
         //page click action
         $('#populateorderpagination').on("page", function (event, num) {
             //show / hide content or pull via ajax etc
-            initializeOrdersList(num, 1, $("#orderDateFrom").val(), $("#orderDateTo").val(), 'CREATED_DATE', 'desc', null);
+            initializeOrdersList(num, 1, $("#orderDateFrom").val(), $("#orderDateTo").val(), 'CREATED_DATE', 'desc', $("#searchOrder").val());
             //$("#content").html("Page " + num);
         });
     }
@@ -134,7 +134,7 @@
         //page click action
         $('#allocateorderpagination').on("page", function (event, num) {
             //show / hide content or pull via ajax etc
-            initializeOrdersList(num, 2, $("#orderDateFrom").val(), $("#orderDateTo").val(), 'CREATED_DATE', 'desc', null);
+            initializeOrdersList(num, 2, $("#orderDateFrom").val(), $("#orderDateTo").val(), 'CREATED_DATE', 'desc', $("#searchOrder").val());
             //$("#content").html("Page " + num);
         });
     }
@@ -151,7 +151,7 @@
         //page click action
         $('#dispatchorderpagination').on("page", function (event, num) {
             //show / hide content or pull via ajax etc
-            initializeOrdersList(num, 3, $("#orderDateFrom").val(), $("#orderDateTo").val(), 'CREATED_DATE', 'desc', null);
+            initializeOrdersList(num, 3, $("#orderDateFrom").val(), $("#orderDateTo").val(), 'CREATED_DATE', 'desc', $("#searchOrder").val());
             //$("#content").html("Page " + num);
         });
     }
@@ -168,7 +168,7 @@
         //page click action
         $('#shippedorderpagination').on("page", function (event, num) {
             //show / hide content or pull via ajax etc
-            initializeOrdersList(num, 4, $("#orderDateFrom").val(), $("#orderDateTo").val(), 'CREATED_DATE', 'desc', null);
+            initializeOrdersList(num, 4, $("#orderDateFrom").val(), $("#orderDateTo").val(), 'CREATED_DATE', 'desc', $("#searchOrder").val());
             //$("#content").html("Page " + num);
         });
     }
